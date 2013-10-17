@@ -1,0 +1,44 @@
+.aa-datepicker-button {
+  background: #ccc;
+  color: #333;
+  padding: 5px 10px;
+  display: inline-block;
+  text-decoration: none;
+}
+.aa-datepicker-button:hover {
+  text-decoration: underline;
+}
+
+.aa-calendar-wrapper {
+  width: 250px;
+  display: none;
+  position: absolute;
+  background: #fff;
+  padding: 10px;
+  border: solid 1px #ddd;
+  border-radius: 3px;
+}
+.aa-calendar-wrapper.open {
+  display: block;
+}
+.aa-calendar-header {
+  display:block;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: solid 1px #ccc;
+}
+.aa-calendar-header .close {
+  float:right;
+}
+.aa-input-wrapper {
+  display:inline-block;
+  width:50%;
+}
+.aa-input-wrapper input {
+  width: 75%;
+}
+.aa-calendar {
+  height: 150px;
+  margin-top: 15px;
+  border: solid 1px #ddd;
+}

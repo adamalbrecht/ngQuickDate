@@ -1,15 +1,47 @@
 <!DOCTYPE html>
-<html data-ng-app='ngDatepickerDemo'>
+<html data-ng-app='aaDatepickerDemo'>
   <head>
     <title>ngDatepicker Demo</title>
     <link rel="stylesheet" type="text/css" href="../bower_components/pure/pure-min.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../bower_components/font-awesome/css/font-awesome.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../src/aaDatepicker.css" media="all" />
     <link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
   </head>
   <body>
-    <p>1 + 2 = {{1 + 2}}</p>
+    <div class='wrapper'>
+      <div class='intro'>
+        <h1>AA DatePicker Demo</h1>
+        <p>Nam justo est, suscipit a luctus sit amet, hendrerit eget massa. Sed placerat interdum lorem, sed vestibulum lacus lacinia sit amet. Fusce eu leo at ligula lacinia fringilla a sit amet arcu. Nam sed sapien massa. Curabitur in fringilla nisi. Morbi a elementum dolor, quis ornare justo. Mauris laoreet mollis urna, ut ullamcorper ipsum. Proin risus arcu, aliquam in sodales vel, pharetra at nisi. Duis interdum ac erat non adipiscing. Donec nec nisl vehicula, ornare eros non, commodo arcu.</p>
+      </div>
+      <div class='example'>
+        <h3>Example 1: Basic Date</h3>
+        <p>
+          <label>Date Field</label>
+          <aa-datepicker ng-model='date1' hover-text='This is the hover text' placeholder='Click to Set Date'>
+            <i class='icon-time'></i> 
+          </aa-datepicker>
+        </p>
+        <p>
+          <b>Value:</b> {{date1}}
+        </p>
+        <p>
+          <b>Value With Date Filter:</b> {{date1 | date:'medium'}}
+        </p>
+        <pre>&lt;aa-datepicker ng-model=&#39;date1&#39; hover-text=&#39;This is the hover text&#39; placeholder=&#39;Click to Set Date&#39;&gt;</pre>
+      </div>
+      <div class='example'>
+        <h3>Example 2: Basic Date/Time</h3>
+        <p>
+          <label>Datetime Field</label>
+          <aa-datepicker ng-model='date2' placeholder='Click to Set Date/Time'>
+            <i class='icon-time'></i> 
+          </aa-datepicker>
+        </p>
+      </div>
+    </div>
     <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="../bower_components/momentjs/min/moment.min.js"></script>
-    <script type="text/javascript" src="../src/ngDatepicker.js"></script>
+    <script type="text/javascript" src="../src/aaDatepicker.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
   </body>
 </html>

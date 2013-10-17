@@ -1,1 +1,1 @@
-var app = angular.module('ngDatepickerDemo', ['ngDatepicker'])
+var app = angular.module('aaDatepickerDemo', ['aaDatepickerLib'])

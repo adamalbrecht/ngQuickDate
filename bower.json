@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "angular": "~1.0.8",
-    "pure": "~0.3"
+    "pure": "~0.3",
+    "font-awesome": "~3.2"
   }
 }

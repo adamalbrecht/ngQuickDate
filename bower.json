@@ -1,0 +1,17 @@
+{
+  "name": "ng-datepicker",
+  "version": "0.0.1",
+  "main": "src/ngDatepicker.js",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt",
+    "demo"
+  ],
+  "dependencies": {
+    "momentjs": "~2.3.1"
+  },
+  "devDependencies": {
+    "angular": "~1.0.8",
+    "pure": "~0.3"
+  }
+}

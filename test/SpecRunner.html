@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Jasmine Spec Runner</title>
+
+  <link rel="shortcut icon" type="image/png" href="../bower_components/jasmine/images/jasmine_favicon.png">
+
+
+  <!-- jasmine files -->
+  <link rel="stylesheet" type="text/css" href="../bower_components/jasmine/lib/jasmine-core/jasmine.css">
+  <script type="text/javascript" src="../bower_components/jasmine/lib/jasmine-core/jasmine.js"></script>
+  <script type="text/javascript" src="../bower_components/jasmine/lib/jasmine-core/jasmine-html.js"></script>
+
+  <!-- vendor files -->
+  <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
+  <script type="text/javascript" src="../bower_components/angular-mocks/angular-mocks.js"></script>
+  <script type="text/javascript" src="../bower_components/datejs/build/date.js"></script>
+
+  <!-- source files -->
+  <script type="text/javascript" src="../src/aaDatepicker.js"></script>
+
+  <!-- spec files -->
+  <script type="text/javascript" src="aaDatepickerSpec.js"></script>
+
+
+  <script type="text/javascript">
+
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var trivialReporter = new jasmine.TrivialReporter();
+
+      jasmineEnv.addReporter(trivialReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return trivialReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html

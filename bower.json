@@ -8,11 +8,15 @@
     "demo"
   ],
   "dependencies": {
-    "momentjs": "~2.3.1"
+    "momentjs": "~2.3.1",
+    "datejs": ""
   },
   "devDependencies": {
     "angular": "~1.0.8",
+    "angular-mocks": "~1.0.8",
     "pure": "~0.3",
-    "font-awesome": "~3.2"
+    "font-awesome": "~3.2",
+    "jasmine": "~1.3.1",
+    "karma-jasmine": "~0.1.3"
   }
 }

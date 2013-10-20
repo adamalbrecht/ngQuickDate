@@ -8,6 +8,13 @@
 .aa-datepicker-button:hover {
   text-decoration: underline;
 }
+.aa-datepicker-button:hover i {
+  text-decoration: none;
+}
+
+.aa-datepicker-button i {
+  padding-right:4px;
+}
 
 .aa-calendar-wrapper {
   width: 250px;

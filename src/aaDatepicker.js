@@ -43,7 +43,7 @@ app.directive('aaDatepicker', [function() {
       "<div class='aa-datepicker'><a href='' ng-click='toggleCalendar()' class='aa-datepicker-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{chosenDateStr}}</a>" +
         "<div class='aa-calendar-wrapper' ng-class='{open: calendarShown}'>" +
           "<div class='aa-calendar-header'>{{chosenDateStr}}<a href='' class='close' ng-click='toggleCalendar()'>X</a></div>" +
-          "<div class='aa-input-wrapper'><label>Date</label><input type='text' ng-model='chosenDateStr' placeholder='1/1/2013' /></div>" +
+          "<div class='aa-input-wrapper'><label>Date</label><input class='aa-date-text-input' type='text' ng-model='chosenDateStr' placeholder='1/1/2013' /></div>" +
           // "<div class='aa-input-wrapper'><label>Time</label><input type='text' ng-model='chosenTimeStr' placeholder='12:00pm' /></div>" +
           "<table class='aa-calendar'>" +
             "<thead>" +

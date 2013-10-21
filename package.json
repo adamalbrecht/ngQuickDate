@@ -1,0 +1,9 @@
+{
+  "name": "aaDatepicker",
+  "version": "0.1.0",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-coffee": "~0.7",
+    "grunt-contrib-watch": "~0.5"
+  }
+}

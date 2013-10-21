@@ -2,3 +2,6 @@
 /generated
 bower_components
 .DS_Store
+/test/generated/*
+node_modules
+

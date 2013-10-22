@@ -6,7 +6,9 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          "test/generated/specs.js": ["test/coffee/*.coffee"]
+          "test/js/specs.js": ["test/coffee/*.coffee"],
+          "src/js/aaDatepicker.js": ["src/coffee/aaDatepicker.coffee"],
+          "demo/js/app.js": ["demo/coffee/*.coffee"]
         }
       }
     },
@@ -17,12 +19,12 @@ module.exports = function(grunt) {
         options: {
           debounceDelay: 250,
         },
-      },
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['coffee']);
+  grunt.registerTask('default', ['coffee', 'watch']);
 };

@@ -14,26 +14,38 @@
         <p>Nam justo est, suscipit a luctus sit amet, hendrerit eget massa. Sed placerat interdum lorem, sed vestibulum lacus lacinia sit amet. Fusce eu leo at ligula lacinia fringilla a sit amet arcu. Nam sed sapien massa. Curabitur in fringilla nisi. Morbi a elementum dolor, quis ornare justo. Mauris laoreet mollis urna, ut ullamcorper ipsum. Proin risus arcu, aliquam in sodales vel, pharetra at nisi. Duis interdum ac erat non adipiscing. Donec nec nisl vehicula, ornare eros non, commodo arcu.</p>
       </div>
       <div class='example' ng-controller='example1Ctrl'>
-        <h3>Example 1: Basic Date</h3>
+        <h3>Example 1: Basic Datepicker set to Date Object</h3>
         <p>
           <label>Date Field</label>
-          Hello!
-          <aa-datepicker ng-model='date1' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
+          <aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
+        </p>
+          <b>Raw Value:</b> {{myDate}}
         </p>
         <p>
-          <b>Value:</b> {{date1}}
+          <b>Value With Medium Date Filter:</b> {{myDate | date:'medium'}}
         </p>
-        <p>
-          <b>Value With Date Filter:</b> {{date1 | date:'medium'}}
-        </p>
-        <pre>&lt;aa-datepicker ng-model=&#39;date1&#39; hover-text=&#39;This is the hover text&#39; placeholder=&#39;Click to Set Date&#39;&gt;</pre>
+        <strong>Code:</strong><br/>
+        <pre><code>$scope.myDate = Date.parse("10/26/2013");</code></pre>
+        <pre><code>&lt;aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
       </div>
-      <div class='example'>
-        <h3>Example 2: Basic Date/Time</h3>
+      <div class='example' ng-controller='example2Ctrl'>
+        <h3>Example 2: Basic Datepicker set to Null</h3>
         <p>
-          <label>Datetime Field</label>
-          <aa-datepicker ng-model='date2' placeholder='Click to Set Date/Time' />
+          <label>Date Field</label>
+          <aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
         </p>
+        <p>
+          <b>Raw Value:</b> {{myDate}}
+        </p>
+        <p>
+          <b>Value With Medium Date Filter:</b> {{myDate | date:'medium'}}
+        </p>
+        <p class='italic'>
+          Notice that the button initially reads "Click to Set Date". This comes from the <code>placeholder</code> attribute since the model is null.
+        <p>
+        <strong>Code:</strong>
+        <pre><code>$scope.myDate = null;</code></pre>
+        <pre><code>&lt;aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
       </div>
     </div>
     <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>

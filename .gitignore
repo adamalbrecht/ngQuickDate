@@ -1,5 +1,5 @@
 *.swp
-/generated
+**/generated
 bower_components
 .DS_Store
 node_modules

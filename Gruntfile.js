@@ -6,15 +6,15 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          "test/js/specs.js": ["test/coffee/*.coffee"],
-          "src/js/aaDatepicker.js": ["src/coffee/aaDatepicker.coffee"],
-          "demo/js/app.js": ["demo/coffee/*.coffee"]
+          "test/generated/specs.js": ["test/coffee/*.coffee"],
+          "src/generated/aaDatepicker.js": ["src/coffee/aaDatepicker.coffee"],
+          "demo/generated/app.js": ["demo/coffee/*.coffee"]
         }
       }
     },
     watch: {
       scripts: {
-        files: 'test/coffee/*.coffee',
+        files: '**/**/*.coffee',
         tasks: ['coffee'],
         options: {
           debounceDelay: 250,

@@ -20,7 +20,12 @@ app.directive "aaDatepicker", [->
     scope.weeks = []
 
     setDateStr = ->
-      scope.dateStr = if scope.ngModel then Date.parse(scope.ngModel).toString('M/d/yyyy') else null
+      try
+        if !scope.ngModel or (typeof(scope.ngModel) == 'string' and scope.ngModel.trim() == '')
+          throw 'Blank date in ngModel'
+        scope.dateStr = Date.parse(scope.ngModel).toString('M/d/yyyy')
+      catch error
+        scope.dateStr = null
 
     # DATA BINDING / WATCHING
     scope.$watch "ngModel", (newVal, oldVal) ->
@@ -30,12 +35,9 @@ app.directive "aaDatepicker", [->
     scope.$watch "dateStr", (newVal, oldVal) ->
       if newVal != oldVal
         try
-          console.log "New Val:", newVal
           newDate = Date.parse(newVal)
-          console.log "New Date:", newDate
           throw "Date can't be parsed" if !newDate
           scope.ngModel = newDate
-          console.log "Copied into ngModel"
         catch error
           console.log "Error parsing date", error
 
@@ -46,7 +48,10 @@ app.directive "aaDatepicker", [->
     scope.finalDateStr = ->
       try
         if ngModel
-          scope.ngModel.toString('M/d/yyyy')
+          str = scope.ngModel.toString('M/d/yyyy')
+          if !str or !str.length
+            throw 'ngModel is blank'
+          str
         else
           throw "ngModel is null"
       catch

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         files: {
           "test/generated/specs.js": ["test/coffee/*.coffee"],
           "src/generated/aaDatepicker.js": ["src/coffee/aaDatepicker.coffee"],
-          "demo/generated/app.js": ["demo/coffee/*.coffee"]
+          "demo/generated/demo.js": ["demo/coffee/*.coffee"]
         }
       }
     },

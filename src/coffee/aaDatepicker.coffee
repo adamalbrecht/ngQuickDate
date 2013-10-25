@@ -15,58 +15,53 @@ app.directive "aaDatepicker", [->
     
     # INITIALIZE VARIABLES
     # ================================
-    scope.calendarShown = false
-    scope.dayCodes = ["Su", "M", "Tu", "W", "Th", "F", "Sa"]
-    scope.weeks = []
+    initialize = ->
+      scope.calendarShown = false
+      scope.dayCodes = ["Su", "M", "Tu", "W", "Th", "F", "Sa"]
+      scope.weeks = []
+      scope.inputDate = null
 
-    setDateStr = ->
-      try
-        if !scope.ngModel or (typeof(scope.ngModel) == 'string' and scope.ngModel.trim() == '')
-          throw 'Blank date in ngModel'
-        scope.dateStr = Date.parse(scope.ngModel).toString('M/d/yyyy')
-      catch error
-        scope.dateStr = null
+      if typeof(scope.ngModel) == 'string'
+        scope.ngModel = Date.parse(scope.ngModel)
 
-    # DATA BINDING / WATCHING
-    scope.$watch "ngModel", (newVal, oldVal) ->
+      setInputDateFromModel()
+      setCalendarDateFromModel()
+
+    setInputDateFromModel = ->
+      if scope.ngModel
+        scope.inputDate = scope.ngModel.toString('M/d/yyyy')
+      else
+        scope.inputDate = null
+
+    setCalendarDateFromModel = ->
+      scope.calendarDate = scope.ngModel || Date.today()
+
+    # DATA WATCHES
+    # ==================================
+    scope.$watch('ngModel', (newVal, oldVal) ->
       if newVal != oldVal
-        setDateStr()
+        setInputDateFromModel()
+        setCalendarDateFromModel()
+    )
 
-    scope.$watch "dateStr", (newVal, oldVal) ->
-      if newVal != oldVal
-        try
-          newDate = Date.parse(newVal)
-          throw "Date can't be parsed" if !newDate
-          scope.ngModel = newDate
-        catch error
-          console.log "Error parsing date", error
-
-    setDateStr()
+    initialize()
 
     # VIEW ACTIONS
-    # ================================
-    scope.finalDateStr = ->
-      try
-        if ngModel
-          str = scope.ngModel.toString('M/d/yyyy')
-          if !str or !str.length
-            throw 'ngModel is blank'
-          str
-        else
-          throw "ngModel is null"
-      catch
-        attrs.placeholder
-
+    # ==================================
     scope.toggleCalendar = ->
       scope.calendarShown = not scope.calendarShown
 
-  
+    scope.mainButtonStr = ->
+      if scope.ngModel then scope.ngModel.toString('M/d/yyyy') else scope.placeholder
+
+  # <span ng-show='ngModel'>{{ngModel | date:'M/d/yyyy'}}</span><span ng-hide='ngModel'>{{placeholder}}</span> 
   # <div class='aa-input-wrapper'><label>Time</label><input type='text' ng-model='chosenTimeStr' placeholder='12:00pm' /></div>
   template: """
-            <div class='aa-datepicker'><a href='' ng-click='toggleCalendar()' class='aa-datepicker-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{finalDateStr()}}</a>
+            <div class='aa-datepicker'><a href='' ng-click='toggleCalendar()' class='aa-datepicker-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{mainButtonStr()}}</a>
               <div class='aa-calendar-wrapper' ng-class='{open: calendarShown}'>
                 <a href='' class='close' ng-click='toggleCalendar()'>X</a>
-                <div class='aa-input-wrapper'><label>Date</label><input class='aa-date-text-input' type='text' ng-model='dateStr' placeholder='1/1/2013' /></div>
+                <div class='aa-input-wrapper'><label>Date</label><input class='aa-date-text-input' type='text' ng-model='inputDate' placeholder='1/1/2013' /></div>
+                <span class='aa-month'>{{calendarDate | date:'MMMM'}}</span>
                 <table class='aa-calendar'>
                   <thead>
                     <tr>

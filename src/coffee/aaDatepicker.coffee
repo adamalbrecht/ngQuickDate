@@ -27,6 +27,9 @@ app.directive "aaDatepicker", [->
       setInputDateFromModel()
       setCalendarDateFromModel()
 
+
+    # SCOPE MANIPULATION
+    # ================================
     setInputDateFromModel = ->
       if scope.ngModel
         scope.inputDate = scope.ngModel.toString('M/d/yyyy')
@@ -34,7 +37,45 @@ app.directive "aaDatepicker", [->
         scope.inputDate = null
 
     setCalendarDateFromModel = ->
-      scope.calendarDate = scope.ngModel || Date.today()
+      d = if scope.ngModel then scope.ngModel.clone() else Date.today()
+      d.setDate(1)
+      scope.calendarDate = Date.parse(d)
+
+    setCalendarRows = ->
+      offset = scope.calendarDate.getDay()
+      numberOfDays = Date.getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth())
+      rows = []
+      for i in [0..(numberOfDays + offset - 1)]
+        if i % 7 == 0
+          rows.push([])
+        if i >= offset
+          rows[rows.length - 1].push({day: i - offset + 1})
+        else
+          rows[rows.length - 1].push({})
+
+      for i in [rows[rows.length - 1].length..6]
+        rows[rows.length - 1].push({})
+
+      scope.weeks = rows
+
+      # rows = [[]]
+      # offset = scope.calendarDate.getDay()
+      # for i in [0..offset]
+      #   rows[0][i] = ''
+      # curRow = 0
+      # curDate = scope.calendarDate
+      # nextMonthDate = curDate
+      # nextMonthDate.addMonths(1)
+      # while ((curDate.getMonth() < nextMonthDate) && (curRow < 5))
+      #   console.log "Setting Week #{curRow}, Day #{curDate.getDay()} to #{curDate.toString('MMMM')} #{curDate.getDate()}"
+      #   rows[curRow][curDate.getDay()] = curDate.getDate()
+      #   if curDate.getDay() % 7 == 0
+      #     rows.push([])
+      #     curRow += 1
+      #   curDate.addDays(1)
+
+      # scope.weeks = rows
+
 
     # DATA WATCHES
     # ==================================
@@ -44,7 +85,13 @@ app.directive "aaDatepicker", [->
         setCalendarDateFromModel()
     )
 
+    scope.$watch('calendarDate', (newVal, oldVal) ->
+      if (newVal != oldVal)
+        setCalendarRows()
+    )
+
     initialize()
+    setCalendarRows()
 
     # VIEW ACTIONS
     # ==================================
@@ -69,8 +116,8 @@ app.directive "aaDatepicker", [->
                     </tr>
                   </thead>
                   <tbody>
-                    <tr ng-repeat='week in weeks'>
-                      <td ng-repeat='day in week.days'>{{day}}</td>
+                    <tr class='week' ng-repeat='week in weeks'>
+                      <td class='day' ng-repeat='day in week'>{{day.day}}</td>
                     </tr>
                   </tbody>
                 </table>

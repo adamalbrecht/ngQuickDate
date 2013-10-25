@@ -39,14 +39,22 @@ describe "aaDatepickerLib", ->
         scope.$digest()
         expect(dateTextInput.val()).toEqual "10/25/2013"
 
-    describe 'Given a datepicker set to September 1, 2013', ->
+    describe 'Given a datepicker set to August 1, 2013', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(2013, 8, 1)
+        scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
         element = $compile("<aa-datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
         scope.$digest()
       )
 
       it 'Should show the proper text in the button based on the value of the ng-model', ->
         monthSpan = angular.element(element[0].querySelector(".aa-month"))
-        expect(monthSpan.html()).toEqual('September')
+        expect(monthSpan.html()).toEqual('August')
+
+      it 'Should have blank entries for the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
+        firstRow = angular.element(element[0].querySelector(".aa-calendar .week"))
+        for i in [0..3]
+          expect(angular.element(firstRow.children()[i]).text()).toEqual ''
+
+        expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
+

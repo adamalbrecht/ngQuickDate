@@ -4,6 +4,8 @@
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7",
-    "grunt-contrib-watch": "~0.5"
+    "grunt-contrib-watch": "~0.5",
+    "karma": "~0.10",
+    "karma-coffee-preprocessor": "~0.1"
   }
 }

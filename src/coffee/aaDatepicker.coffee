@@ -58,25 +58,6 @@ app.directive "aaDatepicker", [->
 
       scope.weeks = rows
 
-      # rows = [[]]
-      # offset = scope.calendarDate.getDay()
-      # for i in [0..offset]
-      #   rows[0][i] = ''
-      # curRow = 0
-      # curDate = scope.calendarDate
-      # nextMonthDate = curDate
-      # nextMonthDate.addMonths(1)
-      # while ((curDate.getMonth() < nextMonthDate) && (curRow < 5))
-      #   console.log "Setting Week #{curRow}, Day #{curDate.getDay()} to #{curDate.toString('MMMM')} #{curDate.getDate()}"
-      #   rows[curRow][curDate.getDay()] = curDate.getDate()
-      #   if curDate.getDay() % 7 == 0
-      #     rows.push([])
-      #     curRow += 1
-      #   curDate.addDays(1)
-
-      # scope.weeks = rows
-
-
     # DATA WATCHES
     # ==================================
     scope.$watch('ngModel', (newVal, oldVal) ->
@@ -93,13 +74,18 @@ app.directive "aaDatepicker", [->
     initialize()
     setCalendarRows()
 
+    # VIEW HELPERS
+    # ==================================
+    scope.mainButtonStr = ->
+      if scope.ngModel then scope.ngModel.toString('M/d/yyyy') else scope.placeholder
+
     # VIEW ACTIONS
     # ==================================
     scope.toggleCalendar = ->
       scope.calendarShown = not scope.calendarShown
 
-    scope.mainButtonStr = ->
-      if scope.ngModel then scope.ngModel.toString('M/d/yyyy') else scope.placeholder
+    scope.nextMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(1)
+    scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
 
   # <span ng-show='ngModel'>{{ngModel | date:'M/d/yyyy'}}</span><span ng-hide='ngModel'>{{placeholder}}</span> 
   # <div class='aa-input-wrapper'><label>Time</label><input type='text' ng-model='chosenTimeStr' placeholder='12:00pm' /></div>
@@ -108,7 +94,9 @@ app.directive "aaDatepicker", [->
               <div class='aa-calendar-wrapper' ng-class='{open: calendarShown}'>
                 <a href='' class='close' ng-click='toggleCalendar()'>X</a>
                 <div class='aa-input-wrapper'><label>Date</label><input class='aa-date-text-input' type='text' ng-model='inputDate' placeholder='1/1/2013' /></div>
-                <span class='aa-month'>{{calendarDate | date:'MMMM'}}</span>
+                <a href='' class='aa-prev-month' ng-click='prevMonth()'>Prev</a>
+                <span class='aa-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
+                <a href='' class='aa-next-month' ng-click='nextMonth()'>Next</a>
                 <table class='aa-calendar'>
                   <thead>
                     <tr>

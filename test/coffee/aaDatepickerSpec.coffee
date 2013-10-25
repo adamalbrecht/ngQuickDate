@@ -49,7 +49,7 @@ describe "aaDatepickerLib", ->
 
       it 'Should show the proper text in the button based on the value of the ng-model', ->
         monthSpan = angular.element(element[0].querySelector(".aa-month"))
-        expect(monthSpan.html()).toEqual('August')
+        expect(monthSpan.html()).toEqual('August 2013')
 
       it 'Should have blank entries for the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
         firstRow = angular.element(element[0].querySelector(".aa-calendar .week"))
@@ -58,3 +58,15 @@ describe "aaDatepickerLib", ->
 
         expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
 
+
+      describe 'And I click the Next Month button', ->
+        beforeEach ->
+          element.scope().nextMonth()
+          scope.$apply()
+
+        it 'Should show September', ->
+          monthSpan = angular.element(element[0].querySelector(".aa-month"))
+          expect(monthSpan.html()).toEqual('September 2013')
+
+        it 'Should show the 1st on the first Sunday', ->
+          expect(angular.element(element[0].querySelector(".aa-calendar .day")).text()).toEqual '1'

@@ -51,13 +51,13 @@ describe "aaDatepickerLib", ->
         monthSpan = angular.element(element[0].querySelector(".aa-month"))
         expect(monthSpan.html()).toEqual('August 2013')
 
-      it 'Should have blank entries for the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
+      it 'Should have last-month classes on the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
         firstRow = angular.element(element[0].querySelector(".aa-calendar .week"))
         for i in [0..3]
-          expect(angular.element(firstRow.children()[i]).text()).toEqual ''
+          box = angular.element(firstRow.children()[i])
+          expect(box.hasClass('other-month')).toEqual(true)
 
         expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
-
 
       describe 'And I click the Next Month button', ->
         beforeEach ->

@@ -19,10 +19,12 @@
 }
 
 .aa-calendar-wrapper {
+  font-size: 15px;
+  text-align: center;
   width: 250px;
   display: none;
   position: absolute;
-  background: #fff;
+  background-color: #FAFAFA;
   padding: 5px;
   border: solid 1px #ddd;
   border-radius: 3px;
@@ -32,9 +34,21 @@
 }
 .aa-calendar-header {
   display:block;
-  padding-bottom: 5px;
+  padding: 2px 0;
   margin-bottom: 5px;
-  border-bottom: solid 1px #ccc;
+  text-align: center;
+}
+.aa-month {
+  display:inline-block;
+}
+a.aa-prev-month {
+  float:left;
+}
+a.aa-next-month {
+  float:right;
+}
+a.aa-action-link:visited, a.aa-action-link:hover {
+  color: auto;
 }
 .aa-calendar-wrapper .close {
   position: absolute;
@@ -42,15 +56,34 @@
   right:5px;
   text-decoration: none;
 }
-.aa-input-wrapper {
-  display:inline-block;
-  width:50%;
+.aa-inputs {
+  text-align:left;
+  margin-bottom:10px;
 }
-.aa-input-wrapper input {
-  width: 75%;
+.aa-input-wrapper {
+  width:48%;
+  display: inline-block;
+}
+.aa-date-text-input, .aa-time-select {
+  width: 100px;
 }
 .aa-calendar {
-  height: 150px;
-  margin-top: 15px;
-  border: solid 1px #ddd;
+  width:100%;
+  margin-top: 5px;
+  border: solid 1px #ccc;
+  background-color: #fff;
+}
+table.aa-calendar th, table.aa-calendar td {
+  padding:5px;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+table.aa-calendar td:hover {
+  cursor: pointer;
+  background-color: #ddd;
+}
+table.aa-calendar td.other-month, table.aa-calendar td.other-month:hover {
+  background-color: #ddd;
+  cursor: auto;
+  color: #666;
 }

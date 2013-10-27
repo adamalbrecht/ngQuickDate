@@ -50,7 +50,12 @@ app.directive "aaDatepicker", [->
       for row in [0..(numRows-1)]
         weeks.push([])
         for day in [0..6]
-          weeks[row].push({date: curDate.clone()})
+          d = curDate.clone()
+          selected = scope.ngModel && d && (d.toString('Mdyyyy') == scope.ngModel.toString('Mdyyyy'))
+          weeks[row].push({
+            date: d
+            selected: selected
+          })
           curDate.addDays(1)
 
       scope.weeks = weeks
@@ -68,6 +73,11 @@ app.directive "aaDatepicker", [->
         setCalendarRows()
     )
 
+    scope.$watch('calendarShown', (newVal, oldVal) ->
+        dateInput = angular.element(element[0].querySelector(".aa-date-text-input"))[0]
+        dateInput.select()
+    )
+
     initialize()
     setCalendarRows()
 
@@ -78,8 +88,12 @@ app.directive "aaDatepicker", [->
 
     # VIEW ACTIONS
     # ==================================
-    scope.toggleCalendar = ->
+    scope.toggleCalendar = (show) ->
       scope.calendarShown = not scope.calendarShown
+
+    scope.setDate = (date) ->
+      scope.ngModel = date
+      scope.calendarShown = false
 
     scope.nextMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(1)
     scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
@@ -93,7 +107,7 @@ app.directive "aaDatepicker", [->
                 <div class='aa-inputs'>
                   <div class='aa-input-wrapper'>
                     <label>Date</label>
-                    <input class='aa-date-text-input' type='text' ng-model='inputDate' placeholder='1/1/2013' />
+                    <input class='aa-date-text-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' />
                   </div>
                   <div class='aa-input-wrapper'>
                     <label>Time</label>
@@ -115,7 +129,7 @@ app.directive "aaDatepicker", [->
                   </thead>
                   <tbody>
                     <tr class='week' ng-repeat='week in weeks'>
-                      <td class='day' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth())}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td class='day' ng-click='setDate(day.date)' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth()), "selected": day.selected}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>

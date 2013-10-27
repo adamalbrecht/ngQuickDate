@@ -39,6 +39,19 @@ describe "aaDatepickerLib", ->
         scope.$digest()
         expect(dateTextInput.val()).toEqual "10/25/2013"
 
+    describe 'Given a basic datepicker', ->
+      beforeEach angular.mock.inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date(2013, 10, 1) # August 1 (months are 0-indexed)
+        element = $compile("<aa-datepicker ng-model='myDate' />")(scope)
+        scope.$digest()
+      )
+
+      it 'Should let me set the date from the calendar', ->
+        element.scope().setDate(Date.parse('10/05/2013')) # click on TD for this date
+        scope.$apply()
+        expect(scope.myDate.getDate()).toEqual(5)
+
     describe 'Given a datepicker set to August 1, 2013', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
@@ -58,6 +71,12 @@ describe "aaDatepickerLib", ->
           expect(box.hasClass('other-month')).toEqual(true)
 
         expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
+
+      it "Should add a 'selected' class to the Aug 1 box", ->
+        secondBox = angular.element(element[0].querySelector(".aa-calendar tr.week:nth-child(1) td.day:nth-child(5)"))
+        expect(secondBox.hasClass('selected')).toEqual(true)
+
+
 
       describe 'And I click the Next Month button', ->
         beforeEach ->

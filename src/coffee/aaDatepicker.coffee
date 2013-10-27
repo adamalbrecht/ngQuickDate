@@ -43,7 +43,8 @@ app.directive "aaDatepicker", [->
 
     setCalendarRows = ->
       offset = scope.calendarDate.getDay()
-      numRows = if (offset > 4) then 6 else 5
+      daysInMonth = Date.getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth())
+      numRows = Math.ceil((offset + daysInMonth) / 7)
       weeks = []
       curDate = scope.calendarDate.clone().addDays(offset * -1)
       for row in [0..(numRows-1)]

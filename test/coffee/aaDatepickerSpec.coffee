@@ -70,3 +70,15 @@ describe "aaDatepickerLib", ->
 
         it 'Should show the 1st on the first Sunday', ->
           expect(angular.element(element[0].querySelector(".aa-calendar .day")).text()).toEqual '1'
+
+      it 'should show the proper number of rows in the calendar', ->
+        scope.myDate = Date.parse('6/1/2013')
+        scope.$digest()
+        expect($(element).find('.aa-calendar .week').length).toEqual(6)
+        scope.myDate = Date.parse('11/1/2013')
+        scope.$digest()
+        expect($(element).find('.aa-calendar .week').length).toEqual(5)
+        scope.myDate = Date.parse('2/1/2015')
+        scope.$digest()
+        expect($(element).find('.aa-calendar .week').length).toEqual(4)
+

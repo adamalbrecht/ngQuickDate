@@ -9,7 +9,8 @@
   ],
   "dependencies": {
     "momentjs": "~2.3.1",
-    "datejs": ""
+    "datejs": "",
+    "jquery": "~2.0"
   },
   "devDependencies": {
     "angular": "~1.0.8",

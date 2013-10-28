@@ -105,11 +105,12 @@ describe "aaDatepickerLib", ->
         scope = $rootScope
         scope.myDate = new Date()
         element = $compile("<aa-datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
-        scope.$digest()
+        scope.$apply()
       )
 
       it "Should add a 'today' class to the today td", ->
         expect($(element).find('.today').length).toEqual(1)
+        element.scope().nextMonth()
         element.scope().nextMonth()
         scope.$apply()
         expect($(element).find('.today').length).toEqual(0)

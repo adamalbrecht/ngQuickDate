@@ -94,5 +94,10 @@ table.aa-calendar td.other-month:hover {
 }
 table.aa-calendar td.selected {
   background-color: #9EC0D6;
+  font-weight:bold;
+}
+table.aa-calendar td.today {
+  color: #B58922;
+  font-weight:bold;
 }
 

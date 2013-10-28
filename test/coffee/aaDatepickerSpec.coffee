@@ -77,7 +77,6 @@ describe "aaDatepickerLib", ->
         expect(secondBox.hasClass('selected')).toEqual(true)
 
 
-
       describe 'And I click the Next Month button', ->
         beforeEach ->
           element.scope().nextMonth()
@@ -100,4 +99,19 @@ describe "aaDatepickerLib", ->
         scope.myDate = Date.parse('2/1/2015')
         scope.$digest()
         expect($(element).find('.aa-calendar .week').length).toEqual(4)
+
+    describe 'Given a datepicker set to today', ->
+      beforeEach angular.mock.inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date()
+        element = $compile("<aa-datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        scope.$digest()
+      )
+
+      it "Should add a 'today' class to the today td", ->
+        expect($(element).find('.today').length).toEqual(1)
+        element.scope().nextMonth()
+        scope.$apply()
+        expect($(element).find('.today').length).toEqual(0)
+
 

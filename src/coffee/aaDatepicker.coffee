@@ -52,9 +52,11 @@ app.directive "aaDatepicker", [->
         for day in [0..6]
           d = curDate.clone()
           selected = scope.ngModel && d && (d.toString('Mdyyyy') == scope.ngModel.toString('Mdyyyy'))
+          today = d.toString('Mdyyyy') == (new Date()).toString('Mdyyyy')
           weeks[row].push({
             date: d
             selected: selected
+            today: today
           })
           curDate.addDays(1)
 
@@ -129,7 +131,7 @@ app.directive "aaDatepicker", [->
                   </thead>
                   <tbody>
                     <tr class='week' ng-repeat='week in weeks'>
-                      <td class='day' ng-click='setDate(day.date)' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth()), "selected": day.selected}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td class='day' ng-click='setDate(day.date)' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth()), "selected": day.selected, "today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>

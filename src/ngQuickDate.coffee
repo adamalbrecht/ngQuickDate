@@ -1,6 +1,6 @@
-app = angular.module("aaDatepickerLib", [])
+app = angular.module("ngQuickDate", [])
 
-app.directive "aaDatepicker", [->
+app.directive "datepicker", [->
   restrict: "E"
   require: "ngModel"
   scope:
@@ -76,7 +76,7 @@ app.directive "aaDatepicker", [->
     )
 
     scope.$watch('calendarShown', (newVal, oldVal) ->
-        dateInput = angular.element(element[0].querySelector(".aa-date-text-input"))[0]
+        dateInput = angular.element(element[0].querySelector(".ng-quick-date-date-text-input"))[0]
         dateInput.select()
     )
 
@@ -101,29 +101,29 @@ app.directive "aaDatepicker", [->
     scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
 
   # <span ng-show='ngModel'>{{ngModel | date:'M/d/yyyy'}}</span><span ng-hide='ngModel'>{{placeholder}}</span> 
-  # <div class='aa-input-wrapper'><label>Time</label><input type='text' ng-model='chosenTimeStr' placeholder='12:00pm' /></div>
+  # <div class='ng-quick-date-input-wrapper'><label>Time</label><input type='text' ng-model='chosenTimeStr' placeholder='12:00pm' /></div>
   template: """
-            <div class='aa-datepicker'><a href='' ng-click='toggleCalendar()' class='aa-datepicker-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{mainButtonStr()}}</a>
-              <div class='aa-calendar-wrapper' ng-class='{open: calendarShown}'>
+            <div class='ng-quick-date'><a href='' ng-click='toggleCalendar()' class='ng-quick-date-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{mainButtonStr()}}</a>
+              <div class='ng-quick-date-calendar-wrapper' ng-class='{open: calendarShown}'>
                 <a href='' class='close' ng-click='toggleCalendar()'>X</a>
-                <div class='aa-inputs'>
-                  <div class='aa-input-wrapper'>
+                <div class='ng-quick-date-inputs'>
+                  <div class='ng-quick-date-input-wrapper'>
                     <label>Date</label>
-                    <input class='aa-date-text-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' />
+                    <input class='ng-quick-date-date-text-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' />
                   </div>
-                  <div class='aa-input-wrapper'>
+                  <div class='ng-quick-date-input-wrapper'>
                     <label>Time</label>
-                    <select class='aa-time-select'>
+                    <select class='ng-quick-date-time-select'>
                       <option>12pm</option>
                     </select>
                   </div>
                 </div>
-                <div class='aa-calendar-header'>
-                  <a href='' class='aa-prev-month aa-action-link' ng-click='prevMonth()'>Prev</a>
-                  <span class='aa-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
-                  <a href='' class='aa-next-month aa-action-link' ng-click='nextMonth()'>Next</a>
+                <div class='ng-quick-date-calendar-header'>
+                  <a href='' class='ng-quick-date-prev-month ng-quick-date-action-link' ng-click='prevMonth()'>Prev</a>
+                  <span class='ng-quick-date-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
+                  <a href='' class='ng-quick-date-next-month ng-quick-date-action-link' ng-click='nextMonth()'>Next</a>
                 </div>
-                <table class='aa-calendar'>
+                <table class='ng-quick-date-calendar'>
                   <thead>
                     <tr>
                       <th ng-repeat='day in dayCodes'>{{day}}</th>

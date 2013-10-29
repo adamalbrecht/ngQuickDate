@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html data-ng-app='aaDatepickerDemo'>
+<html data-ng-app='ngQuickDateDemo'>
   <head>
-    <title>ngDatepicker Demo</title>
+    <title>ngQuickDate Demo</title>
     <link rel="stylesheet" type="text/css" href="../bower_components/pure/pure-min.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../bower_components/font-awesome/css/font-awesome.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="../build/src/ngQuickDatepicker.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="../build/src/ngQuickDate.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../build/demo/demo.css" media="all" />
   </head>
   <body>
     <div class='wrapper'>
       <div class='intro'>
-        <h1>AA DatePicker Demo</h1>
+        <h1>ngQuickDate Demo</h1>
         <p>Nam justo est, suscipit a luctus sit amet, hendrerit eget massa. Sed placerat interdum lorem, sed vestibulum lacus lacinia sit amet. Fusce eu leo at ligula lacinia fringilla a sit amet arcu. Nam sed sapien massa. Curabitur in fringilla nisi. Morbi a elementum dolor, quis ornare justo. Mauris laoreet mollis urna, ut ullamcorper ipsum. Proin risus arcu, aliquam in sodales vel, pharetra at nisi. Duis interdum ac erat non adipiscing. Donec nec nisl vehicula, ornare eros non, commodo arcu.</p>
       </div>
       <div class='example' ng-controller='example1Ctrl'>
         <h3>Example 1: Basic Datepicker initially set to Date Object</h3>
         <p>
           <label>Date Field</label>
-          <aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
+          <datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
         </p>
           <b>Raw Value:</b> {{myDate}}
         </p>
@@ -26,13 +26,13 @@
         </p>
         <strong>Code:</strong><br/>
         <pre><code>$scope.myDate = Date.parse("10/26/2013");</code></pre>
-        <pre><code>&lt;aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
+        <pre><code>&lt;datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
       </div>
       <div class='example' ng-controller='example2Ctrl'>
         <h3>Example 2: Basic Datepicker with placeholder initially set to Null</h3>
         <p>
           <label>Date Field</label>
-          <aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
+          <datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
         </p>
         <p>
           <b>Raw Value:</b> {{myDate}}
@@ -45,12 +45,12 @@
         <p>
         <strong>Code:</strong>
         <pre><code>$scope.myDate = null;</code></pre>
-        <pre><code>&lt;aa-datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
+        <pre><code>&lt;datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
       </div>
     </div>
     <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>
     <script type="text/javascript" src="../bower_components/datejs/build/date.js"></script>
-    <script type="text/javascript" src="../build/src/ngQuickDatepicker.js"></script>
+    <script type="text/javascript" src="../build/src/ngQuickDate.js"></script>
     <script type="text/javascript" src="../build/demo/demo.js"></script>
   </body>
 </html>

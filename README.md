@@ -1,9 +1,13 @@
-## ng-quick-datepicker
+## ng-quick-date
 
 ### Features Need Before Release
 
 * <s>Click on date to open popup</s>
 * <s>Display calendar in popup</s>
+* <s>Set date by clicking on calendar</s>
+* <s>Highlight today's date</s>
+* <s>Highlight selected date</s>
+* <s>Change months</s>
 * Text input for changing the date
 * Text input for changing the time
 * Close popup on click outside

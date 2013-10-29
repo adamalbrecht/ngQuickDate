@@ -1,4 +1,4 @@
-app = angular.module("aaDatepickerDemo", ["aaDatepickerLib"])
+app = angular.module("ngQuickDateDemo", ["ngQuickDate"])
 app.controller "example1Ctrl", ($scope) ->
   $scope.myDate = Date.parse("10/26/2013")
 

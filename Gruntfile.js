@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       compile: {
         files: {
           "build/test/specs.js": ["test/*.coffee"],
-          "build/src/ngQuickDatepicker.js": ["src/aaDatepicker.coffee"],
+          "build/src/ngQuickDate.js": ["src/*.coffee"],
           "build/demo/demo.js": ["demo/*.coffee"]
         }
       }
@@ -15,15 +15,14 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          "build/src/ngQuickDatepicker.css": ["src/*.styl"],
+          "build/src/ngQuickDate.css": ["src/*.styl"],
           "build/demo/demo.css": ["demo/*.styl"]
         }
       }
     },
     watch: {
       scripts: {
-        files: '**/**/*.coffee',
-        files: '**/**/*.styl',
+        files: ['**/*.coffee', '**/*.styl'],
         tasks: ['coffee', 'stylus'],
         options: {
           debounceDelay: 250,

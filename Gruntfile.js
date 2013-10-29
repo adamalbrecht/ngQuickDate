@@ -6,9 +6,9 @@ module.exports = function(grunt) {
     coffee: {
       compile: {
         files: {
-          "test/generated/specs.js": ["test/coffee/*.coffee"],
-          "src/generated/aaDatepicker.js": ["src/coffee/aaDatepicker.coffee"],
-          "demo/generated/demo.js": ["demo/coffee/*.coffee"]
+          "build/test/specs.js": ["test/*.coffee"],
+          "build/src/ngQuickDatepicker.js": ["src/aaDatepicker.coffee"],
+          "build/demo/demo.js": ["demo/*.coffee"]
         }
       }
     },

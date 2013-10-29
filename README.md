@@ -14,8 +14,6 @@
 * Work when ngModel is set to a string rather than a date object
 * Configuration Options
     - Enable / disable timepicker
-    - Use a select box for specifying time
-    - Minute increment in time select (15min, 30min, 1hour, 3hour)
     - Use alternate date formats
     - Default placeholder text
     - Replace close X with an icon
@@ -25,10 +23,19 @@
 * Separate basic styling from default theme
     - Make it at least usable without a theme
     - Move colors and widths into variables (in both files)
+* Make it responsive
+* Tabbing from previous form fields should open the popup and focus properly
 * Finish README
-  * build instructions
-  * contribution instructions
+    - build instructions
+    - contribution instructions
 * Finish Demo site
-  * 4 or so basic examples
-  * List of inline options
-  * List of configuration options
+    - 4 or so basic examples
+    - List of inline options
+    - List of configuration options
+
+
+### Potential Features down the road
+
+* Option to remove date input field and instead use arrows on calendar
+* Option ro replace the time text field with a select box 
+    - Also configure increment in select box (15 min, 1 hour, etc)

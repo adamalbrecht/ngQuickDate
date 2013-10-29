@@ -1,38 +1,18 @@
-.ng-quick-date-button
-  background #ccc
-  color #333
-  padding 5px 10px
-  display inline-block
-  text-decoration none
-
-.ng-quick-date-button
-  &:hover
-    text-decoration underline
-    i
-      text-decoration none
-  i
-    padding-right 4px
-
 .ng-quick-date-calendar-wrapper
-  font-size 15px
+  background-color #fff
+  border solid 1px #000
   text-align center
   width 250px
   display none
   position absolute
-  background-color #FAFAFA
   padding 5px
-  border solid 1px #ddd
-  border-radius 3px
-  -webkit-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
-  -moz-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
-  box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+  
   &.open
     display block
   .close
     position absolute
     top 5px
     right 5px
-    text-decoration none
 
 .ng-quick-date-calendar-header
   display block
@@ -43,14 +23,11 @@
 .ng-quick-date-month
   display inline-block
 
-a
-  &.ng-quick-date-prev-month
-    float left
-  &.ng-quick-date-next-month
-    float right
+a.ng-quick-date-prev-month
+  float left
+a.ng-quick-date-next-month
+  float right
 
-a.ng-quick-date-action-link:visited, a.ng-quick-date-action-link:hover
-  color auto
 
 .ng-quick-date-inputs
   text-align left
@@ -66,28 +43,10 @@ a.ng-quick-date-action-link:visited, a.ng-quick-date-action-link:hover
 table.ng-quick-date-calendar
   width 100%
   margin-top 5px
-  border solid 1px #ccc
-  background-color #fff
 
   th, td
     padding 5px
-    border-right 1px solid #ccc
-    border-bottom 1px solid #ccc
 
   td
     &:hover
       cursor pointer
-      background-color #ddd
-    &.other-month
-      background-color #ddd
-      color #666
-      &:hover
-        background-color #bbb
-    &.selected
-      background-color #9EC0D6
-      font-weight bold
-    &.today
-      color #B58922
-      font-weight bold
-
-

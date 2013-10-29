@@ -1,0 +1,50 @@
+.ng-quick-date-button
+  background #ccc
+  color #333
+  padding 5px 10px
+  display inline-block
+  text-decoration none
+  &:hover
+    text-decoration underline
+    i
+      text-decoration none
+  i
+    padding-right 4px
+
+.ng-quick-date-calendar-wrapper
+  font-size 15px
+  background-color #FAFAFA
+  border solid 1px #ddd
+  border-radius 3px
+  -webkit-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+  -moz-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+  box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+
+  .close
+    text-decoration none
+
+a.ng-quick-date-action-link:visited, a.ng-quick-date-action-link:hover
+  color auto
+
+table.ng-quick-date-calendar
+  border solid 1px #ccc
+  background-color #fff
+
+  th, td
+    border-right 1px solid #ccc
+    border-bottom 1px solid #ccc
+
+  td
+    &:hover
+      background-color #ddd
+    &.other-month
+      background-color #ddd
+      color #666
+      &:hover
+        background-color #bbb
+    &.selected
+      background-color #9EC0D6
+      font-weight bold
+    &.today
+      color #B58922
+      font-weight bold

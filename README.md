@@ -23,6 +23,8 @@
     - Set icon in link
 * Better class names
 * Separate basic styling from default theme
+    - Make it at least usable without a theme
+    - Move colors and widths into variables (in both files)
 * Finish README
   * build instructions
   * contribution instructions

@@ -15,7 +15,8 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          "build/src/ng-quick-date.css": ["src/*.styl"],
+          "build/src/ng-quick-date.css": ["src/ng-quick-date.styl"],
+          "build/src/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"],
           "build/demo/demo.css": ["demo/*.styl"]
         }
       }

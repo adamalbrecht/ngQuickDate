@@ -12,10 +12,19 @@ module.exports = function(grunt) {
         }
       }
     },
+    stylus: {
+      compile: {
+        files: {
+          "build/src/ngQuickDatepicker.css": ["src/*.styl"],
+          "build/demo/demo.css": ["demo/*.styl"]
+        }
+      }
+    },
     watch: {
       scripts: {
         files: '**/**/*.coffee',
-        tasks: ['coffee'],
+        files: '**/**/*.styl',
+        tasks: ['coffee', 'stylus'],
         options: {
           debounceDelay: 250,
         },
@@ -24,7 +33,8 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-coffee');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['coffee', 'watch']);
+  grunt.registerTask('default', ['coffee', 'stylus', 'watch']);
 };

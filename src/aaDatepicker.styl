@@ -1,0 +1,95 @@
+.aa-datepicker-button, .aa-clear-button
+  background #ccc
+  color #333
+  padding 5px 10px
+  display inline-block
+  text-decoration none
+
+.aa-datepicker-button
+  &:hover
+    text-decoration underline
+    i
+      text-decoration none
+  i
+    padding-right 4px
+
+.aa-calendar-wrapper
+  font-size 15px
+  text-align center
+  width 250px
+  display none
+  position absolute
+  background-color #FAFAFA
+  padding 5px
+  border solid 1px #ddd
+  border-radius 3px
+  -webkit-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+  -moz-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+  box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
+  &.open
+    display block
+  .close
+    position absolute
+    top 5px
+    right 5px
+    text-decoration none
+
+.aa-calendar-header
+  display block
+  padding 2px 0
+  margin-bottom 5px
+  text-align center
+
+.aa-month
+  display inline-block
+
+a
+  &.aa-prev-month
+    float left
+  &.aa-next-month
+    float right
+
+a.aa-action-link:visited, a.aa-action-link:hover
+  color auto
+
+.aa-inputs
+  text-align left
+  margin-bottom 10px
+
+.aa-input-wrapper
+  width 48%
+  display inline-block
+
+.aa-date-text-input, .aa-time-select
+  width 100px
+
+.aa-calendar
+  width 100%
+  margin-top 5px
+  border solid 1px #ccc
+  background-color #fff
+
+table.aa-calendar th, table.aa-calendar td
+  padding 5px
+  border-right 1px solid #ccc
+  border-bottom 1px solid #ccc
+
+table
+  &.aa-calendar
+    td
+      &:hover
+        cursor pointer
+        background-color #ddd
+      &.other-month
+        background-color #ddd
+        color #666
+        &:hover
+          background-color #bbb
+      &.selected
+        background-color #9EC0D6
+        font-weight bold
+      &.today
+        color #B58922
+        font-weight bold
+
+

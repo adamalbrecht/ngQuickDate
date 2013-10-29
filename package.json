@@ -6,6 +6,8 @@
     "grunt-contrib-coffee": "~0.7",
     "grunt-contrib-watch": "~0.5",
     "karma": "~0.10",
-    "karma-coffee-preprocessor": "~0.1"
+    "karma-coffee-preprocessor": "~0.1",
+    "stylus": "~0.38",
+    "grunt-contrib-stylus": "~0.9"
   }
 }

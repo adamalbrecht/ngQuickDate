@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       compile: {
         files: {
           "build/test/specs.js": ["test/*.coffee"],
-          "build/src/ngQuickDate.js": ["src/*.coffee"],
+          "build/src/ng-quick-date.js": ["src/*.coffee"],
           "build/demo/demo.js": ["demo/*.coffee"]
         }
       }
@@ -15,7 +15,7 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          "build/src/ngQuickDate.css": ["src/*.styl"],
+          "build/src/ng-quick-date.css": ["src/*.styl"],
           "build/demo/demo.css": ["demo/*.styl"]
         }
       }

@@ -19,6 +19,7 @@ module.exports = (config) ->
       'bower_components/angular-mocks/angular-mocks.js'
       'bower_components/datejs/build/date.js'
       'bower_components/jquery/jquery.js'
+      'vendor/*.js'
       'src/*.coffee'
       'test/*.coffee'
     ]

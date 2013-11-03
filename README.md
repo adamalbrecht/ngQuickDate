@@ -9,7 +9,7 @@
 * <s>Highlight selected date</s>
 * <s>Change months</s>
 * <s>Text input for changing the date</s>
-* Text input for changing the time
+* <s>Text input for changing the time</s>
 * Close popup on click outside
 * Work when ngModel is set to a string rather than a date object
 * Configuration Options
@@ -20,11 +20,13 @@
     - Replace Next and Prev links with icons
     - Set icon in link
 * Better class names
+* Nest all theme styles under a `default-theme` class that is applied to the root
 * Separate basic styling from default theme
     - Make it at least usable without a theme
     - Move colors and widths into variables (in both files)
 * Make it responsive
 * Tabbing from previous form fields should open the popup and focus properly
+* Extract all usage of Date.js to a wrapper class so that another library (or no library) could be swapped in
 * Finish README
     - build instructions
     - contribution instructions

@@ -11,7 +11,7 @@ describe "ngQuickDate", ->
         element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
       )
 
-      it 'Should show the proper text in the button based on the value of the ng-model', ->
+      it 'shows the proper text in the button based on the value of the ng-model', ->
         scope.myDate = null
         scope.$digest()
         button = angular.element(element[0].querySelector(".ng-quick-date-button"))
@@ -23,9 +23,9 @@ describe "ngQuickDate", ->
 
         scope.myDate = new Date(2013, 9, 25)
         scope.$digest()
-        expect(button.text()).toEqual "10/25/2013"
+        expect(button.text()).toEqual "10/25/2013 12:00 AM"
 
-      it 'Should show the proper value in the date input based on the value of the ng-model', ->
+      it 'shows the proper value in the date input based on the value of the ng-model', ->
         scope.myDate = null
         scope.$digest()
         dateTextInput = angular.element(element[0].querySelector(".ng-qd-date-input"))
@@ -47,7 +47,7 @@ describe "ngQuickDate", ->
         scope.$digest()
       )
 
-      it 'Should let me set the date from the calendar', ->
+      it 'lets me set the date from the calendar', ->
         element.scope().setDate(Date.parse('10/05/2013')) # click on TD for this date
         scope.$apply()
         expect(scope.myDate.getDate()).toEqual(5)
@@ -59,21 +59,21 @@ describe "ngQuickDate", ->
           $textInput.val('11/15/2013')
           browserTrigger($textInput, 'input')
 
-        it 'should not change the ngModel just yet', ->
+        it 'does not change the ngModel just yet', ->
           expect(element.scope().ngModel).toEqual(Date.parse('09/1/2013'))
 
         describe 'and leaving the field (blur event)', ->
           beforeEach ->
             browserTrigger($textInput, 'blur')
 
-          it 'should change ngModel', ->
+          it 'updates ngModel properly', ->
             expect(element.scope().ngModel).toEqual(Date.parse('11/15/2013'))
 
-          it 'should change the calendar to the proper month', ->
+          it 'changes the calendar to the proper month', ->
             $monthSpan = $(element).find(".ng-quick-date-month")
             expect($monthSpan.html()).toEqual('November 2013')
 
-          it 'should highlight the selected date', ->
+          it 'highlights the selected date', ->
             selectedTd = $(element).find('.selected')
             expect(selectedTd.text()).toEqual('15')
 
@@ -83,7 +83,7 @@ describe "ngQuickDate", ->
             console.log 'Triggering enter'
             $textInput.trigger($.Event('keypress', { which: 13 }));
          
-          it 'should change ngModel', ->
+          it 'updates ngModel properly', ->
             expect(element.scope().ngModel).toEqual(Date.parse('11/15/2013'))
 
       describe 'After typing an invalid date into the date input field', ->
@@ -94,13 +94,13 @@ describe "ngQuickDate", ->
           browserTrigger($textInput, 'input')
           browserTrigger($textInput, 'blur')
 
-        it 'should add an error class to the input', ->
+        it 'adds an error class to the input', ->
           expect($textInput.hasClass('ng-quick-date-error')).toBe(true)
 
-        it 'should not change the ngModel', ->
+        it 'does not change the ngModel', ->
           expect(element.scope().ngModel).toEqual(Date.parse('9/1/2013'))
 
-        it 'should not change the calendar month', ->
+        it 'does not change the calendar month', ->
           $monthSpan = $(element).find(".ng-quick-date-month")
           expect($monthSpan.html()).toEqual('September 2013')
 
@@ -112,11 +112,11 @@ describe "ngQuickDate", ->
         scope.$digest()
       )
 
-      it 'Should show the proper text in the button based on the value of the ng-model', ->
+      it 'shows the proper text in the button based on the value of the ng-model', ->
         $monthSpan = $(element).find(".ng-quick-date-month")
         expect($monthSpan.html()).toEqual('August 2013')
 
-      it 'Should have last-month classes on the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
+      it 'has last-month classes on the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
         firstRow = angular.element(element[0].querySelector(".ng-quick-date-calendar .week"))
         for i in [0..3]
           box = angular.element(firstRow.children()[i])
@@ -124,7 +124,7 @@ describe "ngQuickDate", ->
 
         expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
 
-      it "Should add a 'selected' class to the Aug 1 box", ->
+      it "adds a 'selected' class to the Aug 1 box", ->
         $fifthBoxOfFirstRow = $(element).find(".ng-quick-date-calendar tr.week:nth-child(1) td.day:nth-child(5)")
         expect($fifthBoxOfFirstRow.hasClass('selected')).toEqual(true)
 
@@ -134,14 +134,14 @@ describe "ngQuickDate", ->
           browserTrigger(nextButton, 'click');
           scope.$apply()
 
-        it 'Should show September', ->
+        it 'shows September', ->
           $monthSpan = $(element).find(".ng-quick-date-month")
           expect($monthSpan.html()).toEqual('September 2013')
 
-        it 'Should show the 1st on the first Sunday', ->
+        it 'shows the 1st on the first Sunday', ->
           expect(angular.element(element[0].querySelector(".ng-quick-date-calendar .day")).text()).toEqual '1'
 
-      it 'should show the proper number of rows in the calendar', ->
+      it 'shows the proper number of rows in the calendar', ->
         scope.myDate = Date.parse('6/1/2013')
         scope.$digest()
         expect($(element).find('.ng-quick-date-calendar .week').length).toEqual(6)
@@ -160,7 +160,7 @@ describe "ngQuickDate", ->
         scope.$apply()
       )
 
-      it "Should add a 'today' class to the today td", ->
+      it "adds a 'today' class to the today td", ->
         expect($(element).find('.today').length).toEqual(1)
         nextButton = $(element).find('.ng-quick-date-next-month')
         browserTrigger(nextButton, 'click')
@@ -169,3 +169,27 @@ describe "ngQuickDate", ->
         expect($(element).find('.today').length).toEqual(0)
 
 
+    describe 'Given a datepicker set to November 1st, 2013 at 1:00pm', ->
+      $timeInput = undefined
+      beforeEach angular.mock.inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = Date.parse('11/1/2013 1:00pm')
+        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        scope.$apply()
+        $timeInput = $(element).find('.ng-qd-time-input')
+      )
+      it 'shows the proper time in the Time input box', ->
+        expect($timeInput.val()).toEqual('1:00 PM')
+
+      describe 'and I type in a new valid time', ->
+        beforeEach ->
+          $timeInput.val('3pm')
+          browserTrigger($timeInput, 'input')
+          browserTrigger($timeInput, 'blur')
+          scope.$apply()
+
+        it 'updates ngModel to reflect this time', ->
+          expect(element.scope().ngModel).toEqual(Date.parse('11/1/2013 3:00PM'))
+
+        it 'updates the input to use the proper time format', ->
+          expect($timeInput.val()).toEqual('3:00 PM')

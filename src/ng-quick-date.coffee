@@ -33,6 +33,7 @@ app.directive "datepicker", [->
     setInputDateFromModel = ->
       if scope.ngModel
         scope.inputDate = scope.ngModel.toString('M/d/yyyy')
+        scope.inputTime = scope.ngModel.toString('h:mm tt')
       else
         scope.inputDate = null
 
@@ -86,7 +87,7 @@ app.directive "datepicker", [->
     # VIEW HELPERS
     # ==================================
     scope.mainButtonStr = ->
-      if scope.ngModel then scope.ngModel.toString('M/d/yyyy') else scope.placeholder
+      if scope.ngModel then scope.ngModel.toString('M/d/yyyy h:mm tt') else scope.placeholder
 
     # VIEW ACTIONS
     # ==================================
@@ -101,13 +102,22 @@ app.directive "datepicker", [->
       try
         tmpDate = Date.parse(scope.inputDate)
         if !tmpDate
-          throw 'Invalid Date Format'
+          throw 'Invalid Date'
         scope.inputDateErr = false
-        scope.ngModel = tmpDate
+        if scope.inputTime and scope.inputTime.length and tmpDate
+          tmpDateAndTime = Date.parse("#{scope.inputDate} #{scope.inputTime}")
+          if !tmpDateAndTime
+            throw 'Invalid Time'
+          scope.ngModel = tmpDateAndTime
+        else
+          scope.ngModel = tmpDate
         if closeCalendar
           scope.calendarShown = false
       catch err
-        scope.inputDateErr = true
+        if err == 'Invalid Date'
+          scope.inputDateErr = true
+        else if err == 'Invalid Time'
+          scope.inputTimeErr = true
 
     scope.nextMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(1)
     scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
@@ -125,9 +135,7 @@ app.directive "datepicker", [->
                   </div>
                   <div class='ng-quick-date-input-wrapper'>
                     <label>Time</label>
-                      <select class='ng-qd-time-select'>
-                      <option>12pm</option>
-                    </select>
+                    <input class='ng-qd-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputTimeErr}">
                   </div>
                 </div>
                 <div class='ng-quick-date-calendar-header'>

@@ -100,6 +100,8 @@ app.directive "datepicker", [->
     scope.setDateFromInput = (closeCalendar=false) ->
       try
         tmpDate = Date.parse(scope.inputDate)
+        if !tmpDate
+          throw 'Invalid Date Format'
         scope.inputDateErr = false
         scope.ngModel = tmpDate
         if closeCalendar

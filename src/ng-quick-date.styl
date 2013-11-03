@@ -1,3 +1,4 @@
+error-color = #DD3B30
 .ng-quick-date-calendar-wrapper
   background-color #fff
   border solid 1px #000
@@ -53,4 +54,6 @@ table.ng-quick-date-calendar
 
 
 .ng-quick-date-error
-  border 1px solid red;
+  border 1px solid error-color;
+.ng-quick-date-error:focus
+  outline-color: error-color;

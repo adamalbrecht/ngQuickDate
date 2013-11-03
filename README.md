@@ -8,7 +8,7 @@
 * <s>Highlight today's date</s>
 * <s>Highlight selected date</s>
 * <s>Change months</s>
-* Text input for changing the date
+* <s>Text input for changing the date</s>
 * Text input for changing the time
 * Close popup on click outside
 * Work when ngModel is set to a string rather than a date object

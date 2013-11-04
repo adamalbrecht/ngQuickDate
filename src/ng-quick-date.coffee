@@ -115,7 +115,6 @@ app.directive "datepicker", [->
         tmpDate = Date.parse(scope.inputDate)
         if !tmpDate
           throw 'Invalid Date'
-        scope.inputDateErr = false
         if scope.inputTime and scope.inputTime.length and tmpDate
           tmpDateAndTime = Date.parse("#{scope.inputDate} #{scope.inputTime}")
           if !tmpDateAndTime
@@ -125,6 +124,8 @@ app.directive "datepicker", [->
           scope.ngModel = tmpDate
         if closeCalendar
           scope.calendarShown = false
+        scope.inputDateErr = false
+        scope.inputTimeErr = false
       catch err
         if err == 'Invalid Date'
           scope.inputDateErr = true

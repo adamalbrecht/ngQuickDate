@@ -164,7 +164,7 @@ app.directive "datepicker", [->
                   </thead>
                   <tbody>
                     <tr class='week' ng-repeat='week in weeks'>
-                      <td class='day' ng-click='setDate(day.date)' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth()), "selected": day.selected, "today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td class='day' ng-mousedown='setDate(day.date)' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth()), "selected": day.selected, "today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -172,16 +172,18 @@ app.directive "datepicker", [->
             </div>
             """
 ]
-
-app.directive 'ngBlur', ->
-  (scope, elem, attrs) ->
-    elem.bind 'blur', ->
-      scope.$apply(attrs.ngBlur)
-
+app.directive "ngBlur", ["$parse", ($parse) ->
+  (scope, element, attr) ->
+    fn = $parse(attr["ngBlur"])
+    element.bind "blur", (event) ->
+      scope.$apply ->
+        fn scope,
+          $event: event
+]
 app.directive 'ngEnter', ->
-  (scope, elem, attrs) ->
-    elem.bind 'keydown keypress', (e) ->
+  (scope, element, attr) ->
+    element.bind 'keydown keypress', (e) ->
       if (e.which == 13)
         console.log 'enter pressed'
-        scope.$apply(attrs.ngEnter)
+        scope.$apply(attr.ngEnter)
         e.preventDefault();

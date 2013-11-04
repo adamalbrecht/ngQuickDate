@@ -27,6 +27,17 @@ app.directive "datepicker", [->
       setInputDateFromModel()
       setCalendarDateFromModel()
 
+    # VIEW SETUP
+    # ================================
+    # window.document.addEventListener 'click', (event) ->
+      # scope.calendarShown = false
+      # scope.$apply()
+      # console.log 'click event', event
+
+    # angular.element(element[0])[0].addEventListener 'click', (event) ->
+    #   console.log 'Element click event', event
+    #   event.stopPropagation();
+     
 
     # SCOPE MANIPULATION
     # ================================
@@ -95,6 +106,7 @@ app.directive "datepicker", [->
       scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
+      console.log 'setDate'
       scope.ngModel = date
       scope.calendarShown = false
 
@@ -122,8 +134,9 @@ app.directive "datepicker", [->
     scope.nextMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(1)
     scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
 
-  # <span ng-show='ngModel'>{{ngModel | date:'M/d/yyyy'}}</span><span ng-hide='ngModel'>{{placeholder}}</span> 
-  # <div class='ng-quick-date-input-wrapper'><label>Time</label><input type='text' ng-model='chosenTimeStr' placeholder='12:00pm' /></div>
+ 
+  # TEMPLATE
+  # ================================================================
   template: """
             <div class='ng-quick-date'><a href='' ng-click='toggleCalendar()' class='ng-quick-date-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{mainButtonStr()}}</a>
               <div class='ng-quick-date-calendar-wrapper' ng-class='{open: calendarShown}'>

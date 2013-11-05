@@ -10,7 +10,7 @@
 * <s>Change months</s>
 * <s>Text input for changing the date</s>
 * <s>Text input for changing the time</s>
-* Close popup on click outside
+* <s>Close popup on click outside</s>
 * Work when ngModel is set to a string rather than a date object
 * Configuration Options
     - Enable / disable timepicker

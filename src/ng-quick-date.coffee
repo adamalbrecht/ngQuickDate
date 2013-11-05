@@ -29,14 +29,12 @@ app.directive "datepicker", [->
 
     # VIEW SETUP
     # ================================
-    # window.document.addEventListener 'click', (event) ->
-      # scope.calendarShown = false
-      # scope.$apply()
-      # console.log 'click event', event
+    window.document.addEventListener 'click', (event) ->
+      scope.calendarShown = false
+      scope.$apply()
 
-    # angular.element(element[0])[0].addEventListener 'click', (event) ->
-    #   console.log 'Element click event', event
-    #   event.stopPropagation();
+    angular.element(element[0])[0].addEventListener 'click', (event) ->
+      event.stopPropagation();
      
 
     # SCOPE MANIPULATION

@@ -104,7 +104,6 @@ app.directive "datepicker", [->
       scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
-      console.log 'setDate'
       scope.ngModel = date
       scope.calendarShown = false
 

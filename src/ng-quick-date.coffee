@@ -1,14 +1,36 @@
 app = angular.module("ngQuickDate", [])
 
-app.directive "datepicker", [->
+
+app.provider "ngQuickDateDefaults", ->
+  @options = {
+    dateFormat: 'M/d/yyyy'
+    timeFormat: 'h:mm a'
+    labelFormat: null
+    placeholder: 'Click to Set Date'
+    hoverText: null
+    iconHtml: null
+    closeButtonHtml: 'X'
+    nextLinkHtml: 'Next'
+    prevLinkHtml: 'Prev'
+    showTimePicker: true
+  }
+  @$get = ->
+    @options
+
+  @set = (keyOrHash, value) ->
+    if typeof(keyOrHash) == 'object'
+      for key, value of keyOrHash
+        @options[key] = value
+    else
+      @options[keyOrHash] = value
+
+
+app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefaults, $filter) ->
   restrict: "E"
   require: "ngModel"
   scope:
-    label: "@"
-    hoverText: "@"
-    placeholder: "@"
-    iconClass: "@"
     ngModel: "="
+    iconClass: "@"
 
   replace: true
   link: (scope, element, attrs, ngModel) ->
@@ -24,8 +46,19 @@ app.directive "datepicker", [->
       if typeof(scope.ngModel) == 'string'
         scope.ngModel = Date.parse(scope.ngModel)
 
+      setConfigOptions()
       setInputDateFromModel()
       setCalendarDateFromModel()
+
+    setConfigOptions = ->
+      for key, value of ngQuickDateDefaults
+        if !key.match(/html/) && attrs[key] && attrs[key].length
+          scope[key] = attrs[key]
+        else
+          scope[key] = ngQuickDateDefaults[key]
+      if !ngQuickDateDefaults.labelFormat
+        scope.labelFormat = "#{scope.dateFormat} #{scope.timeFormat}"
+
 
     # VIEW SETUP
     # ================================
@@ -41,8 +74,8 @@ app.directive "datepicker", [->
     # ================================
     setInputDateFromModel = ->
       if scope.ngModel
-        scope.inputDate = scope.ngModel.toString('M/d/yyyy')
-        scope.inputTime = scope.ngModel.toString('h:mm tt')
+        scope.inputDate = $filter('date')(scope.ngModel, ngQuickDateDefaults.dateFormat)
+        scope.inputTime = $filter('date')(scope.ngModel, ngQuickDateDefaults.timeFormat)
       else
         scope.inputDate = null
 
@@ -96,7 +129,7 @@ app.directive "datepicker", [->
     # VIEW HELPERS
     # ==================================
     scope.mainButtonStr = ->
-      if scope.ngModel then scope.ngModel.toString('M/d/yyyy h:mm tt') else scope.placeholder
+      if scope.ngModel then $filter('date')(scope.ngModel, scope.labelFormat) else scope.placeholder
 
     # VIEW ACTIONS
     # ==================================
@@ -136,7 +169,7 @@ app.directive "datepicker", [->
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='ng-quick-date'><a href='' ng-click='toggleCalendar()' class='ng-quick-date-button' title='{{hoverText}}'><i class='{{iconClass}}' ng-show='iconClass'></i>{{mainButtonStr()}}</a>
+            <div class='ng-quick-date'><a href='' ng-click='toggleCalendar()' class='ng-quick-date-button' title='{{hoverText}}'><i ng-show='iconClass' class='{{iconClass}}'></i><div ng-hide='iconClass' ng-bind-html-unsafe='iconHtml'></div>{{mainButtonStr()}}</a>
               <div class='ng-quick-date-calendar-wrapper' ng-class='{open: calendarShown}'>
                 <a href='' class='close' ng-click='toggleCalendar()'>X</a>
                 <div class='ng-quick-date-inputs'>
@@ -150,9 +183,9 @@ app.directive "datepicker", [->
                   </div>
                 </div>
                 <div class='ng-quick-date-calendar-header'>
-                  <a href='' class='ng-quick-date-prev-month ng-quick-date-action-link' ng-click='prevMonth()'>Prev</a>
+                  <a href='' class='ng-quick-date-prev-month ng-quick-date-action-link' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>
                   <span class='ng-quick-date-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
-                  <a href='' class='ng-quick-date-next-month ng-quick-date-action-link' ng-click='nextMonth()'>Next</a>
+                  <a href='' class='ng-quick-date-next-month ng-quick-date-action-link' ng-click='nextMonth()'><div ng-bind-html-unsafe='nextLinkHtml'></div></a>
                 </div>
                 <table class='ng-quick-date-calendar'>
                   <thead>

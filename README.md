@@ -14,7 +14,7 @@
 * Work when ngModel is set to a string rather than a date object
 * Configuration Options
     - Enable / disable timepicker
-    - Use alternate date formats
+    - <s>Use alternate date formats</s>
     - Default placeholder text
     - Replace close X with an icon
     - Replace Next and Prev links with icons

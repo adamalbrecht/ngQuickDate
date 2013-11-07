@@ -80,7 +80,6 @@ describe "ngQuickDate", ->
         # TODO: Spec not working. 'Enter' keypress not recognized. Seems to be working in demo.
         xdescribe 'and types Enter', ->
           beforeEach ->
-            console.log 'Triggering enter'
             $textInput.trigger($.Event('keypress', { which: 13 }));
          
           it 'updates ngModel properly', ->
@@ -193,3 +192,42 @@ describe "ngQuickDate", ->
 
         it 'updates the input to use the proper time format', ->
           expect($timeInput.val()).toEqual('3:00 PM')
+
+
+    describe 'Given that a non-default label format is configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('labelFormat', 'yyyy-MM-d')
+        null
+      ))
+      
+      describe 'and given a basic datepicker', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          scope = $rootScope
+          scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
+          element = $compile("<datepicker placeholder='debug' ng-model='myDate' />")(scope)
+          scope.$digest()
+        ))
+        it 'should be labeled in the same format as it was configured', ->
+          expect($(element).find('.ng-quick-date-button').text()).toEqual('2013-08-1')
+
+    describe 'Given that a non-default date format is configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('dateFormat', 'yy-M-d')
+        null
+      ))
+        
+      describe 'and given a basic datepicker', ->
+        beforeEach angular.mock.inject ($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, Date.parse('1/1/2013 1:00pm'))
+
+        it 'should use the proper format in the date input', ->
+          expect($(element).find('.ng-qd-date-input').val()).toEqual('13-1-1')
+        it 'should be use this date format in the label, but with time included', ->
+          expect($(element).find('.ng-quick-date-button').text()).toEqual('13-1-1 1:00 PM')
+
+
+buildBasicDatepicker = ($compile, scope, date) ->
+  scope.myDate = date
+  element = $compile("<datepicker ng-model='myDate' />")(scope)
+  scope.$digest()
+  element

@@ -18,7 +18,7 @@
         <h3>Example 1: Basic Datepicker initially set to Date Object</h3>
         <p>
           <label>Date Field</label>
-          <datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
+          <datepicker ng-model='myDate' icon-class='icon-time' />
         </p>
           <b>Raw Value:</b> {{myDate}}
         </p>
@@ -27,13 +27,13 @@
         </p>
         <strong>Code:</strong><br/>
         <pre><code>$scope.myDate = Date.parse("10/26/2013");</code></pre>
-        <pre><code>&lt;datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
+        <pre><code>&lt;datepicker ng-model='myDate' icon-class='icon-time' /&gt;</code></pre>
       </div>
       <div class='example' ng-controller='example2Ctrl'>
         <h3>Example 2: Basic Datepicker with placeholder initially set to Null</h3>
         <p>
           <label>Date Field</label>
-          <datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' />
+          <datepicker ng-model='myDate' hover-text='This is the hover text' />
         </p>
         <p>
           <b>Raw Value:</b> {{myDate}}

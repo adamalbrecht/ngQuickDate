@@ -19,6 +19,8 @@
     - Replace close X with an icon
     - Replace Next and Prev links with icons
     - Set icon in link
+* Rename. Potential name ideas:
+    - ngQuickCal
 * Better class names
 * Nest all theme styles under a `default-theme` class that is applied to the root
 * Separate basic styling from default theme

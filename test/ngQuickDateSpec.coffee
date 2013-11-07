@@ -204,7 +204,7 @@ describe "ngQuickDate", ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
           scope = $rootScope
           scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
-          element = $compile("<datepicker placeholder='debug' ng-model='myDate' />")(scope)
+          element = $compile("<datepicker ng-model='myDate' />")(scope)
           scope.$digest()
         ))
         it 'should be labeled in the same format as it was configured', ->
@@ -225,9 +225,64 @@ describe "ngQuickDate", ->
         it 'should be use this date format in the label, but with time included', ->
           expect($(element).find('.ng-quick-date-button').text()).toEqual('13-1-1 1:00 PM')
 
+    describe 'Given that a non-default close button is configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('closeButtonHtml', "<i class='icon-remove'></i>")
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach angular.mock.inject ($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
 
-buildBasicDatepicker = ($compile, scope, date) ->
+        it 'should inject the given html into the close button spot', ->
+          expect($(element).find('.ng-qd-close').html()).toMatch('icon-remove')
+
+    describe 'Given that non-default next and previous links are configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set({
+          nextLinkHtml: "<i class='icon-arrow-right'></i>",
+          prevLinkHtml: "<i class='icon-arrow-left'></i>"
+        })
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach angular.mock.inject ($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
+
+        it 'should inject the given html into the close button spot', ->
+          expect($(element).find('.ng-quick-date-next-month').html()).toMatch('icon-arrow-right')
+          expect($(element).find('.ng-quick-date-prev-month').html()).toMatch('icon-arrow-left')
+
+    describe 'Given that the button icon html is configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('buttonIconHtml', "<i class='icon-time'></i>")
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach angular.mock.inject ($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
+
+        it 'should inject the given html into the button', ->
+          expect($(element).find('.ng-quick-date-button').html()).toMatch('icon-time')
+
+      describe 'and given a datepicker where icon-class is set inline', ->
+        beforeEach angular.mock.inject ($compile, $rootScope) ->
+          scope = $rootScope
+          scope.myDate = new Date()
+          element = $compile("<datepicker icon-class='icon-calendar' ng-model='myDate' />")($rootScope)
+          scope.$digest()
+
+        it 'should display the inline class and not the configured default html in the button', ->
+          expect($(element).find('.ng-quick-date-button').html()).toNotMatch('icon-time')
+          expect($(element).find('.ng-quick-date-button').html()).toMatch('icon-calendar')
+
+
+
+buildBasicDatepicker = ($compile, scope, date, debug=false) ->
   scope.myDate = date
-  element = $compile("<datepicker ng-model='myDate' />")(scope)
+  if debug
+    element = $compile("<datepicker debug='true' ng-model='myDate' />")(scope)
+  else
+    element = $compile("<datepicker ng-model='myDate' />")(scope)
   scope.$digest()
   element

@@ -8,7 +8,7 @@ app.provider "ngQuickDateDefaults", ->
     labelFormat: null
     placeholder: 'Click to Set Date'
     hoverText: null
-    iconHtml: null
+    buttonIconHtml: null
     closeButtonHtml: 'X'
     nextLinkHtml: 'Next'
     prevLinkHtml: 'Prev'
@@ -19,8 +19,8 @@ app.provider "ngQuickDateDefaults", ->
 
   @set = (keyOrHash, value) ->
     if typeof(keyOrHash) == 'object'
-      for key, value of keyOrHash
-        @options[key] = value
+      for k, v of keyOrHash
+        @options[k] = v
     else
       @options[keyOrHash] = value
 
@@ -30,10 +30,10 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
   require: "ngModel"
   scope:
     ngModel: "="
-    iconClass: "@"
 
   replace: true
   link: (scope, element, attrs, ngModel) ->
+    debug = attrs.debug && attrs.debug.length
     
     # INITIALIZE VARIABLES
     # ================================
@@ -58,6 +58,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
           scope[key] = ngQuickDateDefaults[key]
       if !ngQuickDateDefaults.labelFormat
         scope.labelFormat = "#{scope.dateFormat} #{scope.timeFormat}"
+      if attrs.iconClass && attrs.iconClass.length
+        scope.buttonIconHtml = "<i ng-show='iconClass' class='#{attrs.iconClass}'></i>"
 
 
     # VIEW SETUP
@@ -165,13 +167,15 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     scope.nextMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(1)
     scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
 
+    if debug
+      console.log "quick date scope:", scope
  
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='ng-quick-date'><a href='' ng-click='toggleCalendar()' class='ng-quick-date-button' title='{{hoverText}}'><i ng-show='iconClass' class='{{iconClass}}'></i><div ng-hide='iconClass' ng-bind-html-unsafe='iconHtml'></div>{{mainButtonStr()}}</a>
+            <div class='ng-quick-date'><a href='' ng-click='toggleCalendar()' class='ng-quick-date-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
               <div class='ng-quick-date-calendar-wrapper' ng-class='{open: calendarShown}'>
-                <a href='' class='close' ng-click='toggleCalendar()'>X</a>
+                <a href='' class='ng-qd-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
                 <div class='ng-quick-date-inputs'>
                   <div class='ng-quick-date-input-wrapper'>
                     <label>Date</label>

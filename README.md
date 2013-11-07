@@ -16,9 +16,9 @@
     - Enable / disable timepicker
     - <s>Use alternate date formats</s>
     - Default placeholder text
-    - Replace close X with an icon
-    - Replace Next and Prev links with icons
-    - Set icon in link
+    - <s>Replace close X with an icon</s>
+    - <s>Replace Next and Prev links with icons</s>
+    - <s>Set icon in link</s>
 * Rename. Potential name ideas:
     - ngQuickCal
 * Better class names

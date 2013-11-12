@@ -29,7 +29,7 @@ describe "ngQuickDate", ->
         
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, Date.parse('1/1/2013 1:00pm'))
+          element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('1/1/2013 1:00 PM')))
 
         it 'should use the proper format in the date input', ->
           expect($(element).find('.datepicker-date-input').val()).toEqual('13-1-1')
@@ -43,7 +43,7 @@ describe "ngQuickDate", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
+          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
 
         it 'should inject the given html into the close button spot', ->
           expect($(element).find('.datepicker-close').html()).toMatch('icon-remove')
@@ -58,7 +58,7 @@ describe "ngQuickDate", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
+          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
 
         it 'should inject the given html into the close button spot', ->
           expect($(element).find('.datepicker-next-month').html()).toMatch('icon-arrow-right')
@@ -71,7 +71,7 @@ describe "ngQuickDate", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
+          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
 
         it 'should inject the given html into the button', ->
           expect($(element).find('.datepicker-button').html()).toMatch('icon-time')
@@ -102,8 +102,7 @@ describe "ngQuickDate", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013 3:59pm'))
-          scope.$digest()
+          element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('11/1/2013 3:59 pm')))
         ))
         it 'does not show the timepicker input', ->
           expect($(element).find('.datepicker-input-wrapper:last').css('display')).toEqual('none')
@@ -116,13 +115,34 @@ describe "ngQuickDate", ->
 
       describe 'and given a datepicker with timepicker re-enabled', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
-          $rootScope.myDate = Date.parse('11/1/2013')
+          $rootScope.myDate = new Date(2013, 10, 1)
           element = $compile("<datepicker ng-model='myDate' disable-timepicker='false' />")(scope)
           $rootScope.$digest()
         ))
         it 'shows the timepicker input', ->
           expect($(element).find('.datepicker-input-wrapper:last').css('display')).toNotEqual('none')
 
+
+    describe 'Given that it is configured with a custom date/time parser function that always returns July 1, 2013', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        alwaysReturnsJulyFirst2013 = (str) -> new Date(2013, 6, 1)
+        ngQuickDateDefaultsProvider.set('parseDateStringFunction', alwaysReturnsJulyFirst2013)
+        null
+      ))
+      describe 'and a basic datepicker', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope)
+        ))
+
+        describe 'When the date input is changed to 1/1/2014', ->
+          beforeEach ->
+            $dateInput = $(element).find('.datepicker-date-input')
+            $dateInput.val('1/1/2014')
+            browserTrigger($dateInput, 'input')
+            browserTrigger($dateInput, 'blur')
+
+          it 'Changes the model date to July 1, 2013', ->
+            expect(element.scope().ngModel).toMatch(/Jul 01 2013/)
 
 buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->
   scope.myDate = date

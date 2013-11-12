@@ -7,9 +7,7 @@
     "**/*.txt",
     "demo"
   ],
-  "dependencies": {
-    "datejs": ""
-  },
+  "dependencies": {},
   "devDependencies": {
     "angular": "~1.0.8",
     "angular-mocks": "~1.0.8",

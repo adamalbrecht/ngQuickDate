@@ -12,6 +12,12 @@ app.provider "ngQuickDateDefaults", ->
     nextLinkHtml: 'Next'
     prevLinkHtml: 'Prev'
     disableTimepicker: false
+    parseDateStringFunction: (str) ->
+      seconds = Date.parse(str)
+      if isNaN(seconds)
+        return null
+      else
+        new Date(seconds)
   }
   @$get = ->
     @options
@@ -43,7 +49,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
       scope.inputDate = null
 
       if typeof(scope.ngModel) == 'string'
-        scope.ngModel = Date.parse(scope.ngModel)
+        scope.ngModel = parseDateString(scope.ngModel)
 
       setConfigOptions()
       setInputDateFromModel()
@@ -81,31 +87,50 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         scope.inputDate = null
 
     setCalendarDateFromModel = ->
-      d = if scope.ngModel then scope.ngModel.clone() else Date.today()
+      d = if scope.ngModel then new Date(scope.ngModel) else new Date()
+      if (d.toString() == "Invalid Date")
+        d = new Date()
       d.setDate(1)
-      scope.calendarDate = Date.parse(d)
+      scope.calendarDate = parseDateString(d)
 
     setCalendarRows = ->
       offset = scope.calendarDate.getDay()
-      daysInMonth = Date.getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth())
+      daysInMonth = getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth())
       numRows = Math.ceil((offset + daysInMonth) / 7)
       weeks = []
-      curDate = scope.calendarDate.clone().addDays(offset * -1)
+      curDate = new Date(scope.calendarDate)
+      curDate.setDate(curDate.getDate() + (offset * -1))
       for row in [0..(numRows-1)]
         weeks.push([])
         for day in [0..6]
-          d = curDate.clone()
-          selected = scope.ngModel && d && (d.toString('Mdyyyy') == scope.ngModel.toString('Mdyyyy'))
-          today = d.toString('Mdyyyy') == (new Date()).toString('Mdyyyy')
+          d = new Date(curDate)
+          selected = scope.ngModel && d && datesAreEqual(d, scope.ngModel)
+          today = datesAreEqual(d, new Date())
           weeks[row].push({
             date: d
             selected: selected
             other: d.getMonth() != scope.calendarDate.getMonth()
             today: today
           })
-          curDate.addDays(1)
+          curDate.setDate(curDate.getDate() + 1)
 
       scope.weeks = weeks
+
+    # HELPER METHODS
+    # =================================
+    dateToString = (date, format) ->
+      $filter('date')(date, format)
+
+    parseDateString = ngQuickDateDefaults.parseDateStringFunction
+
+    datesAreEqual = (d1, d2, compareTimes=false) ->
+      if compareTimes
+        (d1 - d2) == 0
+      else
+        d1 && d2 && (d1.getYear() == d2.getYear()) && (d1.getMonth() == d2.getMonth()) && (d1.getDate() == d2.getDate())
+
+    getDaysInMonth = (year, month) ->
+      [31, (if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) then 29 else 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 
     # DATA WATCHES
     # ==================================
@@ -144,12 +169,12 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
 
     scope.setDateFromInput = (closeCalendar=false) ->
       try
-        tmpDate = Date.parse(scope.inputDate)
+        tmpDate = parseDateString(scope.inputDate)
         if !tmpDate
           throw 'Invalid Date'
         if scope.inputTime and scope.inputTime.length and tmpDate
           tmpTime = if scope.disableTimepicker then '00:00:00' else scope.inputTime
-          tmpDateAndTime = Date.parse("#{scope.inputDate} #{tmpTime}")
+          tmpDateAndTime = parseDateString("#{scope.inputDate} #{tmpTime}")
           if !tmpDateAndTime
             throw 'Invalid Time'
           scope.ngModel = tmpDateAndTime
@@ -166,8 +191,10 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         else if err == 'Invalid Time'
           scope.inputTimeErr = true
 
-    scope.nextMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(1)
-    scope.prevMonth = -> scope.calendarDate = scope.calendarDate.clone().addMonths(-1)
+    scope.nextMonth = -> 
+      scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
+    scope.prevMonth = ->
+      scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
 
     if debug
       console.log "quick date scope:", scope

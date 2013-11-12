@@ -1,6 +1,5 @@
 app = angular.module("ngQuickDate", [])
 
-
 app.provider "ngQuickDateDefaults", ->
   @options = {
     dateFormat: 'M/d/yyyy'
@@ -12,7 +11,7 @@ app.provider "ngQuickDateDefaults", ->
     closeButtonHtml: 'X'
     nextLinkHtml: 'Next'
     prevLinkHtml: 'Prev'
-    showTimePicker: true
+    disableTimepicker: false
   }
   @$get = ->
     @options
@@ -148,7 +147,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         if !tmpDate
           throw 'Invalid Date'
         if scope.inputTime and scope.inputTime.length and tmpDate
-          tmpDateAndTime = Date.parse("#{scope.inputDate} #{scope.inputTime}")
+          tmpTime = if scope.disableTimepicker then '00:00:00' else scope.inputTime
+          tmpDateAndTime = Date.parse("#{scope.inputDate} #{tmpTime}")
           if !tmpDateAndTime
             throw 'Invalid Time'
           scope.ngModel = tmpDateAndTime
@@ -156,6 +156,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
           scope.ngModel = tmpDate
         if closeCalendar
           scope.calendarShown = false
+
         scope.inputDateErr = false
         scope.inputTimeErr = false
       catch err
@@ -181,7 +182,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
                     <label>Date</label>
                     <input class='ng-qd-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputDateErr}" />
                   </div>
-                  <div class='ng-quick-date-input-wrapper'>
+                  <div class='ng-quick-date-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
                     <input class='ng-qd-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputTimeErr}">
                   </div>

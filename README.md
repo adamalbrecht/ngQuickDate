@@ -13,7 +13,7 @@
 * <s>Close popup on click outside</s>
 * Work when ngModel is set to a string rather than a date object
 * Configuration Options
-    - Enable / disable timepicker
+    - <s>Enable / disable timepicker</s>
     - <s>Use alternate date formats</s>
     - Default placeholder text
     - <s>Replace close X with an icon</s>

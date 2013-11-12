@@ -116,7 +116,7 @@ describe "ngQuickDate", ->
         expect($monthSpan.html()).toEqual('August 2013')
 
       it 'has last-month classes on the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
-        firstRow = angular.element(element[0].querySelector(".datepicker-calendar .datepicker-week"))
+        firstRow = angular.element(element[0].querySelector(".datepicker-calendar tbody tr"))
         for i in [0..3]
           box = angular.element(firstRow.children()[i])
           expect(box.hasClass('other-month')).toEqual(true)
@@ -124,7 +124,7 @@ describe "ngQuickDate", ->
         expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
 
       it "adds a 'selected' class to the Aug 1 box", ->
-        $fifthBoxOfFirstRow = $(element).find(".datepicker-calendar tr.datepicker-week:nth-child(1) td.datepicker-day:nth-child(5)")
+        $fifthBoxOfFirstRow = $(element).find(".datepicker-calendar tbody tr:nth-child(1) td:nth-child(5)")
         expect($fifthBoxOfFirstRow.hasClass('selected')).toEqual(true)
 
       describe 'And I click the Next Month button', ->
@@ -138,18 +138,18 @@ describe "ngQuickDate", ->
           expect($monthSpan.html()).toEqual('September 2013')
 
         it 'shows the 1st on the first Sunday', ->
-          expect(angular.element(element[0].querySelector(".datepicker-calendar .datepicker-day")).text()).toEqual '1'
+          expect($(element).find('.datepicker-calendar tbody tr:first td:first').text()).toEqual '1'
 
       it 'shows the proper number of rows in the calendar', ->
         scope.myDate = Date.parse('6/1/2013')
         scope.$digest()
-        expect($(element).find('.datepicker-calendar .datepicker-week').length).toEqual(6)
+        expect($(element).find('.datepicker-calendar tbody tr').length).toEqual(6)
         scope.myDate = Date.parse('11/1/2013')
         scope.$digest()
-        expect($(element).find('.datepicker-calendar .datepicker-week').length).toEqual(5)
+        expect($(element).find('.datepicker-calendar tbody tr').length).toEqual(5)
         scope.myDate = Date.parse('2/1/2015')
         scope.$digest()
-        expect($(element).find('.datepicker-calendar .datepicker-week').length).toEqual(4)
+        expect($(element).find('.datepicker-calendar tbody tr').length).toEqual(4)
 
     describe 'Given a datepicker set to today', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->

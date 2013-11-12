@@ -100,6 +100,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
           weeks[row].push({
             date: d
             selected: selected
+            other: d.getMonth() != scope.calendarDate.getMonth()
             today: today
           })
           curDate.addDays(1)
@@ -199,8 +200,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class='datepicker-week' ng-repeat='week in weeks'>
-                      <td class='datepicker-day' ng-mousedown='setDate(day.date)' ng-class='{"other-month": (day.date.getMonth() != calendarDate.getMonth()), "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                    <tr ng-repeat='week in weeks'>
+                      <td ng-mousedown='setDate(day.date)' ng-class='{"other-month": day.other, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>

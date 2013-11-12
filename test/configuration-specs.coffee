@@ -19,7 +19,7 @@ describe "ngQuickDate", ->
           scope.$digest()
         ))
         it 'should be labeled in the same format as it was configured', ->
-          expect($(element).find('.ng-quick-date-button').text()).toEqual('2013-08-1')
+          expect($(element).find('.datepicker-button').text()).toEqual('2013-08-1')
 
     describe 'Given that a non-default date format is configured', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
@@ -32,9 +32,9 @@ describe "ngQuickDate", ->
           element = buildBasicDatepicker($compile, $rootScope, Date.parse('1/1/2013 1:00pm'))
 
         it 'should use the proper format in the date input', ->
-          expect($(element).find('.ng-qd-date-input').val()).toEqual('13-1-1')
+          expect($(element).find('.datepicker-date-input').val()).toEqual('13-1-1')
         it 'should be use this date format in the label, but with time included', ->
-          expect($(element).find('.ng-quick-date-button').text()).toEqual('13-1-1 1:00 PM')
+          expect($(element).find('.datepicker-button').text()).toEqual('13-1-1 1:00 PM')
 
     describe 'Given that a non-default close button is configured', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
@@ -46,7 +46,7 @@ describe "ngQuickDate", ->
           element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
 
         it 'should inject the given html into the close button spot', ->
-          expect($(element).find('.ng-qd-close').html()).toMatch('icon-remove')
+          expect($(element).find('.datepicker-close').html()).toMatch('icon-remove')
 
     describe 'Given that non-default next and previous links are configured', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
@@ -61,8 +61,8 @@ describe "ngQuickDate", ->
           element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
 
         it 'should inject the given html into the close button spot', ->
-          expect($(element).find('.ng-quick-date-next-month').html()).toMatch('icon-arrow-right')
-          expect($(element).find('.ng-quick-date-prev-month').html()).toMatch('icon-arrow-left')
+          expect($(element).find('.datepicker-next-month').html()).toMatch('icon-arrow-right')
+          expect($(element).find('.datepicker-prev-month').html()).toMatch('icon-arrow-left')
 
     describe 'Given that the button icon html is configured', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
@@ -74,7 +74,7 @@ describe "ngQuickDate", ->
           element = buildBasicDatepicker($compile, $rootScope, Date.parse('11/1/2013'))
 
         it 'should inject the given html into the button', ->
-          expect($(element).find('.ng-quick-date-button').html()).toMatch('icon-time')
+          expect($(element).find('.datepicker-button').html()).toMatch('icon-time')
 
       describe 'and given a datepicker where icon-class is set inline', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
@@ -84,8 +84,8 @@ describe "ngQuickDate", ->
           scope.$digest()
 
         it 'does not display the inline class and not the configured default html in the button', ->
-          expect($(element).find('.ng-quick-date-button').html()).toNotMatch('icon-time')
-          expect($(element).find('.ng-quick-date-button').html()).toMatch('icon-calendar')
+          expect($(element).find('.datepicker-button').html()).toNotMatch('icon-time')
+          expect($(element).find('.datepicker-button').html()).toMatch('icon-calendar')
 
     describe 'Given a default-configured datepicker', ->
       beforeEach(angular.mock.inject(($compile, $rootScope) ->
@@ -106,9 +106,9 @@ describe "ngQuickDate", ->
           scope.$digest()
         ))
         it 'does not show the timepicker input', ->
-          expect($(element).find('.ng-quick-date-input-wrapper:last').css('display')).toEqual('none')
+          expect($(element).find('.datepicker-input-wrapper:last').css('display')).toEqual('none')
         it 'sets the time to 0:00 on change', ->
-          $textInput = $(element).find(".ng-qd-date-input")
+          $textInput = $(element).find(".datepicker-date-input")
           $textInput.val('11/15/2013')
           browserTrigger($textInput, 'input')
           browserTrigger($textInput, 'blur')
@@ -121,7 +121,7 @@ describe "ngQuickDate", ->
           $rootScope.$digest()
         ))
         it 'shows the timepicker input', ->
-          expect($(element).find('.ng-quick-date-input-wrapper:last').css('display')).toNotEqual('none')
+          expect($(element).find('.datepicker-input-wrapper:last').css('display')).toNotEqual('none')
 
 
 buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->

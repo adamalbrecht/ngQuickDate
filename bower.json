@@ -1,7 +1,7 @@
 {
-  "name": "ng-datepicker",
+  "name": "ngQuickDatepicker",
   "version": "0.0.1",
-  "main": "src/ngDatepicker.js",
+  "main": "build/src/ng-quick-datepicker.js",
   "ignore": [
     ".jshintrc",
     "**/*.txt",

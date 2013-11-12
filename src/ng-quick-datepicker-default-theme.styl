@@ -7,14 +7,14 @@ calendar-bg-color = #fff
 selected-date-bg-color = #b0ccde
 today-font-color = #B58922
 
-.ng-quick-date
+.datepicker
   font-size 15px
   font-family 'Helvetica Neue', Helvetica, Ariel, sans-serif
 
   input, select
     font-size 13px
 
-.ng-quick-date-button
+.datepicker-button
   background button-bg-color
   color button-text-color
   padding 5px 10px
@@ -27,7 +27,7 @@ today-font-color = #B58922
   i
     padding-right 4px
 
-.ng-quick-date-calendar-wrapper
+.datepicker-popup
   color popup-font-color
   font-size 15px
   background-color popup-bg-color
@@ -37,18 +37,15 @@ today-font-color = #B58922
   -moz-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
   box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
 
-  .close
-    text-decoration none
-
-.ng-quick-date-action-link:visited, .ng-quick-date-action-link:hover
+.datepicker-action-link:visited, .datepicker-action-link:hover
   color popup-font-color
  
-.ng-quick-date-next-month i
+.datepicker-next-month i
   padding-left:10px
-.ng-quick-date-prev-month i
+.datepicker-prev-month i
   padding-right:10px
 
-table.ng-quick-date-calendar
+table.datepicker-calendar
   border solid 1px #ccc
   background-color calendar-bg-color
 
@@ -67,6 +64,6 @@ table.ng-quick-date-calendar
     &.selected
       background-color selected-date-bg-color
       font-weight bold
-    &.today
+    &.is-today
       color today-font-color
       font-weight bold

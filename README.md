@@ -1,4 +1,4 @@
-## ng-quick-date
+## ng-quick-datepicker
 
 ### Features Need Before Release
 
@@ -19,9 +19,9 @@
     - <s>Replace close X with an icon</s>
     - <s>Replace Next and Prev links with icons</s>
     - <s>Set icon in link</s>
-* Rename. Potential name ideas:
-    - ngQuickCal
-* Better class names
+* <s>Rename to ngQuickDatepicker</s>
+* <s>Better class names</s>
+* Try to clean up calendar table HTML so it's not so messy
 * Nest all theme styles under a `default-theme` class that is applied to the root
 * Separate basic styling from default theme
     - Make it at least usable without a theme

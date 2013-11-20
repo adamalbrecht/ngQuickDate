@@ -7,7 +7,7 @@ module.exports = function(grunt) {
       compile: {
         files: {
           "build/test/specs.js": ["test/*.coffee"],
-          "build/src/ng-quick-datepicker.js": ["src/*.coffee"],
+          "build/src/ng-quick-date.js": ["src/*.coffee"],
           "build/demo/demo.js": ["demo/*.coffee"]
         }
       }
@@ -15,8 +15,8 @@ module.exports = function(grunt) {
     stylus: {
       compile: {
         files: {
-          "build/src/ng-quick-datepicker.css": ["src/ng-quick-datepicker.styl"],
-          "build/src/ng-quick-datepicker-default-theme.css": ["src/ng-quick-datepicker-default-theme.styl"],
+          "build/src/ng-quick-date.css": ["src/ng-quick-date.styl"],
+          "build/src/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"],
           "build/demo/demo.css": ["demo/*.styl"]
         }
       }

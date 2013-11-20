@@ -13,7 +13,7 @@ app.provider "ngQuickDateDefaults", ->
     prevLinkHtml: 'Prev'
     disableTimepicker: false
     dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
-    parseDateStringFunction: (str) ->
+    parseDateFunction: (str) ->
       seconds = Date.parse(str)
       if isNaN(seconds)
         return null
@@ -118,7 +118,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     dateToString = (date, format) ->
       $filter('date')(date, format)
 
-    parseDateString = ngQuickDateDefaults.parseDateStringFunction
+    parseDateString = ngQuickDateDefaults.parseDateFunction
 
     datesAreEqual = (d1, d2, compareTimes=false) ->
       if compareTimes

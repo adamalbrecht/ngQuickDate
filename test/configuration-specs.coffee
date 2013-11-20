@@ -126,7 +126,7 @@ describe "ngQuickDate", ->
     describe 'Given that it is configured with a custom date/time parser function that always returns July 1, 2013', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
         alwaysReturnsJulyFirst2013 = (str) -> new Date(2013, 6, 1)
-        ngQuickDateDefaultsProvider.set('parseDateStringFunction', alwaysReturnsJulyFirst2013)
+        ngQuickDateDefaultsProvider.set('parseDateFunction', alwaysReturnsJulyFirst2013)
         null
       ))
       describe 'and a basic datepicker', ->

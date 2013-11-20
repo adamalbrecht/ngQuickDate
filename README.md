@@ -91,7 +91,7 @@ There is a very light set of styles that allow the datepicker to function, but i
 
 ## Supported Versions of Angular
 
-It has been tested with the most recent stable release (1.2) as well as the previous stable release (1.0.8).
+Right now, it only works with Angular 1.0.8, but I'm working on version that will work with 1.2.
 
 ## Browser Support
 

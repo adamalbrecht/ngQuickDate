@@ -15,7 +15,7 @@
 * Configuration Options
     - <s>Enable / disable timepicker</s>
     - <s>Use alternate date formats</s>
-    - Default placeholder text
+    - <s>Default placeholder text</s>
     - <s>Replace close X with an icon</s>
     - <s>Replace Next and Prev links with icons</s>
     - <s>Set icon in link</s>

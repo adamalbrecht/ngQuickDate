@@ -144,6 +144,20 @@ describe "ngQuickDate", ->
           it 'Changes the model date to July 1, 2013', ->
             expect(element.scope().ngModel).toMatch(/Jul 01 2013/)
 
+    describe 'Given that it is configured with a default placeholder', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('placeholder', 'No Date Chosen')
+        null
+      ))
+      describe 'and a basic datepicker set to nothing', ->
+        beforeEach(inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, '')
+        ))
+
+        it 'should show the configured placeholder', ->
+          expect($(element).find('.datepicker-button').html()).toMatch('No Date Chosen')
+
+
 buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->
   scope.myDate = date
   if debug

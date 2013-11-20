@@ -2,6 +2,19 @@
 
 NgQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
 
+## Download
+
+Version 1.0 - Coming soon. Compatible with Angular 1.0
+Version 1.2 - Coming soon. Compatible with Angular 1.2. Not backwards compatible.
+
+## Install with Bower
+
+Coming Soon
+
+## Demo
+
+You can view a number of examples [here]().
+
 ## The Basics
 
 To use the library, include the JS file, main CSS file, and (optionally, but recommended) the theme CSS file. Then include the module in your app:
@@ -88,10 +101,6 @@ Note that when displaying dates in a well-formatted manner, Angular's [Date filt
 ## Styling
 
 There is a very light set of styles that allow the datepicker to function, but isn't particularly pretty. From there you can either use the default theme that's included or you can easily write your own theme.
-
-## Supported Versions of Angular
-
-Right now, it only works with Angular 1.0.8, but I'm working on version that will work with 1.2.
 
 ## Browser Support
 

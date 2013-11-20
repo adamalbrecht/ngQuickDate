@@ -12,6 +12,7 @@ app.provider "ngQuickDateDefaults", ->
     nextLinkHtml: 'Next'
     prevLinkHtml: 'Prev'
     disableTimepicker: false
+    dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
     parseDateStringFunction: (str) ->
       seconds = Date.parse(str)
       if isNaN(seconds)
@@ -29,7 +30,6 @@ app.provider "ngQuickDateDefaults", ->
     else
       @options[keyOrHash] = value
 
-
 app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefaults, $filter) ->
   restrict: "E"
   require: "ngModel"
@@ -44,7 +44,6 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     # ================================
     initialize = ->
       scope.calendarShown = false
-      scope.dayCodes = ["Su", "M", "Tu", "W", "Th", "F", "Sa"]
       scope.weeks = []
       scope.inputDate = null
 
@@ -66,7 +65,6 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
       if attrs.iconClass && attrs.iconClass.length
         scope.buttonIconHtml = "<i ng-show='iconClass' class='#{attrs.iconClass}'></i>"
 
-
     # VIEW SETUP
     # ================================
     window.document.addEventListener 'click', (event) ->
@@ -75,7 +73,6 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
 
     angular.element(element[0])[0].addEventListener 'click', (event) ->
       event.stopPropagation();
-     
 
     # SCOPE MANIPULATION
     # ================================
@@ -191,6 +188,16 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         else if err == 'Invalid Time'
           scope.inputTimeErr = true
 
+    scope.onDateInputTab = (param) ->
+      if scope.disableTimepicker
+        scope.toggleCalendar(false)
+        false
+      else
+        true
+
+    scope.onTimeInputTab = (param) ->
+      scope.toggleCalendar(false)
+
     scope.nextMonth = -> 
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
     scope.prevMonth = ->
@@ -202,28 +209,28 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='datepicker'><a href='' ng-click='toggleCalendar()' class='datepicker-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+            <div class='datepicker'><a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='datepicker-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
               <div class='datepicker-popup' ng-class='{open: calendarShown}'>
-                <a href='' class='datepicker-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
+                <a href='' tabindex='-1' class='datepicker-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
                 <div class='datepicker-text-inputs'>
                   <div class='datepicker-input-wrapper'>
                     <label>Date</label>
-                    <input class='datepicker-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputDateErr}" />
+                    <input class='datepicker-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputDateErr}"  ng-tab='onDateInputTab()' />
                   </div>
                   <div class='datepicker-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='datepicker-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'datepicker-error': inputTimeErr}">
+                    <input class='datepicker-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'datepicker-error': inputTimeErr}" ng-tab='onTimeInputTab()'>
                   </div>
                 </div>
                 <div class='datepicker-calendar-header'>
-                  <a href='' class='datepicker-prev-month datepicker-action-link' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>
+                  <a href='' class='datepicker-prev-month datepicker-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>
                   <span class='datepicker-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
-                  <a href='' class='datepicker-next-month datepicker-action-link' ng-click='nextMonth()'><div ng-bind-html-unsafe='nextLinkHtml'></div></a>
+                  <a href='' class='datepicker-next-month datepicker-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html-unsafe='nextLinkHtml'></div></a>
                 </div>
                 <table class='datepicker-calendar'>
                   <thead>
                     <tr>
-                      <th ng-repeat='day in dayCodes'>{{day}}</th>
+                      <th ng-repeat='day in dayAbbreviations'>{{day}}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -236,18 +243,45 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
             </div>
             """
 ]
-app.directive "ngBlur", ["$parse", ($parse) ->
-  (scope, element, attr) ->
-    fn = $parse(attr["ngBlur"])
-    element.bind "blur", (event) ->
-      scope.$apply ->
-        fn scope,
-          $event: event
-]
+
 app.directive 'ngEnter', ->
   (scope, element, attr) ->
     element.bind 'keydown keypress', (e) ->
       if (e.which == 13)
-        console.log 'enter pressed'
         scope.$apply(attr.ngEnter)
-        e.preventDefault();
+        e.preventDefault()
+
+app.directive 'ngTab', ->
+  (scope, element, attr) ->
+    element.bind 'keydown keypress', (e) ->
+      if (e.which == 9)
+        scope.$apply(attr.ngTab)
+
+
+
+# These directives are provided in angular 1.2+
+if parseInt(angular.version.full) < 1.2
+  app.directive "ngBlur", ["$parse", ($parse) ->
+    (scope, element, attr) ->
+      fn = $parse(attr["ngBlur"])
+      element.bind "blur", (event) ->
+        scope.$apply ->
+          fn scope,
+            $event: event
+  ]
+  app.directive "ngFocus", ["$parse", ($parse) ->
+    (scope, element, attr) ->
+      fn = $parse(attr["ngFocus"])
+      element.bind "focus", (event) ->
+        scope.$apply ->
+          fn scope,
+            $event: event
+  ]
+  app.directive "ngFocusout", ["$parse", ($parse) ->
+    (scope, element, attr) ->
+      fn = $parse(attr["ngFocusOut"])
+      element.bind "focusout", (event) ->
+        scope.$apply ->
+          fn scope,
+            $event: event
+  ]

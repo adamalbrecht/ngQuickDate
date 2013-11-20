@@ -27,7 +27,7 @@
     - Make it at least usable without a theme
     - Move colors and widths into variables (in both files)
 * Make it responsive
-* Tabbing from previous form fields should open the popup and focus properly
+* <s>Tabbing from previous form fields should open the popup and focus properly</s>
 * <s>Extract all usage of Date.js to a wrapper class so that another library (or no library) could be swapped in</s>
 * Finish README
     - build instructions

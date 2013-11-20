@@ -277,11 +277,3 @@ if parseInt(angular.version.full) < 1.2
           fn scope,
             $event: event
   ]
-  app.directive "ngFocusout", ["$parse", ($parse) ->
-    (scope, element, attr) ->
-      fn = $parse(attr["ngFocusOut"])
-      element.bind "focusout", (event) ->
-        scope.$apply ->
-          fn scope,
-            $event: event
-  ]

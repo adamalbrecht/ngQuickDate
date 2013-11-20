@@ -4,8 +4,8 @@ NgQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 
 ## Download
 
-Version 1.0 - Coming soon. Compatible with Angular 1.0
-Version 1.2 - Coming soon. Compatible with Angular 1.2. Not backwards compatible.
+* Version 1.0 - Coming soon. Compatible with Angular 1.0
+* Version 1.2 - Coming soon. Compatible with Angular 1.2. Not backwards compatible.
 
 ## Install with Bower
 
@@ -13,7 +13,7 @@ Coming Soon
 
 ## Demo
 
-You can view a number of examples [here]().
+Coming Soon
 
 ## The Basics
 

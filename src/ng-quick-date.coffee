@@ -1,3 +1,13 @@
+#
+# ngQuickDate
+# by Adam Albrecht
+# http://adamalbrecht.com
+#
+# Source Code: https://github.com/adamalbrecht/ngQuickDate
+#
+# Compatible with Angular 1.0.8
+#
+
 app = angular.module("ngQuickDate", [])
 
 app.provider "ngQuickDateDefaults", ->

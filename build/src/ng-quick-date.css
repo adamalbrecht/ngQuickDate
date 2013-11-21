@@ -1,0 +1,18 @@
+.datepicker{display:inline-block}
+.datepicker-button div,.datepicker-action-link div{display:inline}
+.datepicker-popup{background-color:#fff;border:solid 1px #000;text-align:center;width:250px;display:none;position:absolute;padding:5px;}
+.datepicker-popup.open{display:block}
+.datepicker-close{position:absolute;top:5px;right:5px;color:#333;}
+.datepicker-close:hover,.datepicker-close:visited{color:#333}
+.datepicker-calendar-header{display:block;padding:2px 0;margin-bottom:5px;text-align:center}
+.datepicker-month{display:inline-block}
+a.datepicker-prev-month{float:left}
+a.datepicker-next-month{float:right}
+.datepicker-text-inputs{text-align:left;margin-bottom:10px}
+.datepicker-input-wrapper{width:48%;display:inline-block}
+.datepicker-date-input,.datepicker-time-input{width:100px}
+table.datepicker-calendar{border-collapse:collapse;border-spacing:0;width:100%;margin-top:5px;}
+table.datepicker-calendar th,table.datepicker-calendar td{padding:5px}
+table.datepicker-calendar td:hover{cursor:pointer}
+.datepicker-error{border:1px solid #dd3b30}
+.datepicker-error:focus{outline-color:#dd3b30}

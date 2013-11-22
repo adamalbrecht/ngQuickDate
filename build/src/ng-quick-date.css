@@ -14,5 +14,5 @@ input.quickdate-date-input,input.quickdate-time-input{width:100px;margin:0;heigh
 table.quickdate-calendar{border-collapse:collapse;border-spacing:0;width:100%;margin-top:5px;}
 table.quickdate-calendar th,table.quickdate-calendar td{padding:5px}
 table.quickdate-calendar td:hover{cursor:pointer}
-.quickdate-error{border:1px solid #dd3b30}
-.quickdate-error:focus{outline-color:#dd3b30}
+.quickdate-error{border:1px solid #dd3b30 !important}
+.quickdate-error:focus{outline-color:#dd3b30 !important}

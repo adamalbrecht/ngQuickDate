@@ -46,7 +46,7 @@ There are a number of options that be configured inline with attributes. Here ar
 **Example:**
 
 ```html
-<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-time-picker />
+<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-time-picker='true' />
 ```
 
 ## Configuration Options
@@ -84,19 +84,21 @@ function(str) {
 
 ## Smarter Date/Time Parsing
 
-By default, dates and times entered into the 2 input boxes are parsed using javascript's built-in `Date.parse()` function. This function does not support many formats and can be inconsistent across platforms. I recommend using either the [Moment.js](http://momentjs.com) or [Date.js](http://www.datejs.com/) libraries instead. With Date.js, the parse method on the Date object is overwritten, so you don't need configure anything. With Moment.js, it is simple to configure:
+By default, dates and times entered into the 2 input boxes are parsed using javascript's built-in `Date.parse()` function. This function does not support many formats and can be inconsistent across platforms. I recommend using the [Date.js](http://www.datejs.com/) library instead. With Date.js, the parse method on the Date object is overwritten, so you don't need configure anything. Or if you'd like to use another library or your own parse function, you can do it like this:
 
     app.config(function(ngQuickDateDefaultsProvider) {
       ngQuickDateDefaultsProvider.set('parseDateFunction', function(str) {
-        return moment(str).toDate();
+        // Date parsing logic...
+        // Return null if the date is invalid
+        // Otherwise return a date object
       });
     })
 
-While I don't like the fact that Date.js modifies the native Date object, it will allow you to parse relative dates ('Tomorrow', for example), less formal formats ('1pm'), and more. The parsing enhancements in Moment.js are more modest, but still much better than the built-in capabilities.
+While I don't like the fact that Date.js modifies the native Date object, it will allow you to parse relative dates ('Tomorrow', for example), less formal formats ('1pm'), and more.
 
 ## Date Formatting
 
-Note that when displaying dates in a well-formatted manner, Angular's [Date filter](http://docs.angularjs.org/api/ng.filter:date) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Date.js and Moment.js have their own formatting syntax that are different from Angular's.
+Note that when displaying dates in a well-formatted manner, Angular's [Date filter](http://docs.angularjs.org/api/ng.filter:date) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Date.js has its own formatting syntax that is different from Angular's.
 
 ## Styling
 

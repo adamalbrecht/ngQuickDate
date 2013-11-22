@@ -1,6 +1,6 @@
 .quickdate{display:inline-block;position:relative}
 .quickdate-button div,.quickdate-action-link div{display:inline}
-.quickdate-popup{background-color:#fff;border:solid 1px #000;text-align:center;width:250px;display:none;position:absolute;padding:5px;}
+.quickdate-popup{z-index:10;background-color:#fff;border:solid 1px #000;text-align:center;width:250px;display:none;position:absolute;padding:5px;}
 .quickdate-popup.open{display:block}
 .quickdate-close{position:absolute;top:5px;right:5px;color:#333;}
 .quickdate-close:hover,.quickdate-close:visited{color:#333}

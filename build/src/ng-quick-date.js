@@ -77,8 +77,11 @@
                 scope[key] = ngQuickDateDefaults[key];
               }
             }
-            if (!ngQuickDateDefaults.labelFormat) {
-              scope.labelFormat = "" + scope.dateFormat + " " + scope.timeFormat;
+            if (!scope.labelFormat) {
+              scope.labelFormat = scope.dateFormat;
+              if (!scope.disableTimepicker) {
+                scope.labelFormat += " " + scope.timeFormat;
+              }
             }
             if (attrs.iconClass && attrs.iconClass.length) {
               return scope.buttonIconHtml = "<i ng-show='iconClass' class='" + attrs.iconClass + "'></i>";
@@ -176,7 +179,11 @@
             }
           };
           scope.toggleCalendar = function(show) {
-            return scope.calendarShown = !scope.calendarShown;
+            if (isFinite(show)) {
+              return scope.calendarShown = show;
+            } else {
+              return scope.calendarShown = !scope.calendarShown;
+            }
           };
           scope.setDate = function(date, closeCalendar) {
             if (closeCalendar == null) {
@@ -222,13 +229,12 @@
           scope.onDateInputTab = function(param) {
             if (scope.disableTimepicker) {
               scope.toggleCalendar(false);
-              return false;
-            } else {
-              return true;
             }
+            return true;
           };
           scope.onTimeInputTab = function(param) {
-            return scope.toggleCalendar(false);
+            scope.toggleCalendar(false);
+            return true;
           };
           scope.nextMonth = function() {
             return scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1));
@@ -240,7 +246,7 @@
             return console.log("quick date scope:", scope);
           }
         },
-        template: "<div class='datepicker'><a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>\n  <div class='quickdate-popup' ng-class='{open: calendarShown}'>\n    <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>\n    <div class='quickdate-text-inputs'>\n      <div class='quickdate-input-wrapper'>\n        <label>Date</label>\n        <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class=\"{'ng-quick-date-error': inputDateErr}\"  ng-tab='onDateInputTab()' />\n      </div>\n      <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>\n        <label>Time</label>\n        <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class=\"{'quickdate-error': inputTimeErr}\" ng-tab='onTimeInputTab()'>\n      </div>\n    </div>\n    <div class='quickdate-calendar-header'>\n      <a href='' class='quickdate-prev-month quickdate-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>\n      <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>\n      <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html-unsafe='nextLinkHtml'></div></a>\n    </div>\n    <table class='quickdate-calendar'>\n      <thead>\n        <tr>\n          <th ng-repeat='day in dayAbbreviations'>{{day}}</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr ng-repeat='week in weeks'>\n          <td ng-mousedown='setDate(day.date)' ng-class='{\"other-month\": day.other, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>"
+        template: "<div class='quickdate'>\n  <a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>\n  <div class='quickdate-popup' ng-class='{open: calendarShown}'>\n    <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>\n    <div class='quickdate-text-inputs'>\n      <div class='quickdate-input-wrapper'>\n        <label>Date</label>\n        <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class=\"{'ng-quick-date-error': inputDateErr}\"  ng-tab='onDateInputTab()' />\n      </div>\n      <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>\n        <label>Time</label>\n        <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class=\"{'quickdate-error': inputTimeErr}\" ng-tab='onTimeInputTab()'>\n      </div>\n    </div>\n    <div class='quickdate-calendar-header'>\n      <a href='' class='quickdate-prev-month quickdate-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>\n      <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>\n      <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html-unsafe='nextLinkHtml'></div></a>\n    </div>\n    <table class='quickdate-calendar'>\n      <thead>\n        <tr>\n          <th ng-repeat='day in dayAbbreviations'>{{day}}</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr ng-repeat='week in weeks'>\n          <td ng-mousedown='setDate(day.date)' ng-class='{\"other-month\": day.other, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n</div>"
       };
     }
   ]);

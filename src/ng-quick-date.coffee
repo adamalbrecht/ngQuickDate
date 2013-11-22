@@ -70,8 +70,10 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
           scope[key] = attrs[key]
         else
           scope[key] = ngQuickDateDefaults[key]
-      if !ngQuickDateDefaults.labelFormat
-        scope.labelFormat = "#{scope.dateFormat} #{scope.timeFormat}"
+      if !scope.labelFormat
+        scope.labelFormat = scope.dateFormat
+        unless scope.disableTimepicker
+          scope.labelFormat += " " + scope.timeFormat
       if attrs.iconClass && attrs.iconClass.length
         scope.buttonIconHtml = "<i ng-show='iconClass' class='#{attrs.iconClass}'></i>"
 
@@ -168,7 +170,10 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     # VIEW ACTIONS
     # ==================================
     scope.toggleCalendar = (show) ->
-      scope.calendarShown = not scope.calendarShown
+      if isFinite(show)
+        scope.calendarShown = show
+      else
+        scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
       scope.ngModel = date
@@ -201,12 +206,11 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     scope.onDateInputTab = (param) ->
       if scope.disableTimepicker
         scope.toggleCalendar(false)
-        false
-      else
-        true
+      true
 
     scope.onTimeInputTab = (param) ->
       scope.toggleCalendar(false)
+      true
 
     scope.nextMonth = -> 
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
@@ -219,7 +223,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='datepicker'><a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+            <div class='quickdate'>
+              <a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>

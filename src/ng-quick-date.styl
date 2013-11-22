@@ -1,8 +1,9 @@
 error-color = #DD3B30
 
 // Basics
-.datepicker
+.quickdate
   display inline-block
+  position relative
 
 .quickdate-button, .quickdate-action-link
   div 
@@ -44,14 +45,17 @@ a.quickdate-next-month
 
 .quickdate-text-inputs
   text-align left
-  margin-bottom 10px
+  margin-bottom 5px
 
 .quickdate-input-wrapper
   width 48%
   display inline-block
 
-.quickdate-date-input, .quickdate-time-input
+input.quickdate-date-input, input.quickdate-time-input
   width 100px
+  margin 0
+  height auto
+  padding 2px 3px
 
 table.quickdate-calendar
   border-collapse collapse

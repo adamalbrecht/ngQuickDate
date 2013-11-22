@@ -1,13 +1,16 @@
 popup-font-color = #333
-button-bg-color = #ccc
+button-bg-color = #fff
 button-text-color = #333
+button-border-color = #ccc
 popup-bg-color = #fafafa
 popup-border-color = #ddd
 calendar-bg-color = #fff
 selected-date-bg-color = #b0ccde
 today-font-color = #B58922
 
-.datepicker
+.quickdate
+  display: inline-block
+  vertical-align bottom
   font-size 15px
   font-family 'Helvetica Neue', Helvetica, Ariel, sans-serif
 
@@ -17,7 +20,10 @@ today-font-color = #B58922
 .quickdate-button
   background button-bg-color
   color button-text-color
-  padding 5px 10px
+  border solid 1px button-border-color;
+  box-shadow outset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-radius 4px
+  padding 4px 8px
   display inline-block
   text-decoration none
   &:hover
@@ -26,6 +32,7 @@ today-font-color = #B58922
       text-decoration none
   i
     padding-right 4px
+
 
 .quickdate-popup
   color popup-font-color

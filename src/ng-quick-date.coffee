@@ -153,7 +153,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     )
 
     scope.$watch('calendarShown', (newVal, oldVal) ->
-        dateInput = angular.element(element[0].querySelector(".datepicker-date-input"))[0]
+        dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0]
         dateInput.select()
     )
 
@@ -219,25 +219,25 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='datepicker'><a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='datepicker-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
-              <div class='datepicker-popup' ng-class='{open: calendarShown}'>
-                <a href='' tabindex='-1' class='datepicker-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
-                <div class='datepicker-text-inputs'>
-                  <div class='datepicker-input-wrapper'>
+            <div class='datepicker'><a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+              <div class='quickdate-popup' ng-class='{open: calendarShown}'>
+                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
+                <div class='quickdate-text-inputs'>
+                  <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='datepicker-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputDateErr}"  ng-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputDateErr}"  ng-tab='onDateInputTab()' />
                   </div>
-                  <div class='datepicker-input-wrapper' ng-hide='disableTimepicker'>
+                  <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='datepicker-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'datepicker-error': inputTimeErr}" ng-tab='onTimeInputTab()'>
+                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12pm' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'quickdate-error': inputTimeErr}" ng-tab='onTimeInputTab()'>
                   </div>
                 </div>
-                <div class='datepicker-calendar-header'>
-                  <a href='' class='datepicker-prev-month datepicker-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>
-                  <span class='datepicker-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
-                  <a href='' class='datepicker-next-month datepicker-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html-unsafe='nextLinkHtml'></div></a>
+                <div class='quickdate-calendar-header'>
+                  <a href='' class='quickdate-prev-month quickdate-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>
+                  <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
+                  <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html-unsafe='nextLinkHtml'></div></a>
                 </div>
-                <table class='datepicker-calendar'>
+                <table class='quickdate-calendar'>
                   <thead>
                     <tr>
                       <th ng-repeat='day in dayAbbreviations'>{{day}}</th>

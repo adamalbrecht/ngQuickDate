@@ -15,7 +15,7 @@
           var button;
           scope.myDate = null;
           scope.$digest();
-          button = angular.element(element[0].querySelector(".datepicker-button"));
+          button = angular.element(element[0].querySelector(".quickdate-button"));
           expect(button.text()).toEqual("Choose a Date");
           scope.myDate = "";
           scope.$digest();
@@ -28,7 +28,7 @@
           var dateTextInput;
           scope.myDate = null;
           scope.$digest();
-          dateTextInput = angular.element(element[0].querySelector(".datepicker-date-input"));
+          dateTextInput = angular.element(element[0].querySelector(".quickdate-date-input"));
           expect(dateTextInput.val()).toEqual("");
           scope.myDate = "";
           scope.$digest();
@@ -54,7 +54,7 @@
           var $textInput;
           $textInput = void 0;
           beforeEach(function() {
-            $textInput = $(element).find(".datepicker-date-input");
+            $textInput = $(element).find(".quickdate-date-input");
             $textInput.val('11/15/2013');
             return browserTrigger($textInput, 'input');
           });
@@ -70,7 +70,7 @@
             });
             it('changes the calendar to the proper month', function() {
               var $monthSpan;
-              $monthSpan = $(element).find(".datepicker-month");
+              $monthSpan = $(element).find(".quickdate-month");
               return expect($monthSpan.html()).toEqual('November 2013');
             });
             return it('highlights the selected date', function() {
@@ -94,7 +94,7 @@
           var $textInput;
           $textInput = void 0;
           beforeEach(function() {
-            $textInput = $(element).find(".datepicker-date-input");
+            $textInput = $(element).find(".quickdate-date-input");
             $textInput.val('1/a/2013');
             browserTrigger($textInput, 'input');
             return browserTrigger($textInput, 'blur');
@@ -107,7 +107,7 @@
           });
           return it('does not change the calendar month', function() {
             var $monthSpan;
-            $monthSpan = $(element).find(".datepicker-month");
+            $monthSpan = $(element).find(".quickdate-month");
             return expect($monthSpan.html()).toEqual('September 2013');
           });
         });
@@ -121,12 +121,12 @@
         }));
         it('shows the proper text in the button based on the value of the ng-model', function() {
           var $monthSpan;
-          $monthSpan = $(element).find(".datepicker-month");
+          $monthSpan = $(element).find(".quickdate-month");
           return expect($monthSpan.html()).toEqual('August 2013');
         });
         it('has last-month classes on the first 4 boxes in the calendar (because the 1st is a Thursday)', function() {
           var box, firstRow, i, _i;
-          firstRow = angular.element(element[0].querySelector(".datepicker-calendar tbody tr"));
+          firstRow = angular.element(element[0].querySelector(".quickdate-calendar tbody tr"));
           for (i = _i = 0; _i <= 3; i = ++_i) {
             box = angular.element(firstRow.children()[i]);
             expect(box.hasClass('other-month')).toEqual(true);
@@ -135,35 +135,35 @@
         });
         it("adds a 'selected' class to the Aug 1 box", function() {
           var $fifthBoxOfFirstRow;
-          $fifthBoxOfFirstRow = $(element).find(".datepicker-calendar tbody tr:nth-child(1) td:nth-child(5)");
+          $fifthBoxOfFirstRow = $(element).find(".quickdate-calendar tbody tr:nth-child(1) td:nth-child(5)");
           return expect($fifthBoxOfFirstRow.hasClass('selected')).toEqual(true);
         });
         describe('And I click the Next Month button', function() {
           beforeEach(function() {
             var nextButton;
-            nextButton = $(element).find('.datepicker-next-month');
+            nextButton = $(element).find('.quickdate-next-month');
             browserTrigger(nextButton, 'click');
             return scope.$apply();
           });
           it('shows September', function() {
             var $monthSpan;
-            $monthSpan = $(element).find(".datepicker-month");
+            $monthSpan = $(element).find(".quickdate-month");
             return expect($monthSpan.html()).toEqual('September 2013');
           });
           return it('shows the 1st on the first Sunday', function() {
-            return expect($(element).find('.datepicker-calendar tbody tr:first td:first').text()).toEqual('1');
+            return expect($(element).find('.quickdate-calendar tbody tr:first td:first').text()).toEqual('1');
           });
         });
         return it('shows the proper number of rows in the calendar', function() {
           scope.myDate = new Date(2013, 5, 1);
           scope.$digest();
-          expect($(element).find('.datepicker-calendar tbody tr').length).toEqual(6);
+          expect($(element).find('.quickdate-calendar tbody tr').length).toEqual(6);
           scope.myDate = new Date(2013, 10, 1);
           scope.$digest();
-          expect($(element).find('.datepicker-calendar tbody tr').length).toEqual(5);
+          expect($(element).find('.quickdate-calendar tbody tr').length).toEqual(5);
           scope.myDate = new Date(2015, 1, 1);
           scope.$digest();
-          return expect($(element).find('.datepicker-calendar tbody tr').length).toEqual(4);
+          return expect($(element).find('.quickdate-calendar tbody tr').length).toEqual(4);
         });
       });
       describe('Given a datepicker set to today', function() {
@@ -176,7 +176,7 @@
         return it("adds a 'today' class to the today td", function() {
           var nextButton;
           expect($(element).find('.is-today').length).toEqual(1);
-          nextButton = $(element).find('.datepicker-next-month');
+          nextButton = $(element).find('.quickdate-next-month');
           browserTrigger(nextButton, 'click');
           browserTrigger(nextButton, 'click');
           scope.$apply();
@@ -191,7 +191,7 @@
           scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'));
           element = $compile("<datepicker ng-model='myDate' />")(scope);
           scope.$apply();
-          return $timeInput = $(element).find('.datepicker-time-input');
+          return $timeInput = $(element).find('.quickdate-time-input');
         }));
         it('shows the proper time in the Time input box', function() {
           return expect($timeInput.val()).toEqual('1:00 PM');
@@ -239,7 +239,7 @@
             return scope.$digest();
           }));
           return it('should be labeled in the same format as it was configured', function() {
-            return expect($(element).find('.datepicker-button').text()).toEqual('2013-08-1');
+            return expect($(element).find('.quickdate-button').text()).toEqual('2013-08-1');
           });
         });
       });
@@ -253,10 +253,10 @@
             return element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('1/1/2013 1:00 PM')));
           }));
           it('should use the proper format in the date input', function() {
-            return expect($(element).find('.datepicker-date-input').val()).toEqual('13-1-1');
+            return expect($(element).find('.quickdate-date-input').val()).toEqual('13-1-1');
           });
           return it('should be use this date format in the label, but with time included', function() {
-            return expect($(element).find('.datepicker-button').text()).toEqual('13-1-1 1:00 PM');
+            return expect($(element).find('.quickdate-button').text()).toEqual('13-1-1 1:00 PM');
           });
         });
       });
@@ -270,7 +270,7 @@
             return element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1));
           }));
           return it('should inject the given html into the close button spot', function() {
-            return expect($(element).find('.datepicker-close').html()).toMatch('icon-remove');
+            return expect($(element).find('.quickdate-close').html()).toMatch('icon-remove');
           });
         });
       });
@@ -287,8 +287,8 @@
             return element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1));
           }));
           return it('should inject the given html into the close button spot', function() {
-            expect($(element).find('.datepicker-next-month').html()).toMatch('icon-arrow-right');
-            return expect($(element).find('.datepicker-prev-month').html()).toMatch('icon-arrow-left');
+            expect($(element).find('.quickdate-next-month').html()).toMatch('icon-arrow-right');
+            return expect($(element).find('.quickdate-prev-month').html()).toMatch('icon-arrow-left');
           });
         });
       });
@@ -302,7 +302,7 @@
             return element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1));
           }));
           return it('should inject the given html into the button', function() {
-            return expect($(element).find('.datepicker-button').html()).toMatch('icon-time');
+            return expect($(element).find('.quickdate-button').html()).toMatch('icon-time');
           });
         });
         return describe('and given a datepicker where icon-class is set inline', function() {
@@ -313,8 +313,8 @@
             return scope.$digest();
           }));
           return it('does not display the inline class and not the configured default html in the button', function() {
-            expect($(element).find('.datepicker-button').html()).toNotMatch('icon-time');
-            return expect($(element).find('.datepicker-button').html()).toMatch('icon-calendar');
+            expect($(element).find('.quickdate-button').html()).toNotMatch('icon-time');
+            return expect($(element).find('.quickdate-button').html()).toMatch('icon-calendar');
           });
         });
       });
@@ -337,11 +337,11 @@
             return element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('11/1/2013 3:59 pm')));
           }));
           it('does not show the timepicker input', function() {
-            return expect($(element).find('.datepicker-input-wrapper:last').css('display')).toEqual('none');
+            return expect($(element).find('.quickdate-input-wrapper:last').css('display')).toEqual('none');
           });
           return it('sets the time to 0:00 on change', function() {
             var $textInput;
-            $textInput = $(element).find(".datepicker-date-input");
+            $textInput = $(element).find(".quickdate-date-input");
             $textInput.val('11/15/2013');
             browserTrigger($textInput, 'input');
             browserTrigger($textInput, 'blur');
@@ -355,7 +355,7 @@
             return $rootScope.$digest();
           }));
           return it('shows the timepicker input', function() {
-            return expect($(element).find('.datepicker-input-wrapper:last').css('display')).toNotEqual('none');
+            return expect($(element).find('.quickdate-input-wrapper:last').css('display')).toNotEqual('none');
           });
         });
       });
@@ -375,7 +375,7 @@
           return describe('When the date input is changed to 1/1/2014', function() {
             beforeEach(function() {
               var $dateInput;
-              $dateInput = $(element).find('.datepicker-date-input');
+              $dateInput = $(element).find('.quickdate-date-input');
               $dateInput.val('1/1/2014');
               browserTrigger($dateInput, 'input');
               return browserTrigger($dateInput, 'blur');
@@ -396,7 +396,7 @@
             return element = buildBasicDatepicker($compile, $rootScope, '');
           }));
           return it('should show the configured placeholder', function() {
-            return expect($(element).find('.datepicker-button').html()).toMatch('No Date Chosen');
+            return expect($(element).find('.quickdate-button').html()).toMatch('No Date Chosen');
           });
         });
       });

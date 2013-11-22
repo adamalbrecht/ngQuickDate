@@ -54,10 +54,10 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModel) {
-          var dateToString, datesAreEqual, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel;
+          var dateToString, datepickerClicked, datesAreEqual, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel;
           debug = attrs.debug && attrs.debug.length;
           initialize = function() {
-            scope.calendarShown = false;
+            scope.toggleCalendar(false);
             scope.weeks = [];
             scope.inputDate = null;
             if (typeof scope.ngModel === 'string') {
@@ -87,12 +87,16 @@
               return scope.buttonIconHtml = "<i ng-show='iconClass' class='" + attrs.iconClass + "'></i>";
             }
           };
+          datepickerClicked = false;
           window.document.addEventListener('click', function(event) {
-            scope.calendarShown = false;
-            return scope.$apply();
+            if (!datepickerClicked) {
+              scope.toggleCalendar(false);
+              scope.$apply();
+            }
+            return datepickerClicked = false;
           });
           angular.element(element[0])[0].addEventListener('click', function(event) {
-            return event.stopPropagation();
+            return datepickerClicked = true;
           });
           setInputDateFromModel = function() {
             if (scope.ngModel) {
@@ -169,8 +173,6 @@
             dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0];
             return dateInput.select();
           });
-          initialize();
-          setCalendarRows();
           scope.mainButtonStr = function() {
             if (scope.ngModel) {
               return $filter('date')(scope.ngModel, scope.labelFormat);
@@ -190,7 +192,7 @@
               closeCalendar = true;
             }
             scope.ngModel = date;
-            return scope.calendarShown = false;
+            return scope.toggleCalendar(false);
           };
           scope.setDateFromInput = function(closeCalendar) {
             var err, tmpDate, tmpDateAndTime, tmpTime;
@@ -213,7 +215,7 @@
                 scope.ngModel = tmpDate;
               }
               if (closeCalendar) {
-                scope.calendarShown = false;
+                scope.toggleCalendar(false);
               }
               scope.inputDateErr = false;
               return scope.inputTimeErr = false;
@@ -242,6 +244,8 @@
           scope.prevMonth = function() {
             return scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1));
           };
+          initialize();
+          setCalendarRows();
           if (debug) {
             return console.log("quick date scope:", scope);
           }

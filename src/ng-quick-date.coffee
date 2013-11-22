@@ -53,7 +53,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     # INITIALIZE VARIABLES
     # ================================
     initialize = ->
-      scope.calendarShown = false
+      scope.toggleCalendar(false)
       scope.weeks = []
       scope.inputDate = null
 
@@ -79,12 +79,15 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
 
     # VIEW SETUP
     # ================================
+    datepickerClicked = false
     window.document.addEventListener 'click', (event) ->
-      scope.calendarShown = false
-      scope.$apply()
+      unless datepickerClicked
+        scope.toggleCalendar(false)
+        scope.$apply()
+      datepickerClicked = false
 
     angular.element(element[0])[0].addEventListener 'click', (event) ->
-      event.stopPropagation();
+      datepickerClicked = true
 
     # SCOPE MANIPULATION
     # ================================
@@ -159,8 +162,6 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         dateInput.select()
     )
 
-    initialize()
-    setCalendarRows()
 
     # VIEW HELPERS
     # ==================================
@@ -177,7 +178,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
 
     scope.setDate = (date, closeCalendar=true) ->
       scope.ngModel = date
-      scope.calendarShown = false
+      scope.toggleCalendar(false)
 
     scope.setDateFromInput = (closeCalendar=false) ->
       try
@@ -193,7 +194,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         else
           scope.ngModel = tmpDate
         if closeCalendar
-          scope.calendarShown = false
+          scope.toggleCalendar(false)
 
         scope.inputDateErr = false
         scope.inputTimeErr = false
@@ -216,6 +217,9 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
     scope.prevMonth = ->
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
+
+    initialize()
+    setCalendarRows()
 
     if debug
       console.log "quick date scope:", scope

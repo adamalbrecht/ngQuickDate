@@ -14,7 +14,8 @@
   });
 
   app.controller("example1Ctrl", function($scope) {
-    return $scope.myDate = new Date(Date.parse("10/16/2013"));
+    $scope.date1 = new Date(Date.parse("10/16/2013"));
+    return $scope.date2 = null;
   });
 
   app.controller("example2Ctrl", function($scope) {

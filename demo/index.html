@@ -2,51 +2,35 @@
 <html data-ng-app='ngQuickDateDemo'>
   <head>
     <title>ngQuickDate Demo</title>
-    <!-- <link rel="stylesheet" type="text/css" href="../bower_components/pure/pure-min.css" media="all" /> -->
+    <link rel="stylesheet" type="text/css" href="../bower_components/pure/grids-nr-min.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../bower_components/font-awesome/css/font-awesome.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../build/src/ng-quick-date.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../build/src/ng-quick-date-default-theme.css" media="all" />
     <link rel="stylesheet" type="text/css" href="../build/demo/demo.css" media="all" />
   </head>
   <body>
-    <div class='wrapper'>
-      <div class='intro'>
-        <h1>ngQuickDate Demo</h1>
-        <p>Nam justo est, suscipit a luctus sit amet, hendrerit eget massa. Sed placerat interdum lorem, sed vestibulum lacus lacinia sit amet. Fusce eu leo at ligula lacinia fringilla a sit amet arcu. Nam sed sapien massa. Curabitur in fringilla nisi. Morbi a elementum dolor, quis ornare justo. Mauris laoreet mollis urna, ut ullamcorper ipsum. Proin risus arcu, aliquam in sodales vel, pharetra at nisi. Duis interdum ac erat non adipiscing. Donec nec nisl vehicula, ornare eros non, commodo arcu.</p>
+    <div data-ng-controller='example1Ctrl'>
+      <div class='pure-g'>
+        <div class='pure-u-1-4'>
+          <label>Some Field</label>
+          <input type='text' name='something' />
+        </div>
+        <div class='pure-u-1-4'>
+          <label>Date 1</label>
+          <datepicker ng-model='date1' icon-class='icon-calendar' />
+        </div>
+        <div class='pure-u-1-4'>
+          <label>Also Date 1</label>
+          <datepicker ng-model='date1' icon-class='icon-calendar' />
+        </div>
       </div>
-      <div class='example' ng-controller='example1Ctrl'>
-        <h3>Example 1: Basic Datepicker initially set to Date Object</h3>
-        <p>
-          <label>Date Field</label>
-          <datepicker ng-model='myDate' icon-class='icon-calendar' />
-        </p>
-          <b>Raw Value:</b> {{myDate}}
-        </p>
-        <p>
-          <b>Value With Medium Date Filter:</b> {{myDate | date:'medium'}}
-        </p>
-        <strong>Code:</strong><br/>
-        <pre><code>$scope.myDate = Date.parse("10/26/2013");</code></pre>
-        <pre><code>&lt;datepicker ng-model='myDate' icon-class='icon-time' /&gt;</code></pre>
-      </div>
-      <div class='example' ng-controller='example2Ctrl'>
-        <h3>Example 2: Basic Datepicker with placeholder initially set to Null</h3>
-        <p>
-          <label>Date Field</label>
-          <datepicker ng-model='myDate' hover-text='This is the hover text' />
-        </p>
-        <p>
-          <b>Raw Value:</b> {{myDate}}
-        </p>
-        <p>
-          <b>Value With Medium Date Filter:</b> {{myDate | date:'medium'}}
-        </p>
-        <p class='italic'>
-          Notice that the button initially reads "Click to Set Date". This comes from the <code>placeholder</code> attribute since the model is null.
-        <p>
-        <strong>Code:</strong>
-        <pre><code>$scope.myDate = null;</code></pre>
-        <pre><code>&lt;datepicker ng-model='myDate' hover-text='This is the hover text' placeholder='Click to Set Date' icon-class='icon-time' /&gt;</code></pre>
+      <br/>
+      <br/>
+      <div class='pure-g'>
+        <div class='pure-u-1-4'>
+          <label>Date 2 (initially null)</label>
+          <datepicker ng-model='date2' icon-class='icon-calendar' />
+        </div>
       </div>
     </div>
     <script type="text/javascript" src="../bower_components/angular/angular.min.js"></script>

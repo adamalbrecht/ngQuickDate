@@ -10,7 +10,8 @@ app.config((ngQuickDateDefaultsProvider) ->
   })
 )
 app.controller "example1Ctrl", ($scope) ->
-  $scope.myDate = new Date(Date.parse("10/16/2013"))
+  $scope.date1 = new Date(Date.parse("10/16/2013"))
+  $scope.date2 = null
 
 app.controller "example2Ctrl", ($scope) ->
   $scope.myDate = null

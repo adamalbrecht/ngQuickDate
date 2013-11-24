@@ -7,8 +7,7 @@ module.exports = function(grunt) {
       compile: {
         files: {
           "build/test/specs.js": ["test/*.coffee"],
-          "build/src/ng-quick-date.js": ["src/*.coffee"],
-          "build/demo/demo.js": ["demo/*.coffee"]
+          "build/src/ng-quick-date.js": ["src/*.coffee"]
         }
       }
     },
@@ -16,8 +15,7 @@ module.exports = function(grunt) {
       compile: {
         files: {
           "build/src/ng-quick-date.css": ["src/ng-quick-date.styl"],
-          "build/src/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"],
-          "build/demo/demo.css": ["demo/*.styl"]
+          "build/src/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"]
         }
       }
     },

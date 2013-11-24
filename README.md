@@ -1,6 +1,6 @@
-# NgQuickDate
+# ngQuickDate
 
-NgQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
+ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
 
 ![ngQuickDate Screenshot](https://raw.github.com/adamalbrecht/ngQuickDate/master/screenshot.png)
 

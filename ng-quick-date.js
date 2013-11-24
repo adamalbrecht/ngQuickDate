@@ -115,7 +115,7 @@
               d = new Date();
             }
             d.setDate(1);
-            return scope.calendarDate = parseDateString(d);
+            return scope.calendarDate = new Date(d);
           };
           setCalendarRows = function() {
             var curDate, d, day, daysInMonth, numRows, offset, row, selected, today, weeks, _i, _j, _ref;

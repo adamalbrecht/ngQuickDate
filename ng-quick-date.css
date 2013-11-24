@@ -1,0 +1,19 @@
+.quickdate{display:inline-block;position:relative}
+.quickdate-button div,.quickdate-action-link div{display:inline}
+.quickdate-popup{z-index:10;background-color:#fff;border:solid 1px #000;text-align:center;width:250px;display:none;position:absolute;padding:5px;}
+.quickdate-popup.open{display:block}
+.quickdate-close{position:absolute;top:5px;right:5px;color:#333;}
+.quickdate-close:hover,.quickdate-close:visited{color:#333}
+.quickdate-calendar-header{display:block;padding:2px 0;margin-bottom:5px;text-align:center}
+.quickdate-month{display:inline-block}
+a.quickdate-prev-month{float:left}
+a.quickdate-next-month{float:right}
+.quickdate-text-inputs{text-align:left;margin-bottom:5px}
+.quickdate-input-wrapper{width:48%;display:inline-block}
+input.quickdate-date-input,input.quickdate-time-input{width:100px;margin:0;height:auto;padding:2px 3px}
+table.quickdate-calendar{border-collapse:collapse;border-spacing:0;width:100%;margin-top:5px;}
+table.quickdate-calendar th,table.quickdate-calendar td{padding:5px}
+table.quickdate-calendar td:hover{cursor:pointer}
+.quickdate-popup-footer{text-align:right;display:block}
+.quickdate-error{border:1px solid #dd3b30 !important}
+.quickdate-error:focus{outline-color:#dd3b30 !important}

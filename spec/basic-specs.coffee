@@ -196,7 +196,9 @@ describe "ngQuickDate", ->
     describe 'Given a basic datepicker set to today', ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        element = buildBasicDatepicker($compile, scope, new Date())
+        scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'))
+        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        scope.$apply()
       ))
 
       describe 'when you click the clear button', ->

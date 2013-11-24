@@ -214,7 +214,9 @@
       return describe('Given a basic datepicker set to today', function() {
         beforeEach(inject(function($compile, $rootScope) {
           scope = $rootScope;
-          return element = buildBasicDatepicker($compile, scope, new Date());
+          scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'));
+          element = $compile("<datepicker ng-model='myDate' />")(scope);
+          return scope.$apply();
         }));
         return describe('when you click the clear button', function() {
           beforeEach(function() {

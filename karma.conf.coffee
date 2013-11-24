@@ -20,5 +20,5 @@ module.exports = (config) ->
       'bower_components/jquery/jquery.js'
       'vendor/*.js'
       'src/*.coffee'
-      'test/*.coffee'
+      'spec/*.coffee'
     ]

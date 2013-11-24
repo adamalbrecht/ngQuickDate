@@ -7,7 +7,12 @@ app.config(function(ngQuickDateDefaultsProvider) {
     closeButtonHtml: "<i class='fa fa-times'></i>",
     buttonIconHtml: "<i class='fa fa-clock-o'></i>",
     nextLinkHtml: "<i class='fa fa-chevron-right'></i>",
-    prevLinkHtml: "<i class='fa fa-chevron-left'></i>"
+    prevLinkHtml: "<i class='fa fa-chevron-left'></i>",
+    // Take advantage of Sugar.js date parsing
+    parseDateFunction: function(str) {
+      d = Date.create(str);
+      return d.isValid() ? d : null;
+    }
   });
 });
 

@@ -98,6 +98,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         scope.inputTime = $filter('date')(scope.ngModel, ngQuickDateDefaults.timeFormat)
       else
         scope.inputDate = null
+        scope.inputTime = null
 
     setCalendarDateFromModel = ->
       d = if scope.ngModel then new Date(scope.ngModel) else new Date()

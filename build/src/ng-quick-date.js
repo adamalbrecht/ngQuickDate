@@ -104,7 +104,8 @@
               scope.inputDate = $filter('date')(scope.ngModel, ngQuickDateDefaults.dateFormat);
               return scope.inputTime = $filter('date')(scope.ngModel, ngQuickDateDefaults.timeFormat);
             } else {
-              return scope.inputDate = null;
+              scope.inputDate = null;
+              return scope.inputTime = null;
             }
           };
           setCalendarDateFromModel = function() {

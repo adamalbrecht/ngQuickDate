@@ -33,15 +33,16 @@ The directive itself is simply called *datepicker*. The only required attribute 
 
 There are a number of options that be configured inline with attributes. Here are a few:
 
-| Option              | Default             | Description                                                                                 |
-| ------------------- | ------------------- | ------------------------------------------------------------------------------------------- |
-| date-format         | "M/d/yyyy"          | Date Format used in the date input box.                                                     |
-| time-format         | "h:mm a"            | Time Format used in the time input box.                                                     |
-| label-format        | null                | Date/Time format used on button. If null, will use combination of date and time formats.    |
-| placeholder         | 'Click to Set Date' | Text that is shown on button when the model variable is null.                               |
-| hover-text          | null                | Hover text for button.                                                                      |
-| icon-class          | null                | If set, `<i class='some-class'></i>` will be prepended inside the button                    |
-| disable-time-picker | false               | If set, the timepicker will be disabled and the default label format will be just the date |
+| Option               | Default             | Description                                                                                 |
+| -------------------- | ------------------- | ------------------------------------------------------------------------------------------- |
+| date-format          | "M/d/yyyy"          | Date Format used in the date input box.                                                     |
+| time-format          | "h:mm a"            | Time Format used in the time input box.                                                     |
+| label-format         | null                | Date/Time format used on button. If null, will use combination of date and time formats.    |
+| placeholder          | 'Click to Set Date' | Text that is shown on button when the model variable is null.                               |
+| hover-text           | null                | Hover text for button.                                                                      |
+| icon-class           | null                | If set, `<i class='some-class'></i>` will be prepended inside the button                    |
+| disable-time-picker  | false               | If true, the timepicker will be disabled and the default label format will be just the date |
+| disable-clear-button | false               | If true, the clear button will be removed                                                   |
 
 **Example:**
 
@@ -84,21 +85,20 @@ function(str) {
 
 ## Smarter Date/Time Parsing
 
-By default, dates and times entered into the 2 input boxes are parsed using javascript's built-in `Date.parse()` function. This function does not support many formats and can be inconsistent across platforms. I recommend using the [Date.js](http://www.datejs.com/) library instead. With Date.js, the parse method on the Date object is overwritten, so you don't need configure anything. Or if you'd like to use another library or your own parse function, you can do it like this:
+By default, dates and times entered into the 2 input boxes are parsed using javascript's built-in `Date.parse()` function. This function does not support many formats and can be inconsistent across platforms. I recommend using either the [Sugar.js](http://sugarjs.com/) or [Date.js](http://www.datejs.com/) library instead. With Date.js, the parse method on the Date object is overwritten, so you don't need configure anything. If you'd like to use Sugar, you can configure it to work like so:
 
     app.config(function(ngQuickDateDefaultsProvider) {
       ngQuickDateDefaultsProvider.set('parseDateFunction', function(str) {
-        // Date parsing logic...
-        // Return null if the date is invalid
-        // Otherwise return a date object
+        d = Date.create(str);
+        return d.isValid() ? d : null;
       });
     })
 
-While I don't like the fact that Date.js modifies the native Date object, it will allow you to parse relative dates ('Tomorrow', for example), less formal formats ('1pm'), and more.
+With either library, you'll be able to input more natural formats such as 'Today' or '1pm'. Of course, you can override this parse function with any code you'd like, so you're also free to swap in another library or write your own parser.
 
 ## Date Formatting
 
-Note that when displaying dates in a well-formatted manner, Angular's [Date filter](http://docs.angularjs.org/api/ng.filter:date) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Date.js has its own formatting syntax that is different from Angular's.
+Note that when displaying dates in a well-formatted manner, Angular's [Date filter](http://docs.angularjs.org/api/ng.filter:date) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Sugar.js and Date.js have their own formatting syntax that are different from Angular's.
 
 ## Styling
 

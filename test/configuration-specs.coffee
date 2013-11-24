@@ -157,6 +157,30 @@ describe "ngQuickDate", ->
         it 'should show the configured placeholder', ->
           expect($(element).find('.quickdate-button').html()).toMatch('No Date Chosen')
 
+    describe 'Given that it is configured without a clear button', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('disableClearButton', true)
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date())
+        ))
+
+        it 'should not have clear button', ->
+          expect($(element).find('.quickdate-clear').css('display')).toEqual('none')
+      describe 'and given a datepicker with the clear button re-enabled', ->
+        beforeEach(inject(($compile, $rootScope) ->
+          scope = $rootScope
+          scope.myDate = new Date()
+          element = $compile("<datepicker ng-model='myDate' disable-clear-button='false' />")(scope)
+          scope.$digest()
+        ))
+
+        it 'should have a clear button', ->
+          expect($(element).find('.quickdate-clear').css('display')).toNotEqual('none')
+
+
 
 buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->
   scope.myDate = date

@@ -401,7 +401,7 @@
           });
         });
       });
-      return describe('Given that it is configured with a default placeholder', function() {
+      describe('Given that it is configured with a default placeholder', function() {
         beforeEach(module('ngQuickDate', function(ngQuickDateDefaultsProvider) {
           ngQuickDateDefaultsProvider.set('placeholder', 'No Date Chosen');
           return null;
@@ -412,6 +412,31 @@
           }));
           return it('should show the configured placeholder', function() {
             return expect($(element).find('.quickdate-button').html()).toMatch('No Date Chosen');
+          });
+        });
+      });
+      return describe('Given that it is configured without a clear button', function() {
+        beforeEach(module('ngQuickDate', function(ngQuickDateDefaultsProvider) {
+          ngQuickDateDefaultsProvider.set('disableClearButton', true);
+          return null;
+        }));
+        describe('and given a basic datepicker', function() {
+          beforeEach(inject(function($compile, $rootScope) {
+            return element = buildBasicDatepicker($compile, $rootScope, new Date());
+          }));
+          return it('should not have clear button', function() {
+            return expect($(element).find('.quickdate-clear').css('display')).toEqual('none');
+          });
+        });
+        return describe('and given a datepicker with the clear button re-enabled', function() {
+          beforeEach(inject(function($compile, $rootScope) {
+            scope = $rootScope;
+            scope.myDate = new Date();
+            element = $compile("<datepicker ng-model='myDate' disable-clear-button='false' />")(scope);
+            return scope.$digest();
+          }));
+          return it('should have a clear button', function() {
+            return expect($(element).find('.quickdate-clear').css('display')).toNotEqual('none');
           });
         });
       });

@@ -9,7 +9,7 @@ ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 * [Version 1.0.0-alpha](https://github.com/adamalbrecht/ngQuickDate/releases/download/v1.0.0-alpha/ng-quick-date.zip) - Compatible with Angular 1.0.x
 * Version 1.2 - Coming soon. Compatible with Angular 1.2.x
 
-*No dependencies (besides Angular) are required, but its date parsing capabilities can be improved by 3rd party libraries. See [Smarter Date/Time Parsing](#smarter-datetime-parsing) for more info.*
+*No dependencies (besides Angular) are required, but its date parsing capabilities can be improved by 3rd party libraries. See [Smarter Date/Time Parsing](#smarter-datetime-parsing) for more info. And it's styling can be improved by using a font icon library like [Font Awesome](http://fontawesome.io/). See the [Configuration](#configuration-options) and [Styling](#styling) sections.*
 
 ## Demo
 
@@ -105,6 +105,20 @@ Note that when displaying dates in a well-formatted manner, Angular's [Date filt
 ## Styling
 
 There is a very light set of styles that allow the datepicker to function, but isn't particularly pretty. From there you can either use the default theme that's included or you can easily write your own theme.
+
+You can improve it's appearance quite a bit by using a Font Icon library like [Font Awesome](http://fontawesome.io/). To make look like the screenshot above, you'd need Font Awesome 4.0 and the following configuration:
+
+```javascript
+app.config(function(ngQuickDateDefaultsProvider) {
+  // Configure with icons from font-awesome
+  return ngQuickDateDefaultsProvider.set({
+    closeButtonHtml: "<i class='fa fa-times'></i>",
+    buttonIconHtml: "<i class='fa fa-calendar'></i>",
+    nextLinkHtml: "<i class='fa fa-chevron-right'></i>",
+    prevLinkHtml: "<i class='fa fa-chevron-left'></i>"
+  });
+});
+```
 
 ## Browser Support
 

@@ -2,14 +2,18 @@
 
 NgQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
 
+![ngQuickDate Screenshot](https://raw.github.com/adamalbrecht/ngQuickDate/master/screenshot.png)
+
 ## Download
 
 * [Version 1.0.0-alpha](https://github.com/adamalbrecht/ngQuickDate/releases/download/v1.0.0-alpha/ng-quick-date-v1.0.0-alpha.zip) - Compatible with Angular 1.0.x
 * Version 1.2 - Coming soon. Compatible with Angular 1.2.x
 
+*No dependencies (besides Angular) are required, but its date parsing capabilities can be improved by 3rd party libraries. See [Smarter Date/Time Parsing](#smarter-date-time-parsing) for more info.*
+
 ## Demo
 
-Coming Soon
+You can find some basic examples [here](http://adamalbrecht.github.io/ngQuickDate)
 
 ## The Basics
 

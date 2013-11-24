@@ -105,7 +105,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
       if (d.toString() == "Invalid Date")
         d = new Date()
       d.setDate(1)
-      scope.calendarDate = parseDateString(d)
+      scope.calendarDate = new Date(d)
 
     setCalendarRows = ->
       offset = scope.calendarDate.getDay()

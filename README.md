@@ -4,12 +4,8 @@ NgQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 
 ## Download
 
-* [Version 1.0](https://github.com/adamalbrecht/ngQuickDate/releases/download/v1.0/ng-quick-date-v1.0.zip) - Coming soon. Compatible with Angular 1.0
-* Version 1.2 - Coming soon. Compatible with Angular 1.2. Not backwards compatible.
-
-## Install with Bower
-
-Coming Soon
+* [Version 1.0.0-alpha](https://github.com/adamalbrecht/ngQuickDate/releases/download/v1.0.0-alpha/ng-quick-date-v1.0.0-alpha.zip) - Compatible with Angular 1.0.x
+* Version 1.2 - Coming soon. Compatible with Angular 1.2.x
 
 ## Demo
 
@@ -106,11 +102,17 @@ There is a very light set of styles that allow the datepicker to function, but i
 
 ## Browser Support
 
-So far, it has only been tested in Chrome. That will change soon.
+So far, it has only been tested in Chrome.
 
-## Contributions
+## Contributing
 
 Contributions are welcome. Whenever possible, please include test coverage with your contribution.
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 To get the project running, you'll need [NPM](https://npmjs.org/) and [Bower](http://bower.io/). Run `npm install` and `bower install` to install all dependencies. Then run `grunt` in the project directory to watch and compile changes. And you can run `karma start` to watch for changes and auto-execute unit tests.
 

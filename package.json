@@ -1,6 +1,6 @@
 {
-  "name": "ngQuickDatepicker",
-  "version": "0.1.0",
+  "name": "ngQuickDate",
+  "version": "1.0.0-alpha",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7",

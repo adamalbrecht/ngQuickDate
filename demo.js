@@ -4,10 +4,10 @@ app = angular.module("ngQuickDateDemo", ["ngQuickDate"]);
 
 app.config(function(ngQuickDateDefaultsProvider) {
   return ngQuickDateDefaultsProvider.set({
-    closeButtonHtml: "<i class='icon-remove'></i>",
-    buttonIconHtml: "<i class='icon-time'></i>",
-    nextLinkHtml: "<i class='icon-chevron-right'></i>",
-    prevLinkHtml: "<i class='icon-chevron-left'></i>"
+    closeButtonHtml: "<i class='fa fa-times'></i>",
+    buttonIconHtml: "<i class='fa fa-clock-o'></i>",
+    nextLinkHtml: "<i class='fa fa-chevron-right'></i>",
+    prevLinkHtml: "<i class='fa fa-chevron-left'></i>"
   });
 });
 

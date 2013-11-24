@@ -41,13 +41,13 @@ There are a number of options that be configured inline with attributes. Here ar
 | placeholder          | 'Click to Set Date' | Text that is shown on button when the model variable is null.                               |
 | hover-text           | null                | Hover text for button.                                                                      |
 | icon-class           | null                | If set, `<i class='some-class'></i>` will be prepended inside the button                    |
-| disable-time-picker  | false               | If true, the timepicker will be disabled and the default label format will be just the date |
+| disable-timepicker  | false               | If true, the timepicker will be disabled and the default label format will be just the date |
 | disable-clear-button | false               | If true, the clear button will be removed                                                   |
 
 **Example:**
 
 ```html
-<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-time-picker='true' />
+<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-timepicker='true' />
 ```
 
 ## Configuration Options

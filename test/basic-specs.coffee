@@ -193,5 +193,20 @@ describe "ngQuickDate", ->
         it 'updates the input to use the proper time format', ->
           expect($timeInput.val()).toEqual('3:00 PM')
 
+    describe 'Given a basic datepicker set to today', ->
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        element = buildBasicDatepicker($compile, scope, new Date())
+      ))
+
+      describe 'when you click the clear button', ->
+        beforeEach ->
+          browserTrigger($(element).find('.quickdate-clear'), 'click')
+          scope.$apply()
+
+        it 'should set the model back to null', ->
+          expect(element.scope().ngModel).toEqual(null)
+
+
 
 

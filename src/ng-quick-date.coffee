@@ -218,6 +218,11 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     scope.prevMonth = ->
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
 
+    scope.clear = ->
+      scope.ngModel = null
+      scope.toggleCalendar(false)
+
+
     initialize()
     setCalendarRows()
 
@@ -258,6 +263,9 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
                     </tr>
                   </tbody>
                 </table>
+                <div class='quickdate-popup-footer'>
+                  <a href='' class='quickdate-clear' tabindex='-1' ng-click='clear()'>Clear</a>
+                </div>
               </div>
             </div>
             """

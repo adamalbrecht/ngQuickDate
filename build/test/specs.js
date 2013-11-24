@@ -183,7 +183,7 @@
           return expect($(element).find('.is-today').length).toEqual(0);
         });
       });
-      return describe('Given a datepicker set to November 1st, 2013 at 1:00pm', function() {
+      describe('Given a datepicker set to November 1st, 2013 at 1:00pm', function() {
         var $timeInput;
         $timeInput = void 0;
         beforeEach(angular.mock.inject(function($compile, $rootScope) {
@@ -208,6 +208,21 @@
           });
           return it('updates the input to use the proper time format', function() {
             return expect($timeInput.val()).toEqual('3:00 PM');
+          });
+        });
+      });
+      return describe('Given a basic datepicker set to today', function() {
+        beforeEach(inject(function($compile, $rootScope) {
+          scope = $rootScope;
+          return element = buildBasicDatepicker($compile, scope, new Date());
+        }));
+        return describe('when you click the clear button', function() {
+          beforeEach(function() {
+            browserTrigger($(element).find('.quickdate-clear'), 'click');
+            return scope.$apply();
+          });
+          return it('should set the model back to null', function() {
+            return expect(element.scope().ngModel).toEqual(null);
           });
         });
       });

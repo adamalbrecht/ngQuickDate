@@ -87,12 +87,14 @@ function(str) {
 
 By default, dates and times entered into the 2 input boxes are parsed using javascript's built-in `Date.parse()` function. This function does not support many formats and can be inconsistent across platforms. I recommend using either the [Sugar.js](http://sugarjs.com/) or [Date.js](http://www.datejs.com/) library instead. With Date.js, the parse method on the Date object is overwritten, so you don't need configure anything. If you'd like to use Sugar, you can configure it to work like so:
 
-    app.config(function(ngQuickDateDefaultsProvider) {
-      ngQuickDateDefaultsProvider.set('parseDateFunction', function(str) {
-        d = Date.create(str);
-        return d.isValid() ? d : null;
-      });
-    })
+```javascript
+app.config(function(ngQuickDateDefaultsProvider) {
+  ngQuickDateDefaultsProvider.set('parseDateFunction', function(str) {
+    d = Date.create(str);
+    return d.isValid() ? d : null;
+  });
+})
+```
 
 With either library, you'll be able to input more natural formats such as 'Today' or '1pm'. Of course, you can override this parse function with any code you'd like, so you're also free to swap in another library or write your own parser.
 

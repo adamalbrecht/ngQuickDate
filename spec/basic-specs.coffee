@@ -210,5 +210,45 @@ describe "ngQuickDate", ->
           expect(element.scope().ngModel).toEqual(null)
 
 
+    describe "Given a datepicker with an 'on-change' method to call", ->
+      mySpy = undefined
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myVariable = 1
+        scope.myOtherVariable = null
+        scope.myMethod = (param) ->
+          scope.myVariable += 1
+          scope.myOtherVariable = param
 
+        scope.myDate = new Date(2013, 5, 10)
+        element = $compile("<datepicker ng-model='myDate' on-change='myMethod(\"hello!\")' />")(scope)
+        scope.$apply()
+      ))
 
+      it 'should not be called initially', ->
+        expect(scope.myVariable).toEqual(1)
+
+      # Can't get this spec to work
+      describe 'When the date input is changed', ->
+        beforeEach ->
+          $input = $(element).find('.quickdate-date-input')
+          scope.$apply ->
+            $input.val('1/5/2013')
+            $input.trigger('input')
+            $input.trigger('blur')
+          browserTrigger($input, 'input')
+          browserTrigger($input, 'change')
+          browserTrigger($input, 'blur')
+
+        it 'should call the method once', ->
+          expect(scope.myVariable).toEqual(2)
+          expect(scope.myOtherVariable).toEqual('hello!')
+
+      describe 'When the date input is blurred but not changed', ->
+        beforeEach ->
+          $input = $(element).find('.quickdate-date-input')
+          browserTrigger($input, 'change')
+          browserTrigger($input, 'blur')
+
+        it 'should not call the method', ->
+          expect(scope.myVariable).toEqual(1)

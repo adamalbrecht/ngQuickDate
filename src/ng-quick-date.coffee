@@ -46,6 +46,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
   require: "ngModel"
   scope:
     ngModel: "="
+    onChange: "&"
 
   replace: true
   link: (scope, element, attrs, ngModel) ->
@@ -179,27 +180,32 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
+      changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != scope.ngModel.getTime())
       scope.ngModel = date
       scope.toggleCalendar(false)
+      if changed && scope.onChange
+        scope.onChange()
 
     scope.setDateFromInput = (closeCalendar=false) ->
       try
         tmpDate = parseDateString(scope.inputDate)
         if !tmpDate
           throw 'Invalid Date'
-        if scope.inputTime and scope.inputTime.length and tmpDate
+        if !scope.disableTimepicker && scope.inputTime and scope.inputTime.length and tmpDate
           tmpTime = if scope.disableTimepicker then '00:00:00' else scope.inputTime
           tmpDateAndTime = parseDateString("#{scope.inputDate} #{tmpTime}")
           if !tmpDateAndTime
             throw 'Invalid Time'
-          scope.ngModel = tmpDateAndTime
+          scope.setDate(tmpDateAndTime, false)
         else
-          scope.ngModel = tmpDate
+          scope.setDate(tmpDate, false)
+
         if closeCalendar
           scope.toggleCalendar(false)
 
         scope.inputDateErr = false
         scope.inputTimeErr = false
+
       catch err
         if err == 'Invalid Date'
           scope.inputDateErr = true
@@ -241,11 +247,11 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'ng-quick-date-error': inputDateErr}"  ng-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'ng-quick-date-error': inputDateErr}"  ng-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur='setDateFromInput()' ng-enter='setDateFromInput(true)' ng-class="{'quickdate-error': inputTimeErr}" ng-tab='onTimeInputTab()'>
+                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputTimeErr}" ng-tab='onTimeInputTab()'>
                   </div>
                 </div>
                 <div class='quickdate-calendar-header'>

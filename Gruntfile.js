@@ -7,22 +7,22 @@ module.exports = function(grunt) {
       compile: {
         files: {
           "spec/build/specs.js": ["spec/*.coffee"],
-          "build/ng-quick-date.js": ["src/*.coffee"]
+          "dist/ng-quick-date.js": ["src/*.coffee"]
         }
       }
     },
     uglify: {
       my_target: {
         files: {
-          "build/ng-quick-date.min.js": "build/ng-quick-date.js"
+          "dist/ng-quick-date.min.js": "dist/ng-quick-date.js"
         }
       }
     },
     stylus: {
       compile: {
         files: {
-          "build/ng-quick-date.css": ["src/ng-quick-date.styl"],
-          "build/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"]
+          "dist/ng-quick-date.css": ["src/ng-quick-date.styl"],
+          "dist/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"]
         }
       }
     },

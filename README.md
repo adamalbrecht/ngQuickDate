@@ -6,8 +6,22 @@ ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 
 ## Download
 
-* [Version 1.0.0-alpha.1](https://github.com/adamalbrecht/ngQuickDate/releases/download/v1.0.0-alpha.1/ng-quick-date.zip) - Compatible with Angular 1.0.x
+* [Version 1.0.0-alpha.2](https://github.com/adamalbrecht/ngQuickDate/releases/download/v1.0.0-alpha.2/ng-quick-date.zip) - Compatible with Angular 1.0.x
 * Version 1.2 - Coming soon. Compatible with Angular 1.2.x
+
+You can also install the package using [Bower](http://bower.io).
+
+```sh
+bower install ngQuickDate
+```
+
+Or add it to your bower.json file:
+
+```javascript
+dependencies: {
+  "ngQuickDate": "~1.0.0"
+}
+```
 
 *No dependencies (besides Angular) are required, but its date parsing capabilities can be improved by 3rd party libraries. See [Smarter Date/Time Parsing](#smarter-datetime-parsing) for more info. And it's styling can be improved by using a font icon library like [Font Awesome](http://fontawesome.io/). See the [Styling](#styling) and [Configuration](#configuration-options) sections.*
 

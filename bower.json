@@ -1,11 +1,17 @@
 {
   "name": "ngQuickDate",
-  "version": "1.0.0-alpha",
-  "main": "build/src/ng-quick-date.js",
+  "version": "1.0.0-alpha.2",
+  "main": ["dist/ng-quick-date.js", "dist/ng-quick-date.css", "dist/ng-quick-date-default-theme.css"],
   "ignore": [
-    ".jshintrc",
-    "**/*.txt",
-    "demo"
+    "bower_components",
+    "node_modules",
+    "spec",
+    "src",
+    "vendor",
+    "Gruntfile.js",
+    "karma.conf.coffee",
+    "package.json",
+    "screenshot.png"
   ],
   "dependencies": {},
   "devDependencies": {

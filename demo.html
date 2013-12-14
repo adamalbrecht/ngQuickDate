@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html data-ng-app='ngQuickDateDemo'>
+  <head>
+    <title>ngQuickDate Demo</title>
+    <link rel="stylesheet" type="text/css" href="dist/ng-quick-date.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="dist/ng-quick-date-default-theme.css" media="all" />
+  </head>
+  <body>
+    <div ng-controller='DemoCtrl'>
+      <p>
+        <label>My Date</label>
+        <br/>
+        <datepicker ng-model='myDate'></datepicker>
+      </p>
+      <br/>
+      <p>
+        <strong>My Date:</strong> {{myDate | date:'medium'}}
+      </p>
+    </div>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <!-- <script type='text/javascript' src='bower_components/jquery/jquery.js' /> -->
+    <script type="text/javascript" src="dist/ng-quick-date.js"></script>
+    <script type='text/javascript'>
+      var app = angular.module("ngQuickDateDemo", ["ngQuickDate"]);
+      app.config(function(ngQuickDateDefaultsProvider) {
+        return ngQuickDateDefaultsProvider.set({
+        });
+      });
+      app.controller("DemoCtrl", function($scope) {
+        $scope.myDate = new Date();
+      });
+    </script>
+  </body>
+</html>

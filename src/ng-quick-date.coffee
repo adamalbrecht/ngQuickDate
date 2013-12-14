@@ -11,37 +11,39 @@
 app = angular.module("ngQuickDate", [])
 
 app.provider "ngQuickDateDefaults", ->
-  @options = {
-    dateFormat: 'M/d/yyyy'
-    timeFormat: 'h:mm a'
-    labelFormat: null
-    placeholder: 'Click to Set Date'
-    hoverText: null
-    buttonIconHtml: null
-    closeButtonHtml: 'X'
-    nextLinkHtml: 'Next'
-    prevLinkHtml: 'Prev'
-    disableTimepicker: false
-    disableClearButton: false
-    dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
-    parseDateFunction: (str) ->
-      seconds = Date.parse(str)
-      if isNaN(seconds)
-        return null
+  {
+    options: {
+      dateFormat: 'M/d/yyyy'
+      timeFormat: 'h:mm a'
+      labelFormat: null
+      placeholder: 'Click to Set Date'
+      hoverText: null
+      buttonIconHtml: null
+      closeButtonHtml: 'X'
+      nextLinkHtml: 'Next'
+      prevLinkHtml: 'Prev'
+      disableTimepicker: false
+      disableClearButton: false
+      dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
+      parseDateFunction: (str) ->
+        seconds = Date.parse(str)
+        if isNaN(seconds)
+          return null
+        else
+          new Date(seconds)
+    }
+    $get: ->
+      @options
+
+    set: (keyOrHash, value) ->
+      if typeof(keyOrHash) == 'object'
+        for k, v of keyOrHash
+          @options[k] = v
       else
-        new Date(seconds)
+        @options[keyOrHash] = value
   }
-  @$get = ->
-    @options
 
-  @set = (keyOrHash, value) ->
-    if typeof(keyOrHash) == 'object'
-      for k, v of keyOrHash
-        @options[k] = v
-    else
-      @options[keyOrHash] = value
-
-app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefaults, $filter) ->
+app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickDateDefaults, $filter, $sce) ->
   restrict: "E"
   require: "ngModel"
   scope:
@@ -68,7 +70,9 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
 
     setConfigOptions = ->
       for key, value of ngQuickDateDefaults
-        if !key.match(/html/) && attrs[key] && attrs[key].length
+        if key.match(/[Hh]tml/)
+          scope[key] = $sce.trustAsHtml(ngQuickDateDefaults[key] || "")
+        else if attrs[key]
           scope[key] = attrs[key]
         else
           scope[key] = ngQuickDateDefaults[key]
@@ -77,7 +81,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
         unless scope.disableTimepicker
           scope.labelFormat += " " + scope.timeFormat
       if attrs.iconClass && attrs.iconClass.length
-        scope.buttonIconHtml = "<i ng-show='iconClass' class='#{attrs.iconClass}'></i>"
+        scope.buttonIconHtml = $sce.trustAsHtml("<i ng-show='iconClass' class='#{attrs.iconClass}'></i>")
 
     # VIEW SETUP
     # ================================
@@ -182,7 +186,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
     scope.setDate = (date, closeCalendar=true) ->
       changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != scope.ngModel.getTime())
       scope.ngModel = date
-      scope.toggleCalendar(false)
+      if closeCalendar
+        scope.toggleCalendar(false)
       if changed && scope.onChange
         scope.onChange()
 
@@ -241,9 +246,9 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
   # ================================================================
   template: """
             <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html-unsafe='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+              <a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
-                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html-unsafe='closeButtonHtml'></div></a>
+                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
@@ -255,9 +260,9 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', (ngQuickDateDefau
                   </div>
                 </div>
                 <div class='quickdate-calendar-header'>
-                  <a href='' class='quickdate-prev-month quickdate-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html-unsafe='prevLinkHtml'></div></a>
+                  <a href='' class='quickdate-prev-month quickdate-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>
                   <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
-                  <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html-unsafe='nextLinkHtml'></div></a>
+                  <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>
                 </div>
                 <table class='quickdate-calendar'>
                   <thead>
@@ -291,24 +296,3 @@ app.directive 'ngTab', ->
     element.bind 'keydown keypress', (e) ->
       if (e.which == 9)
         scope.$apply(attr.ngTab)
-
-
-
-# These directives are provided in angular 1.2+
-if parseInt(angular.version.full) < 1.2
-  app.directive "ngBlur", ["$parse", ($parse) ->
-    (scope, element, attr) ->
-      fn = $parse(attr["ngBlur"])
-      element.bind "blur", (event) ->
-        scope.$apply ->
-          fn scope,
-            $event: event
-  ]
-  app.directive "ngFocus", ["$parse", ($parse) ->
-    (scope, element, attr) ->
-      fn = $parse(attr["ngFocus"])
-      element.bind "focus", (event) ->
-        scope.$apply ->
-          fn scope,
-            $event: event
-  ]

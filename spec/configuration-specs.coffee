@@ -93,7 +93,7 @@ describe "ngQuickDate", ->
         null
       ))
       it 'should display the time picker', ->
-        expect($(element).find('.ng-quick-date-input-wrapper:last').css('display')).toNotEqual('none')
+        expect($(element).find('.ng-quick-date-input-wrapper:last').hasClass('ng-hide')).toEqual(false)
 
     describe 'Given that it is configured without the timepicker', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
@@ -105,13 +105,13 @@ describe "ngQuickDate", ->
           element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('11/1/2013 3:59 pm')))
         ))
         it 'does not show the timepicker input', ->
-          expect($(element).find('.quickdate-input-wrapper:last').css('display')).toEqual('none')
+          expect($(element).find('.quickdate-input-wrapper:last').hasClass('ng-hide')).toEqual(true)
         it 'sets the time to 0:00 on change', ->
           $textInput = $(element).find(".quickdate-date-input")
           $textInput.val('11/15/2013')
           browserTrigger($textInput, 'input')
           browserTrigger($textInput, 'blur')
-          expect(element.scope().ngModel).toMatch(/00:00:00/)
+          expect(element.scope().myDate).toMatch(/00:00:00/)
 
       describe 'and given a datepicker with timepicker re-enabled', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
@@ -120,7 +120,7 @@ describe "ngQuickDate", ->
           $rootScope.$digest()
         ))
         it 'shows the timepicker input', ->
-          expect($(element).find('.quickdate-input-wrapper:last').css('display')).toNotEqual('none')
+          expect($(element).find('.quickdate-input-wrapper:last').hasClass('ng-hide')).toNotEqual(true)
 
 
     describe 'Given that it is configured with a custom date/time parser function that always returns July 1, 2013', ->
@@ -142,7 +142,7 @@ describe "ngQuickDate", ->
             browserTrigger($dateInput, 'blur')
 
           it 'Changes the model date to July 1, 2013', ->
-            expect(element.scope().ngModel).toMatch(/Jul 01 2013/)
+            expect(element.scope().myDate).toMatch(/Jul 01 2013/)
 
     describe 'Given that it is configured with a default placeholder', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
@@ -168,7 +168,8 @@ describe "ngQuickDate", ->
         ))
 
         it 'should not have clear button', ->
-          expect($(element).find('.quickdate-clear').css('display')).toEqual('none')
+          expect($(element).find('.quickdate-clear').hasClass('ng-hide')).toEqual(true)
+
       describe 'and given a datepicker with the clear button re-enabled', ->
         beforeEach(inject(($compile, $rootScope) ->
           scope = $rootScope
@@ -178,7 +179,7 @@ describe "ngQuickDate", ->
         ))
 
         it 'should have a clear button', ->
-          expect($(element).find('.quickdate-clear').css('display')).toNotEqual('none')
+          expect($(element).find('.quickdate-clear').hasClass('ng-hide')).toEqual(false)
 
 
 

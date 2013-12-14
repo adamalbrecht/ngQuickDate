@@ -1,6 +1,6 @@
 {
   "name": "ngQuickDate",
-  "version": "1.0.0-alpha.2",
+  "version": "1.2.0-alpha",
   "main": ["dist/ng-quick-date.js", "dist/ng-quick-date.css", "dist/ng-quick-date-default-theme.css"],
   "ignore": [
     "bower_components",
@@ -15,8 +15,8 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "angular": "~1.0.8",
-    "angular-mocks": "~1.0.8",
+    "angular": "~1.2.0",
+    "angular-mocks": "~1.2.0",
     "jasmine": "~1.3.1",
     "karma-jasmine": "~0.1.3",
     "jquery": "~2.0"

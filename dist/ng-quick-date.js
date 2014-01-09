@@ -67,6 +67,9 @@
             if (typeof scope.ngModel === 'string') {
               scope.ngModel = parseDateString(scope.ngModel);
             }
+            if (typeof attrs.initValue === 'string') {
+              scope.ngModel = parseDateString(attrs.initValue);
+            }
             setConfigOptions();
             setInputDateFromModel();
             return setCalendarDateFromModel();

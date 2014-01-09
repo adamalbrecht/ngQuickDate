@@ -154,9 +154,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     # DATA WATCHES
     # ==================================
     scope.$watch('ngModel', (newVal, oldVal) ->
-      if newVal != oldVal
-        setInputDateFromModel()
-        setCalendarDateFromModel()
+      setInputDateFromModel()
+      setCalendarDateFromModel()
     )
 
     scope.$watch('calendarDate', (newVal, oldVal) ->
@@ -184,6 +183,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
         scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
+      if typeof(scope.ngModel) == 'string'
+        scope.ngModel = parseDateString(scope.ngModel)
       changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != scope.ngModel.getTime())
       scope.ngModel = date
       if closeCalendar

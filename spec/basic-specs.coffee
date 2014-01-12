@@ -212,6 +212,16 @@ describe "ngQuickDate", ->
         it 'should set the model back to null', ->
           expect(element.scope().myDate).toEqual(null)
 
+    describe "Given a datepicker with a valid init-value attribute", ->
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        element = $compile("<datepicker ng-model='someDate' init-value='2/1/2014 2:00 PM' />")(scope)
+        scope.$apply()
+      ))
+
+      it 'should set the model to the specified initial value', ->
+        expect(Date.parse(element.scope().someDate)).toEqual(Date.parse('2/1/2014 2:00 PM'))
+      
 
     describe "Given a datepicker with an 'on-change' method to call", ->
       mySpy = undefined

@@ -53,7 +53,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
   replace: true
   link: (scope, element, attrs, ngModel) ->
     debug = attrs.debug && attrs.debug.length
-    
+
     # INITIALIZE VARIABLES
     # ================================
     initialize = ->
@@ -229,7 +229,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       scope.toggleCalendar(false)
       true
 
-    scope.nextMonth = -> 
+    scope.nextMonth = ->
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
     scope.prevMonth = ->
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
@@ -244,7 +244,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
 
     if debug
       console.log "quick date scope:", scope
- 
+
   # TEMPLATE
   # ================================================================
   template: """

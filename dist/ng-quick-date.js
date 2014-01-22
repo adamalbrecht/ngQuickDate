@@ -58,7 +58,7 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModel) {
-          var dateToString, datepickerClicked, datesAreEqual, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel;
+          var dateToString, datepickerClicked, datesAreEqual, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel, stringToDate;
           debug = attrs.debug && attrs.debug.length;
           initialize = function() {
             scope.toggleCalendar(false);
@@ -153,6 +153,13 @@
           dateToString = function(date, format) {
             return $filter('date')(date, format);
           };
+          stringToDate = function(date) {
+            if (typeof date === 'string') {
+              return parseDateString(date);
+            } else {
+              return date;
+            }
+          };
           parseDateString = ngQuickDateDefaults.parseDateFunction;
           datesAreEqual = function(d1, d2, compareTimes) {
             if (compareTimes == null) {
@@ -161,6 +168,8 @@
             if (compareTimes) {
               return (d1 - d2) === 0;
             } else {
+              d1 = stringToDate(d1);
+              d2 = stringToDate(d2);
               return d1 && d2 && (d1.getYear() === d2.getYear()) && (d1.getMonth() === d2.getMonth()) && (d1.getDate() === d2.getDate());
             }
           };
@@ -202,7 +211,7 @@
             if (closeCalendar == null) {
               closeCalendar = true;
             }
-            changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() !== scope.ngModel.getTime());
+            changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() !== stringToDate(scope.ngModel).getTime());
             scope.ngModel = date;
             if (closeCalendar) {
               scope.toggleCalendar(false);

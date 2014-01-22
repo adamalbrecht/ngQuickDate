@@ -143,12 +143,20 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     dateToString = (date, format) ->
       $filter('date')(date, format)
 
+    stringToDate = (date) ->
+      if typeof date == 'string'
+        parseDateString(date)
+      else
+        date
+
     parseDateString = ngQuickDateDefaults.parseDateFunction
 
     datesAreEqual = (d1, d2, compareTimes=false) ->
       if compareTimes
         (d1 - d2) == 0
       else
+        d1 = stringToDate(d1);
+        d2 = stringToDate(d2);
         d1 && d2 && (d1.getYear() == d2.getYear()) && (d1.getMonth() == d2.getMonth()) && (d1.getDate() == d2.getDate())
 
     getDaysInMonth = (year, month) ->
@@ -187,7 +195,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
         scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
-      changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != scope.ngModel.getTime())
+      changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != stringToDate(scope.ngModel).getTime())
       scope.ngModel = date
       if closeCalendar
         scope.toggleCalendar(false)

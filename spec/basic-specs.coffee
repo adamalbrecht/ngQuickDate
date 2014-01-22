@@ -39,6 +39,22 @@ describe "ngQuickDate", ->
         scope.$digest()
         expect(dateTextInput.val()).toEqual "10/25/2013"
 
+    describe 'Given a datepicker with a string model', ->
+      beforeEach angular.mock.inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = '2013-09-01'
+        element = $compile("<datepicker ng-model='myDate' disable-timepicker='true'/>")(scope)
+        scope.$digest()
+      )
+
+      it 'allows the date to be updated', ->
+        $textInput = $(element).find(".quickdate-date-input")
+        $textInput.val('2013-11-15')
+        browserTrigger($textInput, 'input')
+        expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-09-01')))
+        browserTrigger($textInput, 'blur')
+        expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-11-15')))
+
     describe 'Given a basic datepicker', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
@@ -84,7 +100,7 @@ describe "ngQuickDate", ->
         xdescribe 'and types Enter', ->
           beforeEach ->
             $textInput.trigger($.Event('keypress', { which: 13 }));
-         
+
           it 'updates ngModel properly', ->
             expect(element.scope().myDate).toEqual(new Date(2013, 10, 15))
 
@@ -221,7 +237,7 @@ describe "ngQuickDate", ->
 
       it 'should set the model to the specified initial value', ->
         expect(Date.parse(element.scope().someDate)).toEqual(Date.parse('2/1/2014 2:00 PM'))
-      
+
 
     describe "Given a datepicker with an 'on-change' method to call", ->
       mySpy = undefined

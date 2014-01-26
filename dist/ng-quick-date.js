@@ -58,7 +58,7 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModel) {
-          var dateToString, datepickerClicked, datesAreEqual, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel, stringToDate;
+          var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel, stringToDate;
           debug = attrs.debug && attrs.debug.length;
           initialize = function() {
             scope.toggleCalendar(false);
@@ -173,6 +173,9 @@
               return d1 && d2 && (d1.getYear() === d2.getYear()) && (d1.getMonth() === d2.getMonth()) && (d1.getDate() === d2.getDate());
             }
           };
+          datesAreEqualToMinute = function(d1, d2) {
+            return parseInt(d1.getTime() / 60000) === parseInt(d2.getTime() / 60000);
+          };
           getDaysInMonth = function(year, month) {
             return [31, ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
           };
@@ -236,8 +239,9 @@
                 if (!tmpDateAndTime) {
                   throw 'Invalid Time';
                 }
-                scope.setDate(tmpDateAndTime, false);
-              } else {
+                tmpDate = tmpDateAndTime;
+              }
+              if (!datesAreEqualToMinute(scope.ngModel, tmpDate)) {
                 scope.setDate(tmpDate, false);
               }
               if (closeCalendar) {

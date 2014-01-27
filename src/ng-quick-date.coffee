@@ -247,8 +247,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
 
     scope.clear = ->
-      scope.ngModel = null
-      scope.toggleCalendar(false)
+      scope.setDate(null, true)
 
 
     initialize()

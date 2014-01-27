@@ -275,8 +275,7 @@
             return scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1));
           };
           scope.clear = function() {
-            scope.ngModel = null;
-            return scope.toggleCalendar(false);
+            return scope.setDate(null, true);
           };
           initialize();
           setCalendarRows();

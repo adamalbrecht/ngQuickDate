@@ -41,7 +41,7 @@ app = angular.module("myApp", ["ngQuickDate"])
 The directive itself is simply called *datepicker*. The only required attribute is ngModel, which should be a date object.
 
 ```html
-<datepicker ng-model='myDate' />
+<datepicker ng-model='myDate'></datepicker>
 ```
 
 ## Inline Options
@@ -64,7 +64,7 @@ There are a number of options that be configured inline with attributes. Here ar
 **Example:**
 
 ```html
-<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-timepicker='true' />
+<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-timepicker='true'></datepicker>
 ```
 
 ## Configuration Options

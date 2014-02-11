@@ -17,6 +17,7 @@
         prevLinkHtml: 'Prev',
         disableTimepicker: false,
         disableClearButton: false,
+        defaultTime: null,
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         parseDateFunction: function(str) {
           var seconds;
@@ -126,7 +127,7 @@
             return scope.calendarDate = new Date(d);
           };
           setCalendarRows = function() {
-            var curDate, d, day, daysInMonth, numRows, offset, row, selected, today, weeks, _i, _j, _ref;
+            var curDate, d, day, daysInMonth, numRows, offset, row, selected, time, today, weeks, _i, _j, _ref;
             offset = scope.calendarDate.getDay();
             daysInMonth = getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth());
             numRows = Math.ceil((offset + daysInMonth) / 7);
@@ -137,6 +138,12 @@
               weeks.push([]);
               for (day = _j = 0; _j <= 6; day = ++_j) {
                 d = new Date(curDate);
+                if (scope.defaultTime) {
+                  time = scope.defaultTime.split(':');
+                  d.setHours(time[0] || 0);
+                  d.setMinutes(time[1] || 0);
+                  d.setSeconds(time[2] || 0);
+                }
                 selected = scope.ngModel && d && datesAreEqual(d, scope.ngModel);
                 today = datesAreEqual(d, new Date());
                 weeks[row].push({

@@ -24,6 +24,7 @@ app.provider "ngQuickDateDefaults", ->
       prevLinkHtml: 'Prev'
       disableTimepicker: false
       disableClearButton: false
+      defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
@@ -126,6 +127,11 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
         weeks.push([])
         for day in [0..6]
           d = new Date(curDate)
+          if scope.defaultTime
+            time = scope.defaultTime.split(':')
+            d.setHours(time[0] || 0)
+            d.setMinutes(time[1] || 0)
+            d.setSeconds(time[2] || 0)
           selected = scope.ngModel && d && datesAreEqual(d, scope.ngModel)
           today = datesAreEqual(d, new Date())
           weeks[row].push({

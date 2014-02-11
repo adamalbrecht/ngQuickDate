@@ -181,6 +181,27 @@ describe "ngQuickDate", ->
         it 'should have a clear button', ->
           expect($(element).find('.quickdate-clear').hasClass('ng-hide')).toEqual(false)
 
+    xdescribe 'Given that a default time of 1:52 am is configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('defaultTime', '01:52')
+        null
+      ))
+      describe 'and given a basic datepicker with a null model', ->
+        beforeEach(inject(($compile, $rootScope) ->
+          scope.myDate = null
+          element = $compile("<datepicker ng-model='myDate' />")(scope)
+          scope.$digest()
+        ))
+
+        describe 'and the last day of the first week of this month is clicked', ->
+          beforeEach ->
+            $td = $(element).find('.quickdate-calendar tbody tr:nth-child(1) td:last-child') # Click the 5th
+            browserTrigger($td, 'click')
+            scope.$apply()
+          it 'should set the time input to 1:52 AM', ->
+            expect($(element).find('.quickdate-time-input').val()).toEqual('1:52 AM')
+
+
 
 
 buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->

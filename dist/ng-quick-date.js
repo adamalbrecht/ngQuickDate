@@ -174,6 +174,9 @@
             }
           };
           datesAreEqualToMinute = function(d1, d2) {
+            if (!(d1 && d2)) {
+              return false;
+            }
             return parseInt(d1.getTime() / 60000) === parseInt(d2.getTime() / 60000);
           };
           getDaysInMonth = function(year, month) {
@@ -182,7 +185,10 @@
           scope.$watch('ngModel', function(newVal, oldVal) {
             if (newVal !== oldVal) {
               setInputDateFromModel();
-              return setCalendarDateFromModel();
+              setCalendarDateFromModel();
+              if (scope.onChange && !datesAreEqualToMinute(newVal, oldVal)) {
+                return scope.onChange();
+              }
             }
           });
           scope.$watch('calendarDate', function(newVal, oldVal) {
@@ -217,10 +223,7 @@
             changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() !== stringToDate(scope.ngModel).getTime());
             scope.ngModel = date;
             if (closeCalendar) {
-              scope.toggleCalendar(false);
-            }
-            if (changed && scope.onChange) {
-              return scope.onChange();
+              return scope.toggleCalendar(false);
             }
           };
           scope.setDateFromInput = function(closeCalendar) {

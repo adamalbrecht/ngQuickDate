@@ -160,6 +160,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
         d1 && d2 && (d1.getYear() == d2.getYear()) && (d1.getMonth() == d2.getMonth()) && (d1.getDate() == d2.getDate())
 
     datesAreEqualToMinute = (d1, d2) ->
+      return false unless d1 && d2
       parseInt(d1.getTime() / 60000) == parseInt(d2.getTime() / 60000)
 
 
@@ -172,6 +173,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       if newVal != oldVal
         setInputDateFromModel()
         setCalendarDateFromModel()
+        if scope.onChange and !datesAreEqualToMinute(newVal, oldVal)
+          scope.onChange()
     )
 
     scope.$watch('calendarDate', (newVal, oldVal) ->
@@ -203,8 +206,6 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       scope.ngModel = date
       if closeCalendar
         scope.toggleCalendar(false)
-      if changed && scope.onChange
-        scope.onChange()
 
     scope.setDateFromInput = (closeCalendar=false) ->
       try

@@ -48,7 +48,7 @@
     };
   });
 
-  app.directive("datepicker", [
+  app.directive("vwoDatepicker", [
     'ngQuickDateDefaults', '$filter', '$sce', function(ngQuickDateDefaults, $filter, $sce) {
       return {
         restrict: "E",

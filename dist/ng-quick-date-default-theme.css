@@ -13,8 +13,11 @@ table.quickdate-calendar th,table.quickdate-calendar td{border-right:1px solid #
 table.quickdate-calendar td:hover{background-color:#e6e6e6}
 table.quickdate-calendar td.other-month{background-color:#dcdcdc;color:#707070;}
 table.quickdate-calendar td.other-month:hover{background-color:#c8c8c8}
+table.quickdate-calendar td.disabled-date{background-color:inherit;color:#d6d6d6;}
+table.quickdate-calendar td.disabled-date:hover{background-color:inherit;cursor:default}
 table.quickdate-calendar td.selected{background-color:#b0ccde;font-weight:bold}
-table.quickdate-calendar td.is-today{color:#b58922;font-weight:bold}
+table.quickdate-calendar td.is-today{color:#b58922;font-weight:bold;}
+table.quickdate-calendar td.is-today.disabled-date{color:#978a6c;font-weight:normal}
 .quickdate-popup-footer{margin:3px 1px 0}
 .quickdate-clear{display:inline-block;padding:2px 4px;background-color:#fff;color:#333;border:solid 1px #ccc;box-shadow:outset 0 1px 1px rgba(0,0,0,0.075);border-radius:4px;text-decoration:none;}
 .quickdate-clear:hover{background-color:#f2f2f2}

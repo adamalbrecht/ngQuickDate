@@ -26,6 +26,7 @@ app.provider "ngQuickDateDefaults", ->
       disableClearButton: false
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
+      dateFilter: null
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -48,6 +49,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
   restrict: "E"
   require: "ngModel"
   scope:
+    dateFilter: '=?'
     ngModel: "="
     onChange: "&"
 
@@ -76,9 +78,9 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       for key, value of ngQuickDateDefaults
         if key.match(/[Hh]tml/)
           scope[key] = $sce.trustAsHtml(ngQuickDateDefaults[key] || "")
-        else if attrs[key]
+        else if !scope[key] && attrs[key]
           scope[key] = attrs[key]
-        else
+        else if !scope[key]
           scope[key] = ngQuickDateDefaults[key]
       if !scope.labelFormat
         scope.labelFormat = scope.dateFormat
@@ -137,6 +139,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
           weeks[row].push({
             date: d
             selected: selected
+            disabled: if (typeof(scope.dateFilter) == 'function') then !scope.dateFilter(d) else false
             other: d.getMonth() != scope.calendarDate.getMonth()
             today: today
           })
@@ -209,9 +212,12 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
 
     scope.setDate = (date, closeCalendar=true) ->
       changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != stringToDate(scope.ngModel).getTime())
+      if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
+        return false
       scope.ngModel = date
       if closeCalendar
         scope.toggleCalendar(false)
+      true
 
     scope.setDateFromInput = (closeCalendar=false) ->
       try
@@ -225,7 +231,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
             throw 'Invalid Time'
           tmpDate = tmpDateAndTime
         unless datesAreEqualToMinute(scope.ngModel, tmpDate)
-          scope.setDate(tmpDate, false)
+          if !scope.setDate(tmpDate, false)
+            throw 'Invalid Date'
 
         if closeCalendar
           scope.toggleCalendar(false)
@@ -273,7 +280,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'ng-quick-date-error': inputDateErr}"  ng-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}"  ng-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
@@ -293,7 +300,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
                   </thead>
                   <tbody>
                     <tr ng-repeat='week in weeks'>
-                      <td ng-mousedown='setDate(day.date)' ng-class='{"other-month": day.other, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td ng-mousedown='setDate(day.date)' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>

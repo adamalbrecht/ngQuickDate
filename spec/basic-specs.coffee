@@ -113,7 +113,7 @@ describe "ngQuickDate", ->
           browserTrigger($textInput, 'blur')
 
         it 'adds an error class to the input', ->
-          expect($textInput.hasClass('ng-quick-date-error')).toBe(true)
+          expect($textInput.hasClass('quickdate-error')).toBe(true)
 
         it 'does not change the ngModel', ->
           expect(element.scope().myDate).toEqual(new Date(2013, 8, 1))
@@ -281,3 +281,52 @@ describe "ngQuickDate", ->
 
         it 'should not call the method', ->
           expect(scope.myVariable).toEqual(1)
+
+
+    describe 'Given normal datepicker with no date filter function', ->
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date(2014, 0, 1)
+        element = $compile("<datepicker ng-model='myDate' />")(scope)
+      ))
+      it 'should have no disabled dates', ->
+        expect($(element).find('.disabled-date').length).toEqual(0)
+
+    describe "Given a with a date filter function specified to filter out all weekends", ->
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date(2014, 0, 1) # Jan 1
+        scope.onlyWeekdays = (d) ->
+          dayIndex = d.getDay()
+          (dayIndex != 0) && (dayIndex != 6)
+        element = $compile("<datepicker ng-model='myDate' date-filter='onlyWeekdays' />")(scope)
+        scope.$apply()
+      ))
+
+      it 'should add a disabled class to all weekends in the calendar', ->
+        $sat = $(element).find('.quickdate-calendar tbody tr:nth-child(1) td:nth-child(7)') # the first saturday
+        $sun = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(1)') # the first sunday
+        $mon = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(2)') # the first monday
+        $thur = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(2)') # the second thursday
+        $sat2 = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(7)') # the second saturday
+        expect($sat.hasClass('disabled-date')).toEqual(true)
+        expect($sun.hasClass('disabled-date')).toEqual(true)
+        expect($mon.hasClass('disabled-date')).toEqual(false)
+        expect($thur.hasClass('disabled-date')).toEqual(false)
+        expect($sat2.hasClass('disabled-date')).toEqual(true)
+
+      describe 'and a weekend date is inputted into the date input', ->
+        $textInput = undefined
+        beforeEach ->
+          $textInput = $(element).find(".quickdate-date-input")
+          $textInput.val('01/18/2014') # A saturday
+          browserTrigger($textInput, 'input')
+          browserTrigger($textInput, 'blur')
+
+        it 'should revert back to the previous date after blur', ->
+          expect(element.scope().myDate).toEqual(new Date(Date.parse('1/1/2014')))
+
+        it 'should have an error class', ->
+          expect($textInput.hasClass('quickdate-error')).toBe(true)
+
+

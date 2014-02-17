@@ -6,7 +6,7 @@ ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 
 ## Download
 
-* [Version 1.2.5](https://github.com/adamalbrecht/ngQuickDate/archive/v1.2.5.zip) - Compatible with Angular 1.2.x
+* [Version 1.2.6](https://github.com/adamalbrecht/ngQuickDate/archive/v1.2.6.zip) - Compatible with Angular 1.2.x
 
 * For a version compatible with Angular 1.0.x, checkout the angular-1.0 branch.
 
@@ -61,6 +61,7 @@ There are a number of options that be configured inline with attributes. Here ar
 | on-change            | null                | Set to a function that will be called when the date is changed                              |
 | default-time         | null                | Time that will be set when you click on a date on the calendar. Must be in 24-hour format.  |
 | init-value           | null                | Set the initial value of the date inline as a string. Will be immediately parsed and set as the value of your model.|
+| date-filter          | null                | Set to a function to enable/disable dates. Useful for disabling weekends, etc. [See more below](#date-formatting) |
 
 **Example:**
 
@@ -129,6 +130,21 @@ Of course, you can override this parse function with any code you'd like, so you
 ## Date Formatting
 
 Note that when displaying dates in a well-formatted manner, Angular's [Date filter](http://docs.angularjs.org/api/ng.filter:date) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Sugar.js and Date.js have their own formatting syntax that are different from Angular's.
+
+## Date Filter Function
+
+If you'd like to prevent the user from choosing certain dates, such as weekends or dates that have already been 'reserved', you can do so with the `date-filter` attribute. For example, if you want to disable weekends, you can do it like so:
+
+```html
+<datepicker ng-model='myDate' date-filter='onlyWeekdays'></datepicker>
+```
+
+```javascript
+$scope.onlyWeekdays = function(d) {
+  dayIndex = d.getDay();
+  return ((dayIndex != 0) && (dayIndex != 6));
+}
+```
 
 ## Styling
 

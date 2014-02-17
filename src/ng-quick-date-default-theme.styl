@@ -68,12 +68,21 @@ table.quickdate-calendar
       color lighten(popup-font-color, 30%)
       &:hover
         background-color darken(popup-bg-color, 20%)
+    &.disabled-date
+      background-color inherit
+      color desaturate(lighten(popup-font-color, 80%), 50%)
+      &:hover
+        background-color: inherit
+        cursor: default
     &.selected
       background-color selected-date-bg-color
       font-weight bold
     &.is-today
       color today-font-color
       font-weight bold
+      &.disabled-date
+        color lighten(desaturate(today-font-color, 75%), 15%)
+        font-weight normal
 
 .quickdate-popup-footer
   margin 3px 1px 0

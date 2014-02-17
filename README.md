@@ -146,6 +146,8 @@ $scope.onlyWeekdays = function(d) {
 }
 ```
 
+You can also set a default date filter function in the [configuration options](#configuration-options)
+
 ## Styling
 
 There is a very light set of styles that allow the datepicker to function, but isn't particularly pretty. From there you can either use the default theme that's included or you can easily write your own theme.

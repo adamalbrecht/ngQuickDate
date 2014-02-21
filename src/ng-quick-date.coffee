@@ -274,13 +274,13 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
   # ================================================================
   template: """
             <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar(true)' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}"  ng-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}" ng-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
@@ -322,5 +322,6 @@ app.directive 'ngEnter', ->
 app.directive 'ngTab', ->
   (scope, element, attr) ->
     element.bind 'keydown keypress', (e) ->
-      if (e.which == 9)
+      if (e.which == 9 && !event.shiftKey)
+        console.log 'regular tab!'
         scope.$apply(attr.ngTab)

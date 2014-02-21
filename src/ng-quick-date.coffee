@@ -19,9 +19,9 @@ app.provider "ngQuickDateDefaults", ->
       placeholder: 'Click to Set Date'
       hoverText: null
       buttonIconHtml: null
-      closeButtonHtml: 'X'
-      nextLinkHtml: 'Next'
-      prevLinkHtml: 'Prev'
+      closeButtonHtml: '&times;'
+      nextLinkHtml: 'Next &rarr;'
+      prevLinkHtml: '&larr; Prev'
       disableTimepicker: false
       disableClearButton: false
       defaultTime: null

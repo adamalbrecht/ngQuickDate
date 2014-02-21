@@ -2,7 +2,8 @@
 .quickdate-button div,.quickdate-action-link div{display:inline}
 .quickdate-popup{z-index:10;background-color:#fff;border:solid 1px #000;text-align:center;width:250px;display:none;position:absolute;padding:5px;}
 .quickdate-popup.open{display:block}
-.quickdate-close{position:absolute;top:5px;right:5px;color:#333;}
+.quickdate-close{position:absolute;top:5px;right:5px;color:#333;font-size:110%;margin-top:-6px;text-decoration:none;}
+.quickdate-close:hover{text-decoration:underline}
 .quickdate-close:hover,.quickdate-close:visited{color:#333}
 .quickdate-calendar-header{display:block;padding:2px 0;margin-bottom:5px;text-align:center}
 .quickdate-month{display:inline-block}

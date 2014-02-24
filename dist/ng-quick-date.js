@@ -321,7 +321,7 @@
   app.directive('ngTab', function() {
     return function(scope, element, attr) {
       return element.bind('keydown keypress', function(e) {
-        if (e.which === 9 && !event.shiftKey) {
+        if (e.which === 9) {
           console.log('regular tab!');
           return scope.$apply(attr.ngTab);
         }

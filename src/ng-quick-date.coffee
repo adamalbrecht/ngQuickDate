@@ -322,6 +322,6 @@ app.directive 'ngEnter', ->
 app.directive 'ngTab', ->
   (scope, element, attr) ->
     element.bind 'keydown keypress', (e) ->
-      if (e.which == 9 && !event.shiftKey)
+      if (e.which == 9)
         console.log 'regular tab!'
         scope.$apply(attr.ngTab)

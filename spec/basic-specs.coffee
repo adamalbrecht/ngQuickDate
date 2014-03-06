@@ -282,6 +282,17 @@ describe "ngQuickDate", ->
         it 'should not call the method', ->
           expect(scope.myVariable).toEqual(1)
 
+    describe 'Given a datepicker with a custom date format', ->
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date(2014, 2, 17) # March 17th, 2014
+        element = $compile("<datepicker ng-model='myDate' date-format='d/M/yyyy' />")(scope)
+        scope.$digest()
+      ))
+      it 'should show the date format properly in the date input', ->
+        $textInput = $(element).find(".quickdate-date-input")
+        expect($textInput.val()).toEqual("17/3/2014")
+
 
     describe 'Given normal datepicker with no date filter function', ->
       beforeEach(inject(($compile, $rootScope) ->

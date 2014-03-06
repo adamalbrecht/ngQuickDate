@@ -112,8 +112,8 @@
           });
           setInputDateFromModel = function() {
             if (scope.ngModel) {
-              scope.inputDate = $filter('date')(scope.ngModel, ngQuickDateDefaults.dateFormat);
-              return scope.inputTime = $filter('date')(scope.ngModel, ngQuickDateDefaults.timeFormat);
+              scope.inputDate = $filter('date')(scope.ngModel, scope.dateFormat);
+              return scope.inputTime = $filter('date')(scope.ngModel, scope.timeFormat);
             } else {
               scope.inputDate = null;
               return scope.inputTime = null;

@@ -105,8 +105,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     # ================================
     setInputDateFromModel = ->
       if scope.ngModel
-        scope.inputDate = $filter('date')(scope.ngModel, ngQuickDateDefaults.dateFormat)
-        scope.inputTime = $filter('date')(scope.ngModel, ngQuickDateDefaults.timeFormat)
+        scope.inputDate = $filter('date')(scope.ngModel, scope.dateFormat)
+        scope.inputTime = $filter('date')(scope.ngModel, scope.timeFormat)
       else
         scope.inputDate = null
         scope.inputTime = null

@@ -246,12 +246,12 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
         else if err == 'Invalid Time'
           scope.inputTimeErr = true
 
-    scope.onDateInputTab = (param) ->
+    scope.onDateInputTab = ->
       if scope.disableTimepicker
         scope.toggleCalendar(false)
       true
 
-    scope.onTimeInputTab = (param) ->
+    scope.onTimeInputTab = ->
       scope.toggleCalendar(false)
       true
 
@@ -280,11 +280,11 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}" ng-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}" on-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputTimeErr}" ng-tab='onTimeInputTab()'>
+                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputTimeErr}" on-tab='onTimeInputTab()'>
                   </div>
                 </div>
                 <div class='quickdate-calendar-header'>
@@ -319,9 +319,9 @@ app.directive 'ngEnter', ->
         scope.$apply(attr.ngEnter)
         e.preventDefault()
 
-app.directive 'ngTab', ->
-  (scope, element, attr) ->
+app.directive 'onTab', ->
+  restrict: 'A',
+  link: (scope, element, attr) ->
     element.bind 'keydown keypress', (e) ->
-      if (e.which == 9)
-        console.log 'regular tab!'
-        scope.$apply(attr.ngTab)
+      if (e.which == 9) && !e.shiftKey
+        scope.$apply(attr.onTab)

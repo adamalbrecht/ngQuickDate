@@ -1,15 +1,15 @@
 error-color = #DD3B30
 
 // Basics
-.quickdate
+.quickmoment
   display inline-block
   position relative
 
-.quickdate-button, .quickdate-action-link
+.quickmoment-button, .quickmoment-action-link
   div
     display inline
 
-.quickdate-popup
+.quickmoment-popup
   z-index 10
   background-color #fff
   border solid 1px #000
@@ -21,7 +21,7 @@ error-color = #DD3B30
 
   &.open
     display block
-.quickdate-close
+.quickmoment-close
   position absolute
   top 5px
   right 5px
@@ -34,36 +34,36 @@ error-color = #DD3B30
   &:hover, &:visited
     color: #333
 
-.quickdate-calendar-header
+.quickmoment-calendar-header
   display block
   padding 2px 0
   margin-bottom 5px
   text-align center
 
-.quickdate-month
+.quickmoment-month
   display inline-block
 
-a.quickdate-prev-month
+a.quickmoment-prev-month
   float left
-a.quickdate-next-month
+a.quickmoment-next-month
   float right
 
 
-.quickdate-text-inputs
+.quickmoment-text-inputs
   text-align left
   margin-bottom 5px
 
-.quickdate-input-wrapper
+.quickmoment-input-wrapper
   width 48%
   display inline-block
 
-input.quickdate-date-input, input.quickdate-time-input
+input.quickmoment-date-input, input.quickmoment-time-input
   width 100px
   margin 0
   height auto
   padding 2px 3px
 
-table.quickdate-calendar
+table.quickmoment-calendar
   border-collapse collapse
   border-spacing 0
   width 100%
@@ -76,10 +76,10 @@ table.quickdate-calendar
     &:hover
       cursor pointer
 
-.quickdate-popup-footer
+.quickmoment-popup-footer
   text-align right
   display block
-.quickdate-error
+.quickmoment-error
   border 1px solid error-color !important
-.quickdate-error:focus
+.quickmoment-error:focus
   outline-color: error-color !important

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html data-ng-app='ngQuickDateDemo'>
+<html data-ng-app='fdQuickMomentDemo'>
   <head>
-    <title>ngQuickDate Demo</title>
-    <link rel="stylesheet" type="text/css" href="dist/ng-quick-date.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="dist/ng-quick-date-default-theme.css" media="all" />
+    <title>fdQuickMoment Demo</title>
+    <link rel="stylesheet" type="text/css" href="dist/fd-quick-moment.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="dist/fd-quick-moment-default-theme.css" media="all" />
   </head>
   <body>
     <div ng-controller='DemoCtrl'>
@@ -21,11 +21,11 @@
     <!-- <script type='text/javascript' src='vendor/sugar.js' /> -->
     <!-- <script type='text/javascript' src='vendor/date.js' /> -->
     <!-- <script type='text/javascript' src='bower_components/jquery/jquery.js' /> -->
-    <script type="text/javascript" src="dist/ng-quick-date.js"></script>
+    <script type="text/javascript" src="dist/fd-quick-moment.js"></script>
     <script type='text/javascript'>
-      var app = angular.module("ngQuickDateDemo", ["ngQuickDate"]);
-      app.config(function(ngQuickDateDefaultsProvider) {
-        return ngQuickDateDefaultsProvider.set({
+      var app = angular.module("fdQuickMomentDemo", ["fdQuickMoment"]);
+      app.config(function(fdQuickMomentDefaultsProvider) {
+        return fdQuickMomentDefaultsProvider.set({
         });
       });
       app.controller("DemoCtrl", function($scope) {

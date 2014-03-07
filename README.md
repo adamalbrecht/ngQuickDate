@@ -1,26 +1,26 @@
-# ngQuickDate
+# fdQuickMoment
 
-ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
+fdQuickMoment is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
 
-![ngQuickDate Screenshot](https://raw.github.com/adamalbrecht/ngQuickDate/master/screenshot.png)
+![fdQuickMoment Screenshot](https://raw.github.com/adamalbrecht/fdQuickMoment/master/screenshot.png)
 
 ## Download
 
-* [Version 1.2.9](https://github.com/adamalbrecht/ngQuickDate/archive/1.2.9.zip) - Compatible with Angular 1.2.x
+* [Version 1.2.9](https://github.com/adamalbrecht/fdQuickMoment/archive/1.2.9.zip) - Compatible with Angular 1.2.x
 
 * For a version compatible with Angular 1.0.x, checkout the angular-1.0 branch.
 
 You can also install the package using [Bower](http://bower.io).
 
 ```sh
-bower install ngQuickDate
+bower install fdQuickMoment
 ```
 
 Or add it to your bower.json file:
 
 ```javascript
 dependencies: {
-  "ngQuickDate": "~1.2.0"
+  "fdQuickMoment": "~1.2.0"
 }
 ```
 
@@ -28,14 +28,14 @@ dependencies: {
 
 ## Demo
 
-You can find some basic examples [here](http://adamalbrecht.github.io/ngQuickDate)
+You can find some basic examples [here](http://adamalbrecht.github.io/fdQuickMoment)
 
 ## The Basics
 
 To use the library, include the JS file, main CSS file, and (optionally, but recommended) the theme CSS file. Then include the module in your app:
 
 ```javascript
-app = angular.module("myApp", ["ngQuickDate"])
+app = angular.module("myApp", ["fdQuickMoment"])
 ```
 
 The directive itself is simply called *datepicker*. The only required attribute is ngModel, which should be a date object.
@@ -74,10 +74,10 @@ There are a number of options that be configured inline with attributes. Here ar
 If you want to use a different default for any of the inline options, you can do so by configuring the datepicker during your app's configuration phase. There are also several options that may only be configured in this way.
 
 ```javascript
-app.config(function(ngQuickDateDefaultsProvider) {
-  ngQuickDateDefaultsProvider.set('option', 'value');
+app.config(function(fdQuickMomentDefaultsProvider) {
+  fdQuickMomentDefaultsProvider.set('option', 'value');
   // Or with a hash
-  ngQuickDateDefaultsProvider.set({option: 'value', option2: 'value2'});
+  fdQuickMomentDefaultsProvider.set({option: 'value', option2: 'value2'});
 })
 ```
 
@@ -109,8 +109,8 @@ By default, dates and times entered into the 2 input boxes are parsed using java
 If you'd like to use Sugar, you can configure it to work like so:
 
 ```javascript
-app.config(function(ngQuickDateDefaultsProvider) {
-  ngQuickDateDefaultsProvider.set('parseDateFunction', function(str) {
+app.config(function(fdQuickMomentDefaultsProvider) {
+  fdQuickMomentDefaultsProvider.set('parseDateFunction', function(str) {
     d = Date.create(str);
     return d.isValid() ? d : null;
   });
@@ -155,9 +155,9 @@ There is a very light set of styles that allow the datepicker to function, but i
 You can improve it's appearance quite a bit by using a Font Icon library like [Font Awesome](http://fontawesome.io/). To make look like the screenshot above, you'd need Font Awesome 4.0 and the following configuration:
 
 ```javascript
-app.config(function(ngQuickDateDefaultsProvider) {
+app.config(function(fdQuickMomentDefaultsProvider) {
   // Configure with icons from font-awesome
-  return ngQuickDateDefaultsProvider.set({
+  return fdQuickMomentDefaultsProvider.set({
     closeButtonHtml: "<i class='fa fa-times'></i>",
     buttonIconHtml: "<i class='fa fa-calendar'></i>",
     nextLinkHtml: "<i class='fa fa-chevron-right'></i>",

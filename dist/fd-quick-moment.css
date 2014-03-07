@@ -1,0 +1,20 @@
+.quickmoment{display:inline-block;position:relative}
+.quickmoment-button div,.quickmoment-action-link div{display:inline}
+.quickmoment-popup{z-index:10;background-color:#fff;border:solid 1px #000;text-align:center;width:250px;display:none;position:absolute;padding:5px;}
+.quickmoment-popup.open{display:block}
+.quickmoment-close{position:absolute;top:5px;right:5px;color:#333;font-size:110%;margin-top:-6px;text-decoration:none;}
+.quickmoment-close:hover{text-decoration:underline}
+.quickmoment-close:hover,.quickmoment-close:visited{color:#333}
+.quickmoment-calendar-header{display:block;padding:2px 0;margin-bottom:5px;text-align:center}
+.quickmoment-month{display:inline-block}
+a.quickmoment-prev-month{float:left}
+a.quickmoment-next-month{float:right}
+.quickmoment-text-inputs{text-align:left;margin-bottom:5px}
+.quickmoment-input-wrapper{width:48%;display:inline-block}
+input.quickmoment-date-input,input.quickmoment-time-input{width:100px;margin:0;height:auto;padding:2px 3px}
+table.quickmoment-calendar{border-collapse:collapse;border-spacing:0;width:100%;margin-top:5px;}
+table.quickmoment-calendar th,table.quickmoment-calendar td{padding:5px}
+table.quickmoment-calendar td:hover{cursor:pointer}
+.quickmoment-popup-footer{text-align:right;display:block}
+.quickmoment-error{border:1px solid #dd3b30 !important}
+.quickmoment-error:focus{outline-color:#dd3b30 !important}

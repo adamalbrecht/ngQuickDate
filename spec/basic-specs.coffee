@@ -1,7 +1,7 @@
 "use strict"
 
-describe "ngQuickDate", ->
-  beforeEach angular.mock.module("ngQuickDate")
+describe "fdQuickMoment", ->
+  beforeEach angular.mock.module("fdQuickMoment")
   describe "datepicker", ->
     element = undefined
     scope = undefined
@@ -14,7 +14,7 @@ describe "ngQuickDate", ->
       it 'shows the proper text in the button based on the value of the ng-model', ->
         scope.myDate = null
         scope.$digest()
-        button = angular.element(element[0].querySelector(".quickdate-button"))
+        button = angular.element(element[0].querySelector(".quickmoment-button"))
         expect(button.text()).toEqual "Choose a Date"
 
         scope.myDate = ""
@@ -28,7 +28,7 @@ describe "ngQuickDate", ->
       it 'shows the proper value in the date input based on the value of the ng-model', ->
         scope.myDate = null
         scope.$digest()
-        dateTextInput = angular.element(element[0].querySelector(".quickdate-date-input"))
+        dateTextInput = angular.element(element[0].querySelector(".quickmoment-date-input"))
         expect(dateTextInput.val()).toEqual ""
 
         scope.myDate = ""
@@ -48,7 +48,7 @@ describe "ngQuickDate", ->
       )
 
       it 'allows the date to be updated', ->
-        $textInput = $(element).find(".quickdate-date-input")
+        $textInput = $(element).find(".quickmoment-date-input")
         $textInput.val('2013-11-15')
         browserTrigger($textInput, 'input')
         expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-09-01')))
@@ -65,7 +65,7 @@ describe "ngQuickDate", ->
 
       xit 'lets me set the date from the calendar', ->
         console.log 'hello'
-        $td = $(element).find('.quickdate-calendar tbody tr:nth-child(1) td:nth-child(5)') # Click the 5th
+        $td = $(element).find('.quickmoment-calendar tbody tr:nth-child(1) td:nth-child(5)') # Click the 5th
         console.log("$td.text()", $td.text())
         browserTrigger($td, 'click')
         scope.$apply()
@@ -74,7 +74,7 @@ describe "ngQuickDate", ->
       describe 'After typing a valid date into the date input field', ->
         $textInput = undefined
         beforeEach ->
-          $textInput = $(element).find(".quickdate-date-input")
+          $textInput = $(element).find(".quickmoment-date-input")
           $textInput.val('11/15/2013')
           browserTrigger($textInput, 'input')
 
@@ -89,7 +89,7 @@ describe "ngQuickDate", ->
             expect(element.scope().myDate).toEqual(new Date(2013, 10, 15))
 
           it 'changes the calendar to the proper month', ->
-            $monthSpan = $(element).find(".quickdate-month")
+            $monthSpan = $(element).find(".quickmoment-month")
             expect($monthSpan.html()).toEqual('November 2013')
 
           it 'highlights the selected date', ->
@@ -107,19 +107,19 @@ describe "ngQuickDate", ->
       describe 'After typing an invalid date into the date input field', ->
         $textInput = undefined
         beforeEach ->
-          $textInput = $(element).find(".quickdate-date-input")
+          $textInput = $(element).find(".quickmoment-date-input")
           $textInput.val('1/a/2013')
           browserTrigger($textInput, 'input')
           browserTrigger($textInput, 'blur')
 
         it 'adds an error class to the input', ->
-          expect($textInput.hasClass('quickdate-error')).toBe(true)
+          expect($textInput.hasClass('quickmoment-error')).toBe(true)
 
         it 'does not change the ngModel', ->
           expect(element.scope().myDate).toEqual(new Date(2013, 8, 1))
 
         it 'does not change the calendar month', ->
-          $monthSpan = $(element).find(".quickdate-month")
+          $monthSpan = $(element).find(".quickmoment-month")
           expect($monthSpan.html()).toEqual('September 2013')
 
     describe 'Given a datepicker set to August 1, 2013', ->
@@ -131,11 +131,11 @@ describe "ngQuickDate", ->
       )
 
       it 'shows the proper text in the button based on the value of the ng-model', ->
-        $monthSpan = $(element).find(".quickdate-month")
+        $monthSpan = $(element).find(".quickmoment-month")
         expect($monthSpan.html()).toEqual('August 2013')
 
       it 'has last-month classes on the first 4 boxes in the calendar (because the 1st is a Thursday)', ->
-        firstRow = angular.element(element[0].querySelector(".quickdate-calendar tbody tr"))
+        firstRow = angular.element(element[0].querySelector(".quickmoment-calendar tbody tr"))
         for i in [0..3]
           box = angular.element(firstRow.children()[i])
           expect(box.hasClass('other-month')).toEqual(true)
@@ -143,32 +143,32 @@ describe "ngQuickDate", ->
         expect(angular.element(firstRow.children()[4]).text()).toEqual '1'
 
       it "adds a 'selected' class to the Aug 1 box", ->
-        $fifthBoxOfFirstRow = $(element).find(".quickdate-calendar tbody tr:nth-child(1) td:nth-child(5)")
+        $fifthBoxOfFirstRow = $(element).find(".quickmoment-calendar tbody tr:nth-child(1) td:nth-child(5)")
         expect($fifthBoxOfFirstRow.hasClass('selected')).toEqual(true)
 
       describe 'And I click the Next Month button', ->
         beforeEach ->
-          nextButton = $(element).find('.quickdate-next-month')
+          nextButton = $(element).find('.quickmoment-next-month')
           browserTrigger(nextButton, 'click');
           scope.$apply()
 
         it 'shows September', ->
-          $monthSpan = $(element).find(".quickdate-month")
+          $monthSpan = $(element).find(".quickmoment-month")
           expect($monthSpan.html()).toEqual('September 2013')
 
         it 'shows the 1st on the first Sunday', ->
-          expect($(element).find('.quickdate-calendar tbody tr:first td:first').text()).toEqual '1'
+          expect($(element).find('.quickmoment-calendar tbody tr:first td:first').text()).toEqual '1'
 
       it 'shows the proper number of rows in the calendar', ->
         scope.myDate = new Date(2013, 5, 1)
         scope.$digest()
-        expect($(element).find('.quickdate-calendar tbody tr').length).toEqual(6)
+        expect($(element).find('.quickmoment-calendar tbody tr').length).toEqual(6)
         scope.myDate = new Date(2013, 10, 1)
         scope.$digest()
-        expect($(element).find('.quickdate-calendar tbody tr').length).toEqual(5)
+        expect($(element).find('.quickmoment-calendar tbody tr').length).toEqual(5)
         scope.myDate = new Date(2015, 1, 1)
         scope.$digest()
-        expect($(element).find('.quickdate-calendar tbody tr').length).toEqual(4)
+        expect($(element).find('.quickmoment-calendar tbody tr').length).toEqual(4)
 
     describe 'Given a datepicker set to today', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
@@ -180,7 +180,7 @@ describe "ngQuickDate", ->
 
       it "adds a 'today' class to the today td", ->
         expect($(element).find('.is-today').length).toEqual(1)
-        nextButton = $(element).find('.quickdate-next-month')
+        nextButton = $(element).find('.quickmoment-next-month')
         browserTrigger(nextButton, 'click')
         browserTrigger(nextButton, 'click') # 2 months later, since today's date could still be shown next month
         scope.$apply()
@@ -194,7 +194,7 @@ describe "ngQuickDate", ->
         scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'))
         element = $compile("<datepicker ng-model='myDate' />")(scope)
         scope.$apply()
-        $timeInput = $(element).find('.quickdate-time-input')
+        $timeInput = $(element).find('.quickmoment-time-input')
       )
       it 'shows the proper time in the Time input box', ->
         expect($timeInput.val()).toEqual('1:00 PM')
@@ -222,7 +222,7 @@ describe "ngQuickDate", ->
 
       describe 'when you click the clear button', ->
         beforeEach ->
-          browserTrigger($(element).find('.quickdate-clear'), 'click')
+          browserTrigger($(element).find('.quickmoment-clear'), 'click')
           scope.$apply()
 
         it 'should set the model back to null', ->
@@ -260,7 +260,7 @@ describe "ngQuickDate", ->
       # Can't get this spec to work
       describe 'When the date input is changed', ->
         beforeEach ->
-          $input = $(element).find('.quickdate-date-input')
+          $input = $(element).find('.quickmoment-date-input')
           scope.$apply ->
             $input.val('1/5/2013')
             $input.trigger('input')
@@ -275,7 +275,7 @@ describe "ngQuickDate", ->
 
       describe 'When the date input is blurred but not changed', ->
         beforeEach ->
-          $input = $(element).find('.quickdate-date-input')
+          $input = $(element).find('.quickmoment-date-input')
           browserTrigger($input, 'change')
           browserTrigger($input, 'blur')
 
@@ -290,7 +290,7 @@ describe "ngQuickDate", ->
         scope.$digest()
       ))
       it 'should show the date format properly in the date input', ->
-        $textInput = $(element).find(".quickdate-date-input")
+        $textInput = $(element).find(".quickmoment-date-input")
         expect($textInput.val()).toEqual("17/3/2014")
 
 
@@ -315,11 +315,11 @@ describe "ngQuickDate", ->
       ))
 
       it 'should add a disabled class to all weekends in the calendar', ->
-        $sat = $(element).find('.quickdate-calendar tbody tr:nth-child(1) td:nth-child(7)') # the first saturday
-        $sun = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(1)') # the first sunday
-        $mon = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(2)') # the first monday
-        $thur = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(2)') # the second thursday
-        $sat2 = $(element).find('.quickdate-calendar tbody tr:nth-child(2) td:nth-child(7)') # the second saturday
+        $sat = $(element).find('.quickmoment-calendar tbody tr:nth-child(1) td:nth-child(7)') # the first saturday
+        $sun = $(element).find('.quickmoment-calendar tbody tr:nth-child(2) td:nth-child(1)') # the first sunday
+        $mon = $(element).find('.quickmoment-calendar tbody tr:nth-child(2) td:nth-child(2)') # the first monday
+        $thur = $(element).find('.quickmoment-calendar tbody tr:nth-child(2) td:nth-child(2)') # the second thursday
+        $sat2 = $(element).find('.quickmoment-calendar tbody tr:nth-child(2) td:nth-child(7)') # the second saturday
         expect($sat.hasClass('disabled-date')).toEqual(true)
         expect($sun.hasClass('disabled-date')).toEqual(true)
         expect($mon.hasClass('disabled-date')).toEqual(false)
@@ -329,7 +329,7 @@ describe "ngQuickDate", ->
       describe 'and a weekend date is inputted into the date input', ->
         $textInput = undefined
         beforeEach ->
-          $textInput = $(element).find(".quickdate-date-input")
+          $textInput = $(element).find(".quickmoment-date-input")
           $textInput.val('01/18/2014') # A saturday
           browserTrigger($textInput, 'input')
           browserTrigger($textInput, 'blur')
@@ -338,6 +338,6 @@ describe "ngQuickDate", ->
           expect(element.scope().myDate).toEqual(new Date(Date.parse('1/1/2014')))
 
         it 'should have an error class', ->
-          expect($textInput.hasClass('quickdate-error')).toBe(true)
+          expect($textInput.hasClass('quickmoment-error')).toBe(true)
 
 

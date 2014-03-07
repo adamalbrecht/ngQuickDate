@@ -1,16 +1,16 @@
 #
-# ngQuickDate
+# fdQuickMoment
 # by Adam Albrecht
 # http://adamalbrecht.com
 #
-# Source Code: https://github.com/adamalbrecht/ngQuickDate
+# Source Code: https://github.com/adamalbrecht/fdQuickMoment
 #
 # Compatible with Angular 1.0.8
 #
 
-app = angular.module("ngQuickDate", [])
+app = angular.module("fdQuickMoment", [])
 
-app.provider "ngQuickDateDefaults", ->
+app.provider "fdQuickMomentDefaults", ->
   {
     options: {
       dateFormat: 'M/d/yyyy'
@@ -45,7 +45,7 @@ app.provider "ngQuickDateDefaults", ->
         @options[keyOrHash] = value
   }
 
-app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickDateDefaults, $filter, $sce) ->
+app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuickMomentDefaults, $filter, $sce) ->
   restrict: "E"
   require: "ngModel"
   scope:
@@ -75,13 +75,13 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       setCalendarDateFromModel()
 
     setConfigOptions = ->
-      for key, value of ngQuickDateDefaults
+      for key, value of fdQuickMomentDefaults
         if key.match(/[Hh]tml/)
-          scope[key] = $sce.trustAsHtml(ngQuickDateDefaults[key] || "")
+          scope[key] = $sce.trustAsHtml(fdQuickMomentDefaults[key] || "")
         else if !scope[key] && attrs[key]
           scope[key] = attrs[key]
         else if !scope[key]
-          scope[key] = ngQuickDateDefaults[key]
+          scope[key] = fdQuickMomentDefaults[key]
       if !scope.labelFormat
         scope.labelFormat = scope.dateFormat
         unless scope.disableTimepicker
@@ -158,7 +158,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       else
         date
 
-    parseDateString = ngQuickDateDefaults.parseDateFunction
+    parseDateString = fdQuickMomentDefaults.parseDateFunction
 
     datesAreEqual = (d1, d2, compareTimes=false) ->
       if compareTimes
@@ -192,7 +192,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     )
 
     scope.$watch('calendarShown', (newVal, oldVal) ->
-        dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0]
+        dateInput = angular.element(element[0].querySelector(".quickmoment-date-input"))[0]
         dateInput.select()
     )
 
@@ -273,26 +273,26 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>
-              <div class='quickdate-popup' ng-class='{open: calendarShown}'>
-                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
-                <div class='quickdate-text-inputs'>
-                  <div class='quickdate-input-wrapper'>
+            <div class='quickmoment'>
+              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickmoment-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+              <div class='quickmoment-popup' ng-class='{open: calendarShown}'>
+                <a href='' tabindex='-1' class='quickmoment-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
+                <div class='quickmoment-text-inputs'>
+                  <div class='quickmoment-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}" on-tab='onDateInputTab()' />
+                    <input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickmoment-error': inputDateErr}" on-tab='onDateInputTab()' />
                   </div>
-                  <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
+                  <div class='quickmoment-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputTimeErr}" on-tab='onTimeInputTab()'>
+                    <input class='quickmoment-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickmoment-error': inputTimeErr}" on-tab='onTimeInputTab()'>
                   </div>
                 </div>
-                <div class='quickdate-calendar-header'>
-                  <a href='' class='quickdate-prev-month quickdate-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>
-                  <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
-                  <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>
+                <div class='quickmoment-calendar-header'>
+                  <a href='' class='quickmoment-prev-month quickmoment-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>
+                  <span class='quickmoment-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
+                  <a href='' class='quickmoment-next-month quickmoment-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>
                 </div>
-                <table class='quickdate-calendar'>
+                <table class='quickmoment-calendar'>
                   <thead>
                     <tr>
                       <th ng-repeat='day in dayAbbreviations'>{{day}}</th>
@@ -304,8 +304,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
                     </tr>
                   </tbody>
                 </table>
-                <div class='quickdate-popup-footer'>
-                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
+                <div class='quickmoment-popup-footer'>
+                  <a href='' class='quickmoment-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
                 </div>
               </div>
             </div>

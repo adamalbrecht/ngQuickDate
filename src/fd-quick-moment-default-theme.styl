@@ -8,7 +8,7 @@ calendar-bg-color = #fff
 selected-date-bg-color = #b0ccde
 today-font-color = #B58922
 
-.quickdate
+.quickmoment
   display: inline-block
   vertical-align bottom
   font-size 15px
@@ -17,7 +17,7 @@ today-font-color = #B58922
   input, select
     font-size 13px
 
-.quickdate-button
+.quickmoment-button
   background button-bg-color
   color button-text-color
   border solid 1px button-border-color;
@@ -34,7 +34,7 @@ today-font-color = #B58922
     padding-right 4px
 
 
-.quickdate-popup
+.quickmoment-popup
   color popup-font-color
   font-size 15px
   background-color popup-bg-color
@@ -44,15 +44,15 @@ today-font-color = #B58922
   -moz-box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
   box-shadow 0px 10px 30px rgba(25, 25, 25, 0.92)
 
-.quickdate-action-link:visited, .quickdate-action-link:hover
+.quickmoment-action-link:visited, .quickmoment-action-link:hover
   color popup-font-color
 
-.quickdate-next-month i
+.quickmoment-next-month i
   padding-left:10px
-.quickdate-prev-month i
+.quickmoment-prev-month i
   padding-right:10px
 
-table.quickdate-calendar
+table.quickmoment-calendar
   border solid 1px #ccc
   background-color calendar-bg-color
 
@@ -84,10 +84,10 @@ table.quickdate-calendar
         color lighten(desaturate(today-font-color, 75%), 15%)
         font-weight normal
 
-.quickdate-popup-footer
+.quickmoment-popup-footer
   margin 3px 1px 0
 
-.quickdate-clear
+.quickmoment-clear
   display inline-block
   padding 2px 4px
   background-color button-bg-color
@@ -98,5 +98,3 @@ table.quickdate-calendar
   text-decoration none
   &:hover
     background-color darken(button-bg-color, 5%)
-
-

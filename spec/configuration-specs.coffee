@@ -7,29 +7,29 @@ describe "fdQuickMoment", ->
     scope = undefined
     describe 'Given that a non-default label format is configured', ->
       beforeEach(module('fdQuickMoment', (fdQuickMomentDefaultsProvider) ->
-        fdQuickMomentDefaultsProvider.set('labelFormat', 'yyyy-MM-d')
+        fdQuickMomentDefaultsProvider.set('labelFormat', 'YYYY-MM-DD')
         null
       ))
-      
+
       describe 'and given a basic datepicker', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
           scope = $rootScope
-          scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
-          element = $compile("<datepicker ng-model='myDate' />")(scope)
+          scope.myDate = moment(new Date(2013, 7, 1)) # August 1 (months are 0-indexed)
+          element = $compile("<momentpicker ng-model='myDate' />")(scope)
           scope.$digest()
         ))
         it 'should be labeled in the same format as it was configured', ->
-          expect($(element).find('.quickmoment-button').text()).toEqual('2013-08-1')
+          expect($(element).find('.quickmoment-button').text()).toEqual('2013-08-01')
 
     describe 'Given that a non-default date format is configured', ->
       beforeEach(module('fdQuickMoment', (fdQuickMomentDefaultsProvider) ->
-        fdQuickMomentDefaultsProvider.set('dateFormat', 'yy-M-d')
+        fdQuickMomentDefaultsProvider.set('dateFormat', 'YY-M-D')
         null
       ))
-        
+
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('1/1/2013 1:00 PM')))
+          element = buildBasicDatepicker($compile, $rootScope, moment(new Date(Date.parse('1/1/2013 1:00 PM'))))
 
         it 'should use the proper format in the date input', ->
           expect($(element).find('.quickmoment-date-input').val()).toEqual('13-1-1')
@@ -43,7 +43,7 @@ describe "fdQuickMoment", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
+          element = buildBasicDatepicker($compile, $rootScope, moment(new Date(2013, 10, 1)))
 
         it 'should inject the given html into the close button spot', ->
           expect($(element).find('.quickmoment-close').html()).toMatch('icon-remove')
@@ -58,7 +58,7 @@ describe "fdQuickMoment", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
+          element = buildBasicDatepicker($compile, $rootScope, moment(new Date(2013, 10, 1)))
 
         it 'should inject the given html into the close button spot', ->
           expect($(element).find('.quickmoment-next-month').html()).toMatch('icon-arrow-right')
@@ -71,7 +71,7 @@ describe "fdQuickMoment", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
+          element = buildBasicDatepicker($compile, $rootScope, moment(new Date(2013, 10, 1)))
 
         it 'should inject the given html into the button', ->
           expect($(element).find('.quickmoment-button').html()).toMatch('icon-time')
@@ -79,8 +79,8 @@ describe "fdQuickMoment", ->
       describe 'and given a datepicker where icon-class is set inline', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
           scope = $rootScope
-          scope.myDate = new Date()
-          element = $compile("<datepicker icon-class='icon-calendar' ng-model='myDate' />")($rootScope)
+          scope.myDate = moment()
+          element = $compile("<momentpicker icon-class='icon-calendar' ng-model='myDate' />")($rootScope)
           scope.$digest()
 
         it 'does not display the inline class and not the configured default html in the button', ->
@@ -102,7 +102,7 @@ describe "fdQuickMoment", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('11/1/2013 3:59 pm')))
+          element = buildBasicDatepicker($compile, $rootScope, moment(new Date(Date.parse('11/1/2013 3:59 pm'))))
         ))
         it 'does not show the timepicker input', ->
           expect($(element).find('.quickmoment-input-wrapper:last').hasClass('ng-hide')).toEqual(true)
@@ -115,8 +115,8 @@ describe "fdQuickMoment", ->
 
       describe 'and given a datepicker with timepicker re-enabled', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
-          $rootScope.myDate = new Date(2013, 10, 1)
-          element = $compile("<datepicker ng-model='myDate' disable-timepicker='false' />")(scope)
+          $rootScope.myDate = moment(new Date(2013, 10, 1))
+          element = $compile("<momentpicker ng-model='myDate' disable-timepicker='false' />")(scope)
           $rootScope.$digest()
         ))
         it 'shows the timepicker input', ->
@@ -125,7 +125,7 @@ describe "fdQuickMoment", ->
 
     describe 'Given that it is configured with a custom date/time parser function that always returns July 1, 2013', ->
       beforeEach(module('fdQuickMoment', (fdQuickMomentDefaultsProvider) ->
-        alwaysReturnsJulyFirst2013 = (str) -> new Date(2013, 6, 1)
+        alwaysReturnsJulyFirst2013 = (str) -> moment('2013/7/1')
         fdQuickMomentDefaultsProvider.set('parseDateFunction', alwaysReturnsJulyFirst2013)
         null
       ))
@@ -142,7 +142,7 @@ describe "fdQuickMoment", ->
             browserTrigger($dateInput, 'blur')
 
           it 'Changes the model date to July 1, 2013', ->
-            expect(element.scope().myDate).toMatch(/Jul 01 2013/)
+            expect(element.scope().myDate.format('LL')).toMatch("July 1 2013")
 
     describe 'Given that it is configured with a default placeholder', ->
       beforeEach(module('fdQuickMoment', (fdQuickMomentDefaultsProvider) ->
@@ -164,7 +164,7 @@ describe "fdQuickMoment", ->
       ))
       describe 'and given a basic datepicker', ->
         beforeEach(inject(($compile, $rootScope) ->
-          element = buildBasicDatepicker($compile, $rootScope, new Date())
+          element = buildBasicDatepicker($compile, $rootScope, moment())
         ))
 
         it 'should not have clear button', ->
@@ -173,8 +173,8 @@ describe "fdQuickMoment", ->
       describe 'and given a datepicker with the clear button re-enabled', ->
         beforeEach(inject(($compile, $rootScope) ->
           scope = $rootScope
-          scope.myDate = new Date()
-          element = $compile("<datepicker ng-model='myDate' disable-clear-button='false' />")(scope)
+          scope.myDate = moment()
+          element = $compile("<momentpicker ng-model='myDate' disable-clear-button='false' />")(scope)
           scope.$digest()
         ))
 
@@ -189,7 +189,7 @@ describe "fdQuickMoment", ->
       describe 'and given a basic datepicker with a null model', ->
         beforeEach(inject(($compile, $rootScope) ->
           scope.myDate = null
-          element = $compile("<datepicker ng-model='myDate' />")(scope)
+          element = $compile("<momentpicker ng-model='myDate' />")(scope)
           scope.$digest()
         ))
 
@@ -204,11 +204,11 @@ describe "fdQuickMoment", ->
 
 
 
-buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->
+buildBasicDatepicker = ($compile, scope, date=moment(), debug=false) ->
   scope.myDate = date
   if debug
-    element = $compile("<datepicker debug='true' ng-model='myDate' />")(scope)
+    element = $compile("<momentpicker debug='true' ng-model='myDate' />")(scope)
   else
-    element = $compile("<datepicker ng-model='myDate' />")(scope)
+    element = $compile("<momentpicker ng-model='myDate' />")(scope)
   scope.$digest()
   element

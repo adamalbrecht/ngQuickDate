@@ -1,9 +1,9 @@
 #
 # fdQuickMoment
-# by Adam Albrecht
-# http://adamalbrecht.com
+# by Adam Albrecht and Andrew Coldham
+# http://adamalbrecht.com + http://www.frontdeskhq.com
 #
-# Source Code: https://github.com/adamalbrecht/fdQuickMoment
+# Source Code: https://github.com/frontdesk/fdQuickMoment
 #
 # Compatible with Angular 1.0.8
 #
@@ -13,8 +13,8 @@ app = angular.module("fdQuickMoment", [])
 app.provider "fdQuickMomentDefaults", ->
   {
     options: {
-      dateFormat: 'M/d/yyyy'
-      timeFormat: 'h:mm a'
+      dateFormat: 'M/D/YYYY'
+      timeFormat: 'h:mm A'
       labelFormat: null
       placeholder: 'Click to Set Date'
       hoverText: null
@@ -27,12 +27,14 @@ app.provider "fdQuickMomentDefaults", ->
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      timezone: "America/Chicago"
       parseDateFunction: (str) ->
-        seconds = Date.parse(str)
-        if isNaN(seconds)
+        m = moment(str)
+        if !m.isValid()
           return null
         else
-          new Date(seconds)
+          m
+
     }
     $get: ->
       @options
@@ -45,11 +47,12 @@ app.provider "fdQuickMomentDefaults", ->
         @options[keyOrHash] = value
   }
 
-app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuickMomentDefaults, $filter, $sce) ->
+app.directive "momentpicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuickMomentDefaults, $filter, $sce) ->
   restrict: "E"
   require: "ngModel"
   scope:
     dateFilter: '=?'
+    # timezone: '@'
     ngModel: "="
     onChange: "&"
 
@@ -63,6 +66,7 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
       scope.toggleCalendar(false)
       scope.weeks = []
       scope.inputDate = null
+      scope.timezone = attrs.timezone
 
       if typeof(scope.ngModel) == 'string'
         scope.ngModel = parseDateString(scope.ngModel)
@@ -88,6 +92,8 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
           scope.labelFormat += " " + scope.timeFormat
       if attrs.iconClass && attrs.iconClass.length
         scope.buttonIconHtml = $sce.trustAsHtml("<i ng-show='iconClass' class='#{attrs.iconClass}'></i>")
+      if scope.timezone == undefined
+        throw "timezone required"
 
     # VIEW SETUP
     # ================================
@@ -105,52 +111,51 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
     # ================================
     setInputDateFromModel = ->
       if scope.ngModel
-        scope.inputDate = $filter('date')(scope.ngModel, scope.dateFormat)
-        scope.inputTime = $filter('date')(scope.ngModel, scope.timeFormat)
+        scope.inputDate = scope.ngModel.format(scope.dateFormat)
+        scope.inputTime = scope.ngModel.format(scope.timeFormat)
       else
         scope.inputDate = null
         scope.inputTime = null
 
     setCalendarDateFromModel = ->
-      d = if scope.ngModel then new Date(scope.ngModel) else new Date()
-      if (d.toString() == "Invalid Date")
-        d = new Date()
-      d.setDate(1)
-      scope.calendarDate = new Date(d)
+      d = if scope.ngModel then moment(scope.ngModel).tz(scope.timezone) else moment().tz(scope.timezone)
+      if (d == undefined || !d.isValid())
+        d = moment().tz(scope.timezone)
+      scope.calendarDate = d.startOf('month')
 
     setCalendarRows = ->
-      offset = scope.calendarDate.getDay()
-      daysInMonth = getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth())
+      offset = scope.calendarDate.day()
+      daysInMonth = scope.calendarDate.daysInMonth()
       numRows = Math.ceil((offset + daysInMonth) / 7)
       weeks = []
-      curDate = new Date(scope.calendarDate)
-      curDate.setDate(curDate.getDate() + (offset * -1))
+      curDate = moment(scope.calendarDate)
+      curDate.add('d', offset * -1)
       for row in [0..(numRows-1)]
         weeks.push([])
         for day in [0..6]
-          d = new Date(curDate)
+          d = moment(curDate)
           if scope.defaultTime
             time = scope.defaultTime.split(':')
-            d.setHours(time[0] || 0)
-            d.setMinutes(time[1] || 0)
-            d.setSeconds(time[2] || 0)
+            d.hours(time[0] || 0)
+            d.minutes(time[1] || 0)
+            d.seconds(time[2] || 0)
           selected = scope.ngModel && d && datesAreEqual(d, scope.ngModel)
-          today = datesAreEqual(d, new Date())
+          today = datesAreEqual(d, moment().tz(scope.timezone))
           weeks[row].push({
             date: d
             selected: selected
             disabled: if (typeof(scope.dateFilter) == 'function') then !scope.dateFilter(d) else false
-            other: d.getMonth() != scope.calendarDate.getMonth()
+            other: d.month() != scope.calendarDate.month()
             today: today
           })
-          curDate.setDate(curDate.getDate() + 1)
+          curDate.add('d',1)
 
       scope.weeks = weeks
 
     # HELPER METHODS
     # =================================
     dateToString = (date, format) ->
-      $filter('date')(date, format)
+      date.format(format)
 
     stringToDate = (date) ->
       if typeof date == 'string'
@@ -162,19 +167,16 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
 
     datesAreEqual = (d1, d2, compareTimes=false) ->
       if compareTimes
-        (d1 - d2) == 0
+        (d1.unix() == d2.unix())
       else
         d1 = stringToDate(d1);
         d2 = stringToDate(d2);
-        d1 && d2 && (d1.getYear() == d2.getYear()) && (d1.getMonth() == d2.getMonth()) && (d1.getDate() == d2.getDate())
+        d1.year() == d2.year() && d1.month() == d2.month() && d1.date() == d2.date()
 
     datesAreEqualToMinute = (d1, d2) ->
       return false unless d1 && d2
-      parseInt(d1.getTime() / 60000) == parseInt(d2.getTime() / 60000)
+      d1.year() == d2.year() && d1.month() == d2.month() && d1.date() == d2.date() && d1.hour() == d2.hour() && d1.minute() == d2.minute()
 
-
-    getDaysInMonth = (year, month) ->
-      [31, (if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) then 29 else 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 
     # DATA WATCHES
     # ==================================
@@ -200,7 +202,7 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
     # VIEW HELPERS
     # ==================================
     scope.mainButtonStr = ->
-      if scope.ngModel then $filter('date')(scope.ngModel, scope.labelFormat) else scope.placeholder
+      if scope.ngModel then scope.ngModel.format(scope.labelFormat) else scope.placeholder
 
     # VIEW ACTIONS
     # ==================================
@@ -211,7 +213,7 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
         scope.calendarShown = not scope.calendarShown
 
     scope.setDate = (date, closeCalendar=true) ->
-      changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != stringToDate(scope.ngModel).getTime())
+      changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.unix() != stringToDate(scope.ngModel).unix())
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
       scope.ngModel = date
@@ -256,9 +258,9 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
       true
 
     scope.nextMonth = ->
-      scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
+      scope.calendarDate = moment(scope.calendarDate).add('M', 1)
     scope.prevMonth = ->
-      scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
+      scope.calendarDate = moment(scope.calendarDate).subtract('M', 1)
 
     scope.clear = ->
       scope.setDate(null, true)
@@ -289,7 +291,7 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
                 </div>
                 <div class='quickmoment-calendar-header'>
                   <a href='' class='quickmoment-prev-month quickmoment-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>
-                  <span class='quickmoment-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
+                  <span class='quickmoment-month'>{{calendarDate | moment:'MMMM YYYY'}}</span>
                   <a href='' class='quickmoment-next-month quickmoment-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>
                 </div>
                 <table class='quickmoment-calendar'>
@@ -300,7 +302,7 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
                   </thead>
                   <tbody>
                     <tr ng-repeat='week in weeks'>
-                      <td ng-mousedown='setDate(day.date)' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td ng-mousedown='setDate(day.date)' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | moment:'D'}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -311,6 +313,7 @@ app.directive "datepicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQuic
             </div>
             """
 ]
+
 
 app.directive 'ngEnter', ->
   (scope, element, attr) ->
@@ -325,3 +328,7 @@ app.directive 'onTab', ->
     element.bind 'keydown keypress', (e) ->
       if (e.which == 9) && !e.shiftKey
         scope.$apply(attr.onTab)
+
+app.filter 'moment', ->
+  return (momentObj, formatStr) ->
+    return momentObj.format(formatStr)

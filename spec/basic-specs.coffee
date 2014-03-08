@@ -8,7 +8,7 @@ describe "fdQuickMoment", ->
     describe 'Given a datepicker element with a placeholder', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        element = $compile("<momentpicker placeholder='Choose a Date' ng-model='myDate' timezone='America/Chicago' />")(scope)
       )
 
       it 'shows the proper text in the button based on the value of the ng-model', ->
@@ -21,7 +21,7 @@ describe "fdQuickMoment", ->
         scope.$digest()
         expect(button.text()).toEqual "Choose a Date"
 
-        scope.myDate = new Date(2013, 9, 25)
+        scope.myDate = moment(new Date(2013, 9, 25))
         scope.$digest()
         expect(button.text()).toEqual "10/25/2013 12:00 AM"
 
@@ -35,7 +35,7 @@ describe "fdQuickMoment", ->
         scope.$digest()
         expect(dateTextInput.val()).toEqual ""
 
-        scope.myDate = new Date(2013, 9, 25)
+        scope.myDate = moment(new Date(2013, 9, 25))
         scope.$digest()
         expect(dateTextInput.val()).toEqual "10/25/2013"
 
@@ -43,7 +43,7 @@ describe "fdQuickMoment", ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = '2013-09-01'
-        element = $compile("<datepicker ng-model='myDate' disable-timepicker='true'/>")(scope)
+        element = $compile("<momentpicker ng-model='myDate' disable-timepicker='true'/>")(scope)
         scope.$digest()
       )
 
@@ -51,15 +51,15 @@ describe "fdQuickMoment", ->
         $textInput = $(element).find(".quickmoment-date-input")
         $textInput.val('2013-11-15')
         browserTrigger($textInput, 'input')
-        expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-09-01')))
+        expect(element.scope().myDate.format()).toEqual(moment.tz('2013-09-01',element.scope().timezone).format())
         browserTrigger($textInput, 'blur')
-        expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-11-15')))
+        expect(element.scope().myDate.format()).toEqual(moment.tz('2013-11-15',element.scope().timezone).format())
 
     describe 'Given a basic datepicker', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(2013, 8, 1) # September 1 (months are 0-indexed)
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        scope.myDate = moment(new Date(2013, 8, 1)) # September 1 (months are 0-indexed)
+        element = $compile("<momentpicker ng-model='myDate' />")(scope)
         scope.$digest()
       )
 
@@ -79,14 +79,14 @@ describe "fdQuickMoment", ->
           browserTrigger($textInput, 'input')
 
         it 'does not change the ngModel just yet', ->
-          expect(element.scope().myDate).toEqual(new Date(2013, 8, 1))
+          expect(element.scope().myDate.format()).toEqual(moment(new Date(2013, 8, 1)).format())
 
         describe 'and leaving the field (blur event)', ->
           beforeEach ->
             browserTrigger($textInput, 'blur')
 
           it 'updates ngModel properly', ->
-            expect(element.scope().myDate).toEqual(new Date(2013, 10, 15))
+            expect(element.scope().myDate.format()).toEqual(moment(new Date(2013, 10, 15)).format())
 
           it 'changes the calendar to the proper month', ->
             $monthSpan = $(element).find(".quickmoment-month")
@@ -102,7 +102,7 @@ describe "fdQuickMoment", ->
             $textInput.trigger($.Event('keypress', { which: 13 }));
 
           it 'updates ngModel properly', ->
-            expect(element.scope().myDate).toEqual(new Date(2013, 10, 15))
+            expect(element.scope().myDate.format()).toEqual(moment(new Date(2013, 10, 15)).format())
 
       describe 'After typing an invalid date into the date input field', ->
         $textInput = undefined
@@ -116,7 +116,7 @@ describe "fdQuickMoment", ->
           expect($textInput.hasClass('quickmoment-error')).toBe(true)
 
         it 'does not change the ngModel', ->
-          expect(element.scope().myDate).toEqual(new Date(2013, 8, 1))
+          expect(element.scope().myDate.format()).toEqual(moment(new Date(2013, 8, 1)).format())
 
         it 'does not change the calendar month', ->
           $monthSpan = $(element).find(".quickmoment-month")
@@ -125,8 +125,8 @@ describe "fdQuickMoment", ->
     describe 'Given a datepicker set to August 1, 2013', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
-        element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        scope.myDate = moment(new Date(2013, 7, 1)) # August 1 (months are 0-indexed)
+        element = $compile("<momentpicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
         scope.$digest()
       )
 
@@ -160,21 +160,21 @@ describe "fdQuickMoment", ->
           expect($(element).find('.quickmoment-calendar tbody tr:first td:first').text()).toEqual '1'
 
       it 'shows the proper number of rows in the calendar', ->
-        scope.myDate = new Date(2013, 5, 1)
+        scope.myDate = moment(new Date(2013, 5, 1))
         scope.$digest()
         expect($(element).find('.quickmoment-calendar tbody tr').length).toEqual(6)
-        scope.myDate = new Date(2013, 10, 1)
+        scope.myDate = moment(new Date(2013, 10, 1))
         scope.$digest()
         expect($(element).find('.quickmoment-calendar tbody tr').length).toEqual(5)
-        scope.myDate = new Date(2015, 1, 1)
+        scope.myDate = moment(new Date(2015, 1, 1))
         scope.$digest()
         expect($(element).find('.quickmoment-calendar tbody tr').length).toEqual(4)
 
     describe 'Given a datepicker set to today', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date()
-        element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        scope.myDate = moment(new Date())
+        element = $compile("<momentpicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
         scope.$apply()
       )
 
@@ -191,8 +191,8 @@ describe "fdQuickMoment", ->
       $timeInput = undefined
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'))
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        scope.myDate = moment(new Date(Date.parse('11/1/2013 1:00 PM')))
+        element = $compile("<momentpicker ng-model='myDate' />")(scope)
         scope.$apply()
         $timeInput = $(element).find('.quickmoment-time-input')
       )
@@ -207,7 +207,7 @@ describe "fdQuickMoment", ->
           scope.$apply()
 
         it 'updates ngModel to reflect this time', ->
-          expect(element.scope().myDate).toEqual(new Date(Date.parse('11/1/2013 3:00 PM')))
+          expect(element.scope().myDate.format()).toEqual(moment('11/1/2013 3:00 PM').format())
 
         it 'updates the input to use the proper time format', ->
           expect($timeInput.val()).toEqual('3:00 PM')
@@ -215,8 +215,8 @@ describe "fdQuickMoment", ->
     describe 'Given a basic datepicker set to today', ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'))
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        scope.myDate = moment(new Date(Date.parse('11/1/2013 1:00 PM')))
+        element = $compile("<momentpicker ng-model='myDate' />")(scope)
         scope.$apply()
       ))
 
@@ -231,12 +231,12 @@ describe "fdQuickMoment", ->
     describe "Given a datepicker with a valid init-value attribute", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        element = $compile("<datepicker ng-model='someDate' init-value='2/1/2014 2:00 PM' />")(scope)
+        element = $compile("<momentpicker ng-model='someDate' init-value='2/1/2014 2:00 PM' />")(scope)
         scope.$apply()
       ))
 
       it 'should set the model to the specified initial value', ->
-        expect(Date.parse(element.scope().someDate)).toEqual(Date.parse('2/1/2014 2:00 PM'))
+        expect(element.scope().someDate.format()).toEqual(moment('2/1/2014 2:00 PM').format())
 
 
     describe "Given a datepicker with an 'on-change' method to call", ->
@@ -249,8 +249,8 @@ describe "fdQuickMoment", ->
           scope.myVariable += 1
           scope.myOtherVariable = param
 
-        scope.myDate = new Date(2013, 5, 10)
-        element = $compile("<datepicker ng-model='myDate' on-change='myMethod(\"hello!\")' />")(scope)
+        scope.myDate = moment(new Date(2013, 5, 10))
+        element = $compile("<momentpicker ng-model='myDate' on-change='myMethod(\"hello!\")' />")(scope)
         scope.$apply()
       ))
 
@@ -285,8 +285,8 @@ describe "fdQuickMoment", ->
     describe 'Given a datepicker with a custom date format', ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(2014, 2, 17) # March 17th, 2014
-        element = $compile("<datepicker ng-model='myDate' date-format='d/M/yyyy' />")(scope)
+        scope.myDate = moment(new Date(2014, 2, 17)) # March 17th, 2014
+        element = $compile("<momentpicker ng-model='myDate' date-format='D/M/YYYY' />")(scope)
         scope.$digest()
       ))
       it 'should show the date format properly in the date input', ->
@@ -297,8 +297,8 @@ describe "fdQuickMoment", ->
     describe 'Given normal datepicker with no date filter function', ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(2014, 0, 1)
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        scope.myDate = moment(new Date(2014, 0, 1))
+        element = $compile("<momentpicker ng-model='myDate' />")(scope)
       ))
       it 'should have no disabled dates', ->
         expect($(element).find('.disabled-date').length).toEqual(0)
@@ -306,11 +306,11 @@ describe "fdQuickMoment", ->
     describe "Given a with a date filter function specified to filter out all weekends", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        scope.myDate = new Date(2014, 0, 1) # Jan 1
+        scope.myDate = moment(new Date(2014, 0, 1)) # Jan 1
         scope.onlyWeekdays = (d) ->
-          dayIndex = d.getDay()
+          dayIndex = d.day()
           (dayIndex != 0) && (dayIndex != 6)
-        element = $compile("<datepicker ng-model='myDate' date-filter='onlyWeekdays' />")(scope)
+        element = $compile("<momentpicker ng-model='myDate' date-filter='onlyWeekdays' />")(scope)
         scope.$apply()
       ))
 
@@ -335,9 +335,7 @@ describe "fdQuickMoment", ->
           browserTrigger($textInput, 'blur')
 
         it 'should revert back to the previous date after blur', ->
-          expect(element.scope().myDate).toEqual(new Date(Date.parse('1/1/2014')))
+          expect(element.scope().myDate.format()).toEqual(moment(new Date(Date.parse('1/1/2014'))).format())
 
         it 'should have an error class', ->
           expect($textInput.hasClass('quickmoment-error')).toBe(true)
-
-

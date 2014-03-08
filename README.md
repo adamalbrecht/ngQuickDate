@@ -2,11 +2,11 @@
 
 fdQuickMoment is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.
 
-![fdQuickMoment Screenshot](https://raw.github.com/adamalbrecht/fdQuickMoment/master/screenshot.png)
+![fdQuickMoment Screenshot](https://raw.github.com/frontdesk/fdQuickMoment/master/screenshot.png)
 
 ## Download
 
-* [Version 1.2.9](https://github.com/adamalbrecht/fdQuickMoment/archive/1.2.9.zip) - Compatible with Angular 1.2.x
+* [Version 1.2.9](https://github.com/frontdesk/fdQuickMoment/archive/1.2.9.zip) - Compatible with Angular 1.2.x
 
 * For a version compatible with Angular 1.0.x, checkout the angular-1.0 branch.
 
@@ -28,7 +28,7 @@ dependencies: {
 
 ## Demo
 
-You can find some basic examples [here](http://adamalbrecht.github.io/fdQuickMoment)
+You can find some basic examples [here](http://frontdesk.github.io/fdQuickMoment)
 
 ## The Basics
 
@@ -38,10 +38,10 @@ To use the library, include the JS file, main CSS file, and (optionally, but rec
 app = angular.module("myApp", ["fdQuickMoment"])
 ```
 
-The directive itself is simply called *datepicker*. The only required attribute is ngModel, which should be a date object.
+The directive itself is simply called *momentpicker*. The only required attribute is ngModel, which should be a date object.
 
 ```html
-<datepicker ng-model='myDate'></datepicker>
+<momentpicker ng-model='myDate'></momentpicker>
 ```
 
 ## Inline Options
@@ -50,8 +50,8 @@ There are a number of options that be configured inline with attributes. Here ar
 
 | Option               | Default             | Description                                                                                 |
 | -------------------- | ------------------- | ------------------------------------------------------------------------------------------- |
-| date-format          | "M/d/yyyy"          | Date Format used in the date input box.                                                     |
-| time-format          | "h:mm a"            | Time Format used in the time input box.                                                     |
+| date-format          | "M/D/YYYY"          | Moment Format used in the date input box.                                                   |
+| time-format          | "h:mm A"            | Time Format used in the time input box.                                                     |
 | label-format         | null                | Date/Time format used on button. If null, will use combination of date and time formats.    |
 | placeholder          | 'Click to Set Date' | Text that is shown on button when the model variable is null.                               |
 | hover-text           | null                | Hover text for button.                                                                      |
@@ -66,7 +66,7 @@ There are a number of options that be configured inline with attributes. Here ar
 **Example:**
 
 ```html
-<datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-timepicker='true'></datepicker>
+<momentpicker ng-model='myMoment' date-format='LLLL' placeholder='Pick a Date' disable-timepicker='true'></momentpicker>
 ```
 
 ## Configuration Options
@@ -136,7 +136,7 @@ Note that when displaying dates in a well-formatted manner, Angular's [Date filt
 If you'd like to prevent the user from choosing certain dates, such as weekends or dates that have already been 'reserved', you can do so with the `date-filter` attribute. For example, if you want to disable weekends, you can do it like so:
 
 ```html
-<datepicker ng-model='myDate' date-filter='onlyWeekdays'></datepicker>
+<momentpicker ng-model='myDate' date-filter='onlyWeekdays'></momentpicker>
 ```
 
 ```javascript

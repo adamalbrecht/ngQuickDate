@@ -13,7 +13,10 @@
     "package.json",
     "screenshot.png"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "momentjs": "~2.5.1",
+    "moment-timezone": "~0.0.3"
+  },
   "devDependencies": {
     "angular": "~1.2.0",
     "angular-mocks": "~1.2.0",

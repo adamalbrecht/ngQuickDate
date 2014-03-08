@@ -6,6 +6,8 @@ fdQuickMoment is an [Angular.js](http://angularjs.org/) Date/Time picker directi
 
 ## Download
 
+* [Version 1.3.0](https://github.com/frontdesk/fdQuickMoment/archive/1.3.0.zip) - Compatible with Angular 1.2.x and Moment.js
+
 * [Version 1.2.9](https://github.com/frontdesk/fdQuickMoment/archive/1.2.9.zip) - Compatible with Angular 1.2.x
 
 * For a version compatible with Angular 1.0.x, checkout the angular-1.0 branch.
@@ -20,7 +22,7 @@ Or add it to your bower.json file:
 
 ```javascript
 dependencies: {
-  "fdQuickMoment": "~1.2.0"
+  "fdQuickMoment": "~1.2.0"  
 }
 ```
 

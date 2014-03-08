@@ -129,7 +129,7 @@ Of course, you can override this parse function with any code you'd like, so you
 
 ## Date Formatting
 
-Note that when displaying dates in a well-formatted manner, Angular's [Date filter](http://docs.angularjs.org/api/ng.filter:date) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Sugar.js and Date.js have their own formatting syntax that are different from Angular's.
+Note that when displaying dates in a well-formatted manner, Moments's [format filter](http://momentjs.com/docs/#/displaying/format/) is used. So if you want to customize these formats, please reference that link to see the formatting syntax. Sugar.js and Date.js have their own formatting syntax that are different from Moment.js's.
 
 ## Date Filter Function
 
@@ -141,7 +141,7 @@ If you'd like to prevent the user from choosing certain dates, such as weekends 
 
 ```javascript
 $scope.onlyWeekdays = function(d) {
-  dayIndex = d.getDay();
+  dayIndex = d.day();
   return ((dayIndex != 0) && (dayIndex != 6));
 }
 ```

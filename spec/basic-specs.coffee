@@ -55,6 +55,22 @@ describe "fdQuickMoment", ->
         browserTrigger($textInput, 'blur')
         expect(element.scope().myDate.format()).toEqual(moment.tz('2013-11-15',element.scope().timezone).format())
 
+    describe 'Given a datepicker with a time model', ->
+      beforeEach angular.mock.inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = '2013-09-01 8:00 AM'
+        element = $compile("<momentpicker ng-model='myDate' disable-timepicker='true'/>")(scope)
+        scope.$digest()
+      )
+
+      it 'allows the date to be updated, but preserves the hours/minutes', ->
+        $textInput = $(element).find(".quickmoment-date-input")
+        $textInput.val('2013-11-15')
+        browserTrigger($textInput, 'input')
+        expect(element.scope().myDate.format()).toEqual(moment.tz('2013-09-01 8:00 AM',element.scope().timezone).format())
+        browserTrigger($textInput, 'blur')
+        expect(element.scope().myDate.format()).toEqual(moment.tz('2013-11-15 8:00 AM',element.scope().timezone).format())
+
     describe 'Given a basic datepicker', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope

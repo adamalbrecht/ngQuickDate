@@ -106,12 +106,12 @@ describe "fdQuickMoment", ->
         ))
         it 'does not show the timepicker input', ->
           expect($(element).find('.quickmoment-input-wrapper:last').hasClass('ng-hide')).toEqual(true)
-        it 'sets the time to 0:00 on change', ->
+        it 'sets the time to 3:59 on change', ->
           $textInput = $(element).find(".quickmoment-date-input")
           $textInput.val('11/15/2013')
           browserTrigger($textInput, 'input')
           browserTrigger($textInput, 'blur')
-          expect(element.scope().myDate).toMatch(/00:00:00/)
+          expect(element.scope().myDate.format()).toMatch(/15:59:00/)
 
       describe 'and given a datepicker with timepicker re-enabled', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->

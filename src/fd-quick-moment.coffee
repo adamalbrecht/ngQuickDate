@@ -216,6 +216,10 @@ app.directive "momentpicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQu
       changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.unix() != stringToDate(scope.ngModel).unix())
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
+      if scope.disableTimepicker
+        hours = scope.ngModel.hours()
+        minutes = scope.ngModel.minutes()
+        date = date.hours(hours).minutes(minutes)
       scope.ngModel = date
       if closeCalendar
         scope.toggleCalendar(false)

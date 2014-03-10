@@ -235,7 +235,7 @@
             if (typeof scope.dateFilter === 'function' && !scope.dateFilter(date)) {
               return false;
             }
-            if (scope.disableTimepicker) {
+            if (scope.disableTimepicker && scope.ngModel !== undefined) {
               hours = scope.ngModel.hours();
               minutes = scope.ngModel.minutes();
               date = date.hours(hours).minutes(minutes);

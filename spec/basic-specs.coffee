@@ -373,6 +373,5 @@ describe "ngQuickDate", ->
           expect(scope.myForm.$invalid).toBeTruthy()
           expect(scope.myForm.myDatepicker.$invalid).toBeTruthy()
 
-        it 'should add ng-invalid to the button', ->
-          $button = $(element).find('.quickdate-button')
-          expect($button.hasClass('ng-invalid')).toBe(true)
+        it 'should add ng-invalid to the div', ->
+          expect($(element).hasClass('ng-invalid')).toBe(true)

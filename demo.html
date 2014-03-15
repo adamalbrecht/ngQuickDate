@@ -4,6 +4,11 @@
     <title>ngQuickDate Demo</title>
     <link rel="stylesheet" type="text/css" href="dist/ng-quick-date.css" media="all" />
     <link rel="stylesheet" type="text/css" href="dist/ng-quick-date-default-theme.css" media="all" />
+    <style type="text/css">
+      form.ng-dirty .ng-invalid .quickdate-button {
+        border: solid 1px red;
+      }
+    </style>
   </head>
   <body>
     <div ng-controller='DemoCtrl'>
@@ -33,7 +38,7 @@
         });
       });
       app.controller("DemoCtrl", function($scope) {
-        $scope.myDate = new Date(2013, 9, 5);
+        $scope.myDate = null
         $scope.setToToday = function() { $scope.myDate = new Date(); }
       });
     </script>

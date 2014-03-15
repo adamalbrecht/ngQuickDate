@@ -16,6 +16,5 @@ table.quickdate-calendar{border-collapse:collapse;border-spacing:0;width:100%;ma
 table.quickdate-calendar th,table.quickdate-calendar td{padding:5px}
 table.quickdate-calendar td:hover{cursor:pointer}
 .quickdate-popup-footer{text-align:right;display:block}
-.quickdate .quickdate-button.ng-invalid{border:1px solid #dd3b30}
 .quickdate input.ng-invalid{border:1px solid #dd3b30}
 .quickdate input.ng-invalid:focus{outline-color:#dd3b30}

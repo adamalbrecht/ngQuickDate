@@ -6,7 +6,7 @@ ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 
 ## Download
 
-* [Version 1.2.9](https://github.com/adamalbrecht/ngQuickDate/archive/1.2.9.zip) - Compatible with Angular 1.2.x
+* [Version 1.3.0-beta](https://github.com/adamalbrecht/ngQuickDate/archive/1.3.0-beta.zip) - Compatible with Angular 1.2.x
 
 * For a version compatible with Angular 1.0.x, checkout the angular-1.0 branch.
 
@@ -54,6 +54,7 @@ There are a number of options that be configured inline with attributes. Here ar
 | time-format          | "h:mm a"            | Time Format used in the time input box.                                                     |
 | label-format         | null                | Date/Time format used on button. If null, will use combination of date and time formats.    |
 | placeholder          | 'Click to Set Date' | Text that is shown on button when the model variable is null.                               |
+| required             | false               | Makes the field required. Will set $invalid on the control and the form otherwise           |
 | hover-text           | null                | Hover text for button.                                                                      |
 | icon-class           | null                | If set, `<i class='some-class'></i>` will be prepended inside the button                    |
 | disable-timepicker   | false               | If true, the timepicker will be disabled and the default label format will be just the date |

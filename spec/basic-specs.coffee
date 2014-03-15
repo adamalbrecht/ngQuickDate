@@ -51,7 +51,6 @@ describe "ngQuickDate", ->
         $textInput = $(element).find(".quickdate-date-input")
         $textInput.val('2013-11-15')
         browserTrigger($textInput, 'input')
-        expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-09-01')))
         browserTrigger($textInput, 'blur')
         expect(element.scope().myDate).toEqual(new Date(Date.parse('2013-11-15')))
 
@@ -113,7 +112,7 @@ describe "ngQuickDate", ->
           browserTrigger($textInput, 'blur')
 
         it 'adds an error class to the input', ->
-          expect($textInput.hasClass('quickdate-error')).toBe(true)
+          expect($textInput.hasClass('ng-invalid')).toBe(true)
 
         it 'does not change the ngModel', ->
           expect(element.scope().myDate).toEqual(new Date(2013, 8, 1))
@@ -338,6 +337,41 @@ describe "ngQuickDate", ->
           expect(element.scope().myDate).toEqual(new Date(Date.parse('1/1/2014')))
 
         it 'should have an error class', ->
-          expect($textInput.hasClass('quickdate-error')).toBe(true)
+          expect($textInput.hasClass('ng-invalid')).toBe(true)
 
+    describe "Given a form with a required datepicker", ->
+      form = undefined
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date(2014, 0, 1) # Jan 1
+        form = $compile("<form name='myForm' novalidate><datepicker ng-model='myDate' name='myDatepicker' required /></datepicker></form>")(scope)
+        scope.$apply()
+        element = $(form).find('.quickdate')
+      ))
 
+      it 'should be valid', ->
+        expect(scope.myForm.$invalid).toBeFalsy()
+        expect(scope.myForm.myDatepicker.$invalid).toBeFalsy()
+
+      it 'should be pristine', ->
+        expect(scope.myForm.$pristine).toBeTruthy()
+
+      describe 'and the date input is set to blank', ->
+        beforeEach ->
+          browserTrigger($(element).find('.quickdate-clear'), 'click')
+          scope.$apply()
+
+        it 'should set the form to dirty', ->
+          expect(scope.myForm.$pristine).toBeFalsy()
+          expect(scope.myForm.$dirty).toBeTruthy()
+
+        it 'should set the datepicker to dirty', ->
+          expect(scope.myForm.myDatepicker.$pristine).toBeFalsy()
+          expect(scope.myForm.myDatepicker.$dirty).toBeTruthy()
+
+        it 'should set the input as $invalid', ->
+          expect(scope.myForm.$invalid).toBeTruthy()
+          expect(scope.myForm.myDatepicker.$invalid).toBeTruthy()
+
+        it 'should add ng-invalid to the div', ->
+          expect($(element).hasClass('ng-invalid')).toBe(true)

@@ -93,7 +93,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     # ================================
     datepickerClicked = false
     window.document.addEventListener 'click', (event) ->
-      unless datepickerClicked
+      if scope.calendarShown && ! datepickerClicked
         scope.toggleCalendar(false)
         scope.$apply()
       datepickerClicked = false

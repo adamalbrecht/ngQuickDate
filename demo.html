@@ -7,15 +7,19 @@
   </head>
   <body>
     <div ng-controller='DemoCtrl'>
-      <p>
-        <label>My Date</label>
-        <br/>
-        <datepicker ng-model='myDate'></datepicker>
-      </p>
+      <form name='date_form' novalidate>
+        <p>
+          <label>My Date</label>
+          <datepicker name='myDate' ng-model='myDate' required></datepicker>
+        </p>
+        <p>
+          <label>Some other field</label>
+          <input type='text' name='otherField' ng-model='otherField' required />
+        </p>
+      </form>
       <br/>
-      <p>
-        <strong>My Date:</strong> {{myDate | date:'medium'}}
-      </p>
+      <br/>
+      <a href='' ng-click='setToToday()'>Set Date to Today</a>
     </div>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <!-- <script type='text/javascript' src='vendor/sugar.js' /> -->
@@ -29,7 +33,15 @@
         });
       });
       app.controller("DemoCtrl", function($scope) {
-        $scope.myDate = new Date();
+        $scope.myDate = new Date(2013, 9, 5);
+        $scope.setToToday = function() { $scope.myDate = new Date(); }
+        $scope.$watch('myDate', function(newVal, oldVal) {
+          console.log("newVal is a " + typeof(newVal));
+          console.log("scope.myDate is a " + typeof($scope.myDate));
+          console.log("scope.myDate is a date? " + angular.isDate($scope.myDate));
+          console.log("form is valid? ", $scope.date_form.$valid)
+          console.log("form is dirty? ", $scope.date_form.$dirty)
+        });
       });
     </script>
   </body>

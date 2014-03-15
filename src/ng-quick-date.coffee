@@ -47,32 +47,28 @@ app.provider "ngQuickDateDefaults", ->
 
 app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickDateDefaults, $filter, $sce) ->
   restrict: "E"
-  require: "ngModel"
+  require: "?ngModel"
   scope:
     dateFilter: '=?'
-    ngModel: "="
     onChange: "&"
+    required: '@'
+    dateValue: '=ngModel'
 
   replace: true
-  link: (scope, element, attrs, ngModel) ->
-    debug = attrs.debug && attrs.debug.length
-
+  link: (scope, element, attrs, ngModelCtrl) ->
     # INITIALIZE VARIABLES
     # ================================
     initialize = ->
-      scope.toggleCalendar(false)
-      scope.weeks = []
-      scope.inputDate = null
-
-      if typeof(scope.ngModel) == 'string'
-        scope.ngModel = parseDateString(scope.ngModel)
-
+      setConfigOptions() # Setup configuration variables
+      scope.toggleCalendar(false) # Make sure it is closed initially
+      scope.weeks = [] # Nested Array of visible weeks / days in the popup
+      scope.inputDate = null # Date inputted into the date text input field
+      scope.inputTime = null # Time inputted into the time text input field
+      scope.invalid = true
       if typeof(attrs.initValue) == 'string'
-        scope.ngModel = parseDateString(attrs.initValue)
-
-      setConfigOptions()
-      setInputDateFromModel()
-      setCalendarDateFromModel()
+        ngModelCtrl.$setViewValue(attrs.initValue)
+      setCalendarDate(scope.dateValue)
+      refreshView()
 
     setConfigOptions = ->
       for key, value of ngQuickDateDefaults
@@ -92,6 +88,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     # VIEW SETUP
     # ================================
     datepickerClicked = false
+    tempSelectedDate = undefined
     window.document.addEventListener 'click', (event) ->
       unless datepickerClicked
         scope.toggleCalendar(false)
@@ -103,22 +100,34 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
 
     # SCOPE MANIPULATION
     # ================================
-    setInputDateFromModel = ->
-      if scope.ngModel
-        scope.inputDate = $filter('date')(scope.ngModel, scope.dateFormat)
-        scope.inputTime = $filter('date')(scope.ngModel, scope.timeFormat)
+    # Refresh the calendar, the input dates, and the button date
+    # Called on initialize and on $render
+    refreshView = ->
+      date = if ngModelCtrl.$modelValue then new Date(ngModelCtrl.$modelValue) else null
+      setupCalendarView()
+      setInputFieldValues(date)
+      scope.mainButtonStr = if date then $filter('date')(date, scope.labelFormat) else scope.placeholder
+      scope.invalid = ngModelCtrl.$invalid
+
+
+    # Set the values used in the 2 input fields
+    # Called by refreshView method
+    setInputFieldValues = (val) ->
+      if val?
+        scope.inputDate = $filter('date')(val, scope.dateFormat)
+        scope.inputTime = $filter('date')(val, scope.timeFormat)
       else
         scope.inputDate = null
         scope.inputTime = null
 
-    setCalendarDateFromModel = ->
-      d = if scope.ngModel then new Date(scope.ngModel) else new Date()
+    setCalendarDate = (val=null) ->
+      d = if val? then new Date(val) else new Date()
       if (d.toString() == "Invalid Date")
         d = new Date()
       d.setDate(1)
       scope.calendarDate = new Date(d)
 
-    setCalendarRows = ->
+    setupCalendarView = ->
       offset = scope.calendarDate.getDay()
       daysInMonth = getDaysInMonth(scope.calendarDate.getFullYear(), scope.calendarDate.getMonth())
       numRows = Math.ceil((offset + daysInMonth) / 7)
@@ -134,7 +143,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
             d.setHours(time[0] || 0)
             d.setMinutes(time[1] || 0)
             d.setSeconds(time[2] || 0)
-          selected = scope.ngModel && d && datesAreEqual(d, scope.ngModel)
+          selected = ngModelCtrl.$modelValue && d && datesAreEqual(d, ngModelCtrl.$modelValue)
           today = datesAreEqual(d, new Date())
           weeks[row].push({
             date: d
@@ -146,6 +155,35 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
           curDate.setDate(curDate.getDate() + 1)
 
       scope.weeks = weeks
+
+    # PARSERS AND FORMATTERS
+    # =================================
+    # When the model is set from within the datepicker, this will be run
+    # before passing it to the model.
+    ngModelCtrl.$parsers.push((viewVal) ->
+      if scope.required && !viewVal?
+        ngModelCtrl.$setValidity('required', false);
+        null
+      else if angular.isDate(viewVal)
+        ngModelCtrl.$setValidity('required', true);
+        viewVal
+      else if angular.isString(viewVal)
+        ngModelCtrl.$setValidity('required', true);
+        scope.parseDateFunction(viewVal)
+      else
+        null
+    )
+
+    # When the model is set from outside the datepicker, this will be run
+    # before passing it to the datepicker
+    ngModelCtrl.$formatters.push((modelVal) ->
+      if angular.isDate(modelVal)
+        modelVal
+      else if angular.isString(modelVal)
+        scope.parseDateFunction(modelVal)
+      else
+        undefined
+    )
 
     # HELPER METHODS
     # =================================
@@ -172,35 +210,31 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       return false unless d1 && d2
       parseInt(d1.getTime() / 60000) == parseInt(d2.getTime() / 60000)
 
+    ngModelCtrl.$render = ->
+      refreshView()
+
+
 
     getDaysInMonth = (year, month) ->
       [31, (if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) then 29 else 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 
     # DATA WATCHES
     # ==================================
-    scope.$watch('ngModel', (newVal, oldVal) ->
+    #
+    scope.$watch('dateValue', (newVal, oldVal) ->
       if newVal != oldVal
-        setInputDateFromModel()
-        setCalendarDateFromModel()
-        if scope.onChange and !datesAreEqualToMinute(newVal, oldVal)
-          scope.onChange()
+        setCalendarDate(newVal)
+        refreshView()
     )
-
-    scope.$watch('calendarDate', (newVal, oldVal) ->
-      if (newVal != oldVal)
-        setCalendarRows()
-    )
+    ngModelCtrl.$viewChangeListeners.unshift ->
+      if scope.onChange
+        scope.onChange()
 
     scope.$watch('calendarShown', (newVal, oldVal) ->
         dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0]
         dateInput.select()
     )
 
-
-    # VIEW HELPERS
-    # ==================================
-    scope.mainButtonStr = ->
-      if scope.ngModel then $filter('date')(scope.ngModel, scope.labelFormat) else scope.placeholder
 
     # VIEW ACTIONS
     # ==================================
@@ -210,16 +244,16 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       else
         scope.calendarShown = not scope.calendarShown
 
-    scope.setDate = (date, closeCalendar=true) ->
-      changed = (!scope.ngModel && date) || (scope.ngModel && !date) || (date.getTime() != stringToDate(scope.ngModel).getTime())
+    scope.selectDate = (date, closeCalendar=true) ->
+      changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() != ngModelCtrl.$viewValue.getTime()))
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
-      scope.ngModel = date
+      ngModelCtrl.$setViewValue(date)
       if closeCalendar
         scope.toggleCalendar(false)
       true
 
-    scope.setDateFromInput = (closeCalendar=false) ->
+    scope.selectDateFromInput = (closeCalendar=false) ->
       try
         tmpDate = parseDateString(scope.inputDate)
         if !tmpDate
@@ -230,8 +264,8 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
           if !tmpDateAndTime
             throw 'Invalid Time'
           tmpDate = tmpDateAndTime
-        unless datesAreEqualToMinute(scope.ngModel, tmpDate)
-          if !scope.setDate(tmpDate, false)
+        unless datesAreEqualToMinute(ngModelCtrl.$viewValue, tmpDate)
+          if !scope.selectDate(tmpDate, false)
             throw 'Invalid Date'
 
         if closeCalendar
@@ -256,35 +290,33 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       true
 
     scope.nextMonth = ->
-      scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1))
+      setCalendarDate(new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1)))
+      refreshView()
     scope.prevMonth = ->
-      scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1))
+      setCalendarDate(new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1)))
+      refreshView()
 
     scope.clear = ->
-      scope.setDate(null, true)
-
+      scope.selectDate(null, true)
 
     initialize()
-    setCalendarRows()
-
-    if debug
-      console.log "quick date scope:", scope
+    setupCalendarView()
 
   # TEMPLATE
   # ================================================================
   template: """
             <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>
+              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' ng-class="{'ng-invalid': invalid}" title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputDateErr}" on-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' ng-class="{'ng-invalid': inputDateErr}" name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='quickdate-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputTimeErr}" on-tab='onTimeInputTab()'>
+                    <input class='quickdate-time-input' ng-class="{'ng-invalid': inputTimeErr}" name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onTimeInputTab()'>
                   </div>
                 </div>
                 <div class='quickdate-calendar-header'>
@@ -300,7 +332,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
                   </thead>
                   <tbody>
                     <tr ng-repeat='week in weeks'>
-                      <td ng-mousedown='setDate(day.date)' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td ng-mousedown='selectDate(day.date, true, true)' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>

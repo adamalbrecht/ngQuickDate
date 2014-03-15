@@ -1,4 +1,4 @@
-.quickdate{display:inline-block;vertical-align:bottom;font-size:15px;font-family:'Helvetica Neue',Helvetica,Ariel,sans-serif;}
+.quickdate{display:inline-block;vertical-align:bottom;font-size:15px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;}
 .quickdate input,.quickdate select{font-size:13px}
 .quickdate-button{background:#fff;color:#333;border:solid 1px #ccc;box-shadow:outset 0 1px 1px rgba(0,0,0,0.075);border-radius:4px;padding:4px 8px;display:inline-block;text-decoration:none;}
 .quickdate-button:hover{text-decoration:underline;}

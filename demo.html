@@ -35,13 +35,6 @@
       app.controller("DemoCtrl", function($scope) {
         $scope.myDate = new Date(2013, 9, 5);
         $scope.setToToday = function() { $scope.myDate = new Date(); }
-        $scope.$watch('myDate', function(newVal, oldVal) {
-          console.log("newVal is a " + typeof(newVal));
-          console.log("scope.myDate is a " + typeof($scope.myDate));
-          console.log("scope.myDate is a date? " + angular.isDate($scope.myDate));
-          console.log("form is valid? ", $scope.date_form.$valid)
-          console.log("form is dirty? ", $scope.date_form.$dirty)
-        });
       });
     </script>
   </body>

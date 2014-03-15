@@ -57,8 +57,7 @@
         scope: {
           dateFilter: '=?',
           onChange: "&",
-          required: '@',
-          dateValue: '=ngModel'
+          required: '@'
         },
         replace: true,
         link: function(scope, element, attrs, ngModelCtrl) {
@@ -73,7 +72,7 @@
             if (typeof attrs.initValue === 'string') {
               ngModelCtrl.$setViewValue(attrs.initValue);
             }
-            setCalendarDate(scope.dateValue);
+            setCalendarDate();
             return refreshView();
           };
           setConfigOptions = function() {
@@ -222,19 +221,16 @@
             }
             return parseInt(d1.getTime() / 60000) === parseInt(d2.getTime() / 60000);
           };
-          ngModelCtrl.$render = function() {
-            return refreshView();
-          };
           getDaysInMonth = function(year, month) {
             return [31, ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
           };
-          scope.$watch('dateValue', function(newVal, oldVal) {
-            if (newVal !== oldVal) {
-              setCalendarDate(newVal);
-              return refreshView();
-            }
-          });
+          ngModelCtrl.$render = function() {
+            setCalendarDate(ngModelCtrl.$viewValue);
+            return refreshView();
+          };
           ngModelCtrl.$viewChangeListeners.unshift(function() {
+            setCalendarDate(ngModelCtrl.$viewValue);
+            refreshView();
             if (scope.onChange) {
               return scope.onChange();
             }

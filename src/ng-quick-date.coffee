@@ -52,7 +52,6 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
     dateFilter: '=?'
     onChange: "&"
     required: '@'
-    dateValue: '=ngModel'
 
   replace: true
   link: (scope, element, attrs, ngModelCtrl) ->
@@ -67,7 +66,7 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       scope.invalid = true
       if typeof(attrs.initValue) == 'string'
         ngModelCtrl.$setViewValue(attrs.initValue)
-      setCalendarDate(scope.dateValue)
+      setCalendarDate()
       refreshView()
 
     # Copy various configuration options from the default configuration to scope
@@ -217,22 +216,22 @@ app.directive "datepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQuickD
       return false unless d1 && d2
       parseInt(d1.getTime() / 60000) == parseInt(d2.getTime() / 60000)
 
-    ngModelCtrl.$render = ->
-      refreshView()
-
     getDaysInMonth = (year, month) ->
       [31, (if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) then 29 else 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 
     # DATA WATCHES
     # ==================================
-    scope.$watch('dateValue', (newVal, oldVal) ->
-      if newVal != oldVal
-        setCalendarDate(newVal)
-        refreshView()
-    )
+    
+    # Called when the model is updated from outside the datepicker
+    ngModelCtrl.$render = ->
+      setCalendarDate(ngModelCtrl.$viewValue)
+      refreshView()
 
-    # Listen for changes to the view and call the onChange function accordingly
+    # Called when the model is updated from inside the datepicker,
+    # either by clicking a calendar date, setting an input, etc
     ngModelCtrl.$viewChangeListeners.unshift ->
+      setCalendarDate(ngModelCtrl.$viewValue)
+      refreshView()
       if scope.onChange
         scope.onChange()
 

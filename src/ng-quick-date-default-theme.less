@@ -1,0 +1,126 @@
+@popup-font-color: #333;
+@button-bg-color: #fff;
+@button-text-color: #333;
+@button-border-color: #ccc;
+@popup-bg-color: #fafafa;
+@popup-border-color: #ddd;
+@calendar-bg-color: #fff;
+@selected-date-bg-color: #b0ccde;
+@today-font-color: #B58922;
+
+.quickdate {
+  display: inline-block;
+  vertical-align: bottom;
+  font-size: 15px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  input, select {
+    font-size: 13px;
+  }
+}
+
+.quickdate-button {
+  background: @button-bg-color;
+  color: @button-text-color;
+  border: solid 1px @button-border-color;
+  box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: inline-block;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    i {
+      text-decoration: none;
+    }
+  }
+  i {
+    padding-right: 4px;
+  }
+}
+
+
+.quickdate-popup {
+  color: @popup-font-color;
+  font-size: 15px;
+  background-color: @popup-bg-color;
+  border: solid 1px @popup-border-color;
+  border-radius: 3px;
+  -webkit-box-shadow: 0px 10px 30px rgba(25, 25, 25, 0.92);
+  -moz-box-shadow: 0px 10px 30px rgba(25, 25, 25, 0.92);
+  box-shadow: 0px 10px 30px rgba(25, 25, 25, 0.92);
+}
+
+.quickdate-action-link:visited, .quickdate-action-link:hover {
+  color: @popup-font-color;
+}
+
+.quickdate-next-month i {
+  padding-left:10px;
+}
+.quickdate-prev-month i {
+  padding-right:10px;
+}
+
+table.quickdate-calendar {
+  border: solid 1px #ccc;
+  background-color: @calendar-bg-color;
+
+  th, td {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+  }
+
+  td {
+    &:hover {
+      background-color: darken(@calendar-bg-color, 10%);
+    }
+    &.other-month {
+      background-color: darken(@popup-bg-color, 12%);
+      color: lighten(@popup-font-color, 30%);
+      &:hover {
+        background-color: darken(@popup-bg-color, 20%);
+      }
+    }
+    &.disabled-date {
+      background-color: inherit;
+      color: desaturate(lighten(@popup-font-color, 80%), 50%);
+      &:hover {
+        background-color: inherit;
+        cursor: default;
+      }
+    }
+    &.selected {
+      background-color: @selected-date-bg-color;
+      font-weight: bold;
+    }
+    &.is-today {
+      color: @today-font-color;
+      font-weight: bold;
+      &.disabled-date {
+        color: lighten(desaturate(@today-font-color, 75%), 15%);
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+.quickdate-popup-footer {
+  margin: 3px 1px 0;
+}
+
+.quickdate-clear {
+  display: inline-block;
+  padding: 2px 4px;
+  background-color: @button-bg-color;
+  color: @button-text-color;
+  border: solid 1px @button-border-color;
+  box-shadow: outset 0 1px 1px rgba(0, 0, 0, 0.075);
+  border-radius: 4px;
+  text-decoration: none;
+  &:hover {
+    background-color: darken(@button-bg-color, 5%);
+  }
+}
+
+

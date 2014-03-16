@@ -18,18 +18,19 @@ module.exports = function(grunt) {
         }
       }
     },
-    stylus: {
+    less: {
       compile: {
         files: {
-          "dist/ng-quick-date.css": ["src/ng-quick-date.styl"],
-          "dist/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.styl"]
+          "dist/ng-quick-date.css": ["src/ng-quick-date.less"],
+          "dist/ng-quick-date-default-theme.css": ["src/ng-quick-date-default-theme.less"],
+          "dist/ng-quick-date-plus-default-theme.css": ["src/ng-quick-date.less", "src/ng-quick-date-default-theme.less"]
         }
       }
     },
     watch: {
       scripts: {
-        files: ['**/*.coffee', '**/*.styl'],
-        tasks: ['coffee', 'uglify', 'stylus'],
+        files: ['**/*.coffee', '**/*.less'],
+        tasks: ['coffee', 'uglify', 'less'],
         options: {
           debounceDelay: 250,
         },
@@ -39,8 +40,8 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-stylus');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['coffee', 'uglify', 'stylus', 'watch']);
+  grunt.registerTask('default', ['coffee', 'uglify', 'less', 'watch']);
 };

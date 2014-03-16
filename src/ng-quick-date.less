@@ -1,11 +1,17 @@
+@error-color: #DD3B30;
+
+// Basics
 .quickdate {
   display: inline-block;
   position: relative;
 }
-.quickdate-button div,
-.quickdate-action-link div {
-  display: inline;
+
+.quickdate-button, .quickdate-action-link {
+  div {
+    display: inline
+  }
 }
+
 .quickdate-popup {
   z-index: 10;
   background-color: #fff;
@@ -15,9 +21,10 @@
   display: none;
   position: absolute;
   padding: 5px;
-}
-.quickdate-popup.open {
-  display: block;
+
+  &.open {
+    display: block;
+  }
 }
 .quickdate-close {
   position: absolute;
@@ -27,14 +34,14 @@
   font-size: 110%;
   margin-top: -6px;
   text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:hover, &:visited {
+    color: #333;
+  }
 }
-.quickdate-close:hover {
-  text-decoration: underline;
-}
-.quickdate-close:hover,
-.quickdate-close:visited {
-  color: #333;
-}
+
 .quickdate-calendar-header {
   display: block;
   padding: 2px 0;
@@ -44,47 +51,58 @@
 .quickdate-month {
   display: inline-block;
 }
+
 a.quickdate-prev-month {
   float: left;
 }
 a.quickdate-next-month {
   float: right;
 }
+
 .quickdate-text-inputs {
   text-align: left;
   margin-bottom: 5px;
 }
+
 .quickdate-input-wrapper {
   width: 48%;
   display: inline-block;
 }
-input.quickdate-date-input,
-input.quickdate-time-input {
+
+input.quickdate-date-input, input.quickdate-time-input {
   width: 100px;
   margin: 0;
   height: auto;
   padding: 2px 3px;
 }
+
 table.quickdate-calendar {
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;
   margin-top: 5px;
+
+  th, td {
+    padding: 5px;
+  }
+
+  td {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
-table.quickdate-calendar th,
-table.quickdate-calendar td {
-  padding: 5px;
-}
-table.quickdate-calendar td:hover {
-  cursor: pointer;
-}
+
 .quickdate-popup-footer {
   text-align: right;
   display: block;
 }
-.quickdate input.ng-invalid {
-  border: 1px solid #dd3b30;
-}
-.quickdate input.ng-invalid:focus {
-  outline-color: #dd3b30;
+
+.quickdate {
+  input.ng-invalid {
+    border: 1px solid @error-color;
+  }
+  input.ng-invalid:focus {
+    outline-color: @error-color;
+  }
 }

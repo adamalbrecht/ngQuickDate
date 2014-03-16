@@ -8,7 +8,7 @@ describe "ngQuickDate", ->
     describe 'Given a datepicker element with a placeholder', ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
-        element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
       )
 
       it 'shows the proper text in the button based on the value of the ng-model', ->
@@ -43,7 +43,7 @@ describe "ngQuickDate", ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = '2013-09-01'
-        element = $compile("<datepicker ng-model='myDate' disable-timepicker='true'/>")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' disable-timepicker='true'/>")(scope)
         scope.$digest()
       )
 
@@ -58,7 +58,7 @@ describe "ngQuickDate", ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(2013, 8, 1) # September 1 (months are 0-indexed)
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
         scope.$digest()
       )
 
@@ -125,7 +125,7 @@ describe "ngQuickDate", ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
-        element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
         scope.$digest()
       )
 
@@ -173,7 +173,7 @@ describe "ngQuickDate", ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date()
-        element = $compile("<datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker placeholder='Choose a Date' ng-model='myDate' />")(scope)
         scope.$apply()
       )
 
@@ -191,7 +191,7 @@ describe "ngQuickDate", ->
       beforeEach angular.mock.inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'))
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
         scope.$apply()
         $timeInput = $(element).find('.quickdate-time-input')
       )
@@ -215,7 +215,7 @@ describe "ngQuickDate", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(Date.parse('11/1/2013 1:00 PM'))
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
         scope.$apply()
       ))
 
@@ -230,7 +230,7 @@ describe "ngQuickDate", ->
     describe "Given a datepicker with a valid init-value attribute", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
-        element = $compile("<datepicker ng-model='someDate' init-value='2/1/2014 2:00 PM' />")(scope)
+        element = $compile("<quick-datepicker ng-model='someDate' init-value='2/1/2014 2:00 PM' />")(scope)
         scope.$apply()
       ))
 
@@ -249,7 +249,7 @@ describe "ngQuickDate", ->
           scope.myOtherVariable = param
 
         scope.myDate = new Date(2013, 5, 10)
-        element = $compile("<datepicker ng-model='myDate' on-change='myMethod(\"hello!\")' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' on-change='myMethod(\"hello!\")' />")(scope)
         scope.$apply()
       ))
 
@@ -285,7 +285,7 @@ describe "ngQuickDate", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(2014, 2, 17) # March 17th, 2014
-        element = $compile("<datepicker ng-model='myDate' date-format='d/M/yyyy' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' date-format='d/M/yyyy' />")(scope)
         scope.$digest()
       ))
       it 'should show the date format properly in the date input', ->
@@ -297,7 +297,7 @@ describe "ngQuickDate", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(2014, 0, 1)
-        element = $compile("<datepicker ng-model='myDate' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
       ))
       it 'should have no disabled dates', ->
         expect($(element).find('.disabled-date').length).toEqual(0)
@@ -309,7 +309,7 @@ describe "ngQuickDate", ->
         scope.onlyWeekdays = (d) ->
           dayIndex = d.getDay()
           (dayIndex != 0) && (dayIndex != 6)
-        element = $compile("<datepicker ng-model='myDate' date-filter='onlyWeekdays' />")(scope)
+        element = $compile("<quick-datepicker ng-model='myDate' date-filter='onlyWeekdays' />")(scope)
         scope.$apply()
       ))
 
@@ -344,7 +344,7 @@ describe "ngQuickDate", ->
       beforeEach(inject(($compile, $rootScope) ->
         scope = $rootScope
         scope.myDate = new Date(2014, 0, 1) # Jan 1
-        form = $compile("<form name='myForm' novalidate><datepicker ng-model='myDate' name='myDatepicker' required /></datepicker></form>")(scope)
+        form = $compile("<form name='myForm' novalidate><quick-datepicker ng-model='myDate' name='myDatepicker' required /></quick-datepicker></form>")(scope)
         scope.$apply()
         element = $(form).find('.quickdate')
       ))

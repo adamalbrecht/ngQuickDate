@@ -49,7 +49,7 @@
     };
   });
 
-  app.directive("datepicker", [
+  app.directive("quickDatepicker", [
     'ngQuickDateDefaults', '$filter', '$sce', function(ngQuickDateDefaults, $filter, $sce) {
       return {
         restrict: "E",

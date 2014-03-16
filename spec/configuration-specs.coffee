@@ -15,7 +15,7 @@ describe "ngQuickDate", ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
           scope = $rootScope
           scope.myDate = new Date(2013, 7, 1) # August 1 (months are 0-indexed)
-          element = $compile("<datepicker ng-model='myDate' />")(scope)
+          element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
           scope.$digest()
         ))
         it 'should be labeled in the same format as it was configured', ->
@@ -80,7 +80,7 @@ describe "ngQuickDate", ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
           scope = $rootScope
           scope.myDate = new Date()
-          element = $compile("<datepicker icon-class='icon-calendar' ng-model='myDate' />")($rootScope)
+          element = $compile("<quick-datepicker icon-class='icon-calendar' ng-model='myDate' />")($rootScope)
           scope.$digest()
 
         it 'does not display the inline class and not the configured default html in the button', ->
@@ -116,7 +116,7 @@ describe "ngQuickDate", ->
       describe 'and given a datepicker with timepicker re-enabled', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
           $rootScope.myDate = new Date(2013, 10, 1)
-          element = $compile("<datepicker ng-model='myDate' disable-timepicker='false' />")(scope)
+          element = $compile("<quick-datepicker ng-model='myDate' disable-timepicker='false' />")(scope)
           $rootScope.$digest()
         ))
         it 'shows the timepicker input', ->
@@ -174,7 +174,7 @@ describe "ngQuickDate", ->
         beforeEach(inject(($compile, $rootScope) ->
           scope = $rootScope
           scope.myDate = new Date()
-          element = $compile("<datepicker ng-model='myDate' disable-clear-button='false' />")(scope)
+          element = $compile("<quick-datepicker ng-model='myDate' disable-clear-button='false' />")(scope)
           scope.$digest()
         ))
 
@@ -189,7 +189,7 @@ describe "ngQuickDate", ->
       describe 'and given a basic datepicker with a null model', ->
         beforeEach(inject(($compile, $rootScope) ->
           scope.myDate = null
-          element = $compile("<datepicker ng-model='myDate' />")(scope)
+          element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
           scope.$digest()
         ))
 
@@ -207,8 +207,8 @@ describe "ngQuickDate", ->
 buildBasicDatepicker = ($compile, scope, date=new Date(), debug=false) ->
   scope.myDate = date
   if debug
-    element = $compile("<datepicker debug='true' ng-model='myDate' />")(scope)
+    element = $compile("<quick-datepicker debug='true' ng-model='myDate' />")(scope)
   else
-    element = $compile("<datepicker ng-model='myDate' />")(scope)
+    element = $compile("<quick-datepicker ng-model='myDate' />")(scope)
   scope.$digest()
   element

@@ -97,6 +97,19 @@ describe "fdQuickMoment", ->
 
     describe 'Given that it is configured without the timepicker', ->
       beforeEach(module('fdQuickMoment', (fdQuickMomentDefaultsProvider) ->
+        fdQuickMomentDefaultsProvider.set('disableDateinput', true)
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, moment(new Date(Date.parse('11/1/2013 3:59 pm'))))
+        ))
+        it 'does not show the date input', ->
+          expect($(element).find('.quickmoment-input-wrapper:first').hasClass('ng-hide')).toEqual(true)
+
+
+    describe 'Given that it is configured without the timepicker', ->
+      beforeEach(module('fdQuickMoment', (fdQuickMomentDefaultsProvider) ->
         fdQuickMomentDefaultsProvider.set('disableTimepicker', true)
         null
       ))

@@ -23,6 +23,7 @@ app.provider "fdQuickMomentDefaults", ->
       nextLinkHtml: 'Next &rarr;'
       prevLinkHtml: '&larr; Prev'
       disableTimepicker: false
+      disableDateinput: false
       disableClearButton: false
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
@@ -284,9 +285,9 @@ app.directive "momentpicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQu
               <div class='quickmoment-popup' ng-class='{open: calendarShown}'>
                 <a href='' tabindex='-1' class='quickmoment-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickmoment-text-inputs'>
-                  <div class='quickmoment-input-wrapper'>
+                  <div class='quickmoment-input-wrapper' ng-hide='disableDateinput'>
                     <label>Date</label>
-                    <input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickmoment-error': inputDateErr}" on-tab='onDateInputTab()' />
+                    <input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'quickmoment-error': inputDateErr}" on-tab='onDateInputTab()'/>
                   </div>
                   <div class='quickmoment-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>

@@ -18,6 +18,7 @@
         disableTimepicker: false,
         disableClearButton: false,
         defaultTime: null,
+        defaultCalendarDate: null,
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
         parseDateFunction: function(str) {
@@ -126,11 +127,11 @@
             }
           };
           setCalendarDate = function(val) {
-            var d;
+            var d, _ref;
             if (val == null) {
               val = null;
             }
-            d = val != null ? new Date(val) : new Date();
+            d = val != null ? new Date(val) : (_ref = stringToDate(scope.defaultCalendarDate)) != null ? _ref : new Date();
             if (d.toString() === "Invalid Date") {
               d = new Date();
             }

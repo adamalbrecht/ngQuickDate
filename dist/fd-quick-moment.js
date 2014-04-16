@@ -131,7 +131,7 @@
             if (d === void 0 || !d.isValid()) {
               d = moment().tz(scope.timezone);
             }
-            return scope.calendarDate = d.startOf('month');
+            return scope.calendarDate = d.startOf('month').tz(scope.timezone);
           };
           setCalendarRows = function() {
             var curDate, d, day, daysInMonth, numRows, offset, row, selected, time, today, weeks, _i, _j, _ref;
@@ -139,12 +139,12 @@
             daysInMonth = scope.calendarDate.daysInMonth();
             numRows = Math.ceil((offset + daysInMonth) / 7);
             weeks = [];
-            curDate = moment(scope.calendarDate);
+            curDate = moment(scope.calendarDate).tz(scope.timezone);
             curDate.add('d', offset * -1);
             for (row = _i = 0, _ref = numRows - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; row = 0 <= _ref ? ++_i : --_i) {
               weeks.push([]);
               for (day = _j = 0; _j <= 6; day = ++_j) {
-                d = moment(curDate);
+                d = moment(curDate).tz(scope.timezone);
                 if (scope.defaultTime) {
                   time = scope.defaultTime.split(':');
                   d.hours(time[0] || 0);
@@ -295,10 +295,10 @@
             return true;
           };
           scope.nextMonth = function() {
-            return scope.calendarDate = moment(scope.calendarDate).add('M', 1);
+            return scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).add('M', 1);
           };
           scope.prevMonth = function() {
-            return scope.calendarDate = moment(scope.calendarDate).subtract('M', 1);
+            return scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).subtract('M', 1);
           };
           scope.clear = function() {
             return scope.setDate(null, true);

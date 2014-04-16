@@ -122,19 +122,19 @@ app.directive "momentpicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQu
       d = if scope.ngModel then moment(scope.ngModel).tz(scope.timezone) else moment().tz(scope.timezone)
       if (d == undefined || !d.isValid())
         d = moment().tz(scope.timezone)
-      scope.calendarDate = d.startOf('month')
+      scope.calendarDate = d.startOf('month').tz(scope.timezone)
 
     setCalendarRows = ->
       offset = scope.calendarDate.day()
       daysInMonth = scope.calendarDate.daysInMonth()
       numRows = Math.ceil((offset + daysInMonth) / 7)
       weeks = []
-      curDate = moment(scope.calendarDate)
+      curDate = moment(scope.calendarDate).tz(scope.timezone)
       curDate.add('d', offset * -1)
       for row in [0..(numRows-1)]
         weeks.push([])
         for day in [0..6]
-          d = moment(curDate)
+          d = moment(curDate).tz(scope.timezone)
           if scope.defaultTime
             time = scope.defaultTime.split(':')
             d.hours(time[0] || 0)
@@ -263,9 +263,9 @@ app.directive "momentpicker", ['fdQuickMomentDefaults', '$filter', '$sce', (fdQu
       true
 
     scope.nextMonth = ->
-      scope.calendarDate = moment(scope.calendarDate).add('M', 1)
+      scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).add('M', 1)
     scope.prevMonth = ->
-      scope.calendarDate = moment(scope.calendarDate).subtract('M', 1)
+      scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).subtract('M', 1)
 
     scope.clear = ->
       scope.setDate(null, true)

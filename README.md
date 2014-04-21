@@ -20,7 +20,7 @@ Or add it to your bower.json file:
 
 ```javascript
 dependencies: {
-  "ngQuickDate": "~1.2.0"
+  "ngQuickDate": "~1.3.0"
 }
 ```
 

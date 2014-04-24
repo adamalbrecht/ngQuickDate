@@ -255,6 +255,10 @@
               closeCalendar = true;
             }
             changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() !== ngModelCtrl.$viewValue.getTime()));
+
+			var tmpDate = $filter('date')(date, scope.dateFormat);
+			date = parseDateString('' + tmpDate + ' ' + scope.inputTime);
+
             if (typeof scope.dateFilter === 'function' && !scope.dateFilter(date)) {
               return false;
             }

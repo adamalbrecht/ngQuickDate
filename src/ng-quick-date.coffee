@@ -106,7 +106,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
 
     # Refresh the calendar, the input dates, and the button date
     refreshView = ->
-      date = if ngModelCtrl.$modelValue then new Date(ngModelCtrl.$modelValue) else null
+      date = if ngModelCtrl.$modelValue then parseDateString(ngModelCtrl.$modelValue) else null
       setupCalendarView()
       setInputFieldValues(date)
       scope.mainButtonStr = if date then $filter('date')(date, scope.labelFormat) else scope.placeholder

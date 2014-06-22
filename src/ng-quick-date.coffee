@@ -168,13 +168,13 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     # before passing it to the model.
     ngModelCtrl.$parsers.push((viewVal) ->
       if scope.required && !viewVal?
-        ngModelCtrl.$setValidity('required', false);
+        ngModelCtrl.$setValidity('required', false)
         null
       else if angular.isDate(viewVal)
-        ngModelCtrl.$setValidity('required', true);
+        ngModelCtrl.$setValidity('required', true)
         viewVal
       else if angular.isString(viewVal)
-        ngModelCtrl.$setValidity('required', true);
+        ngModelCtrl.$setValidity('required', true)
         scope.parseDateFunction(viewVal)
       else
         null
@@ -208,8 +208,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       if compareTimes
         (d1 - d2) == 0
       else
-        d1 = stringToDate(d1);
-        d2 = stringToDate(d2);
+        d1 = stringToDate(d1)
+        d2 = stringToDate(d2)
         d1 && d2 && (d1.getYear() == d2.getYear()) && (d1.getMonth() == d2.getMonth()) && (d1.getDate() == d2.getDate())
 
     datesAreEqualToMinute = (d1, d2) ->
@@ -221,7 +221,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
 
     # DATA WATCHES
     # ==================================
-    
+
     # Called when the model is updated from outside the datepicker
     ngModelCtrl.$render = ->
       setCalendarDate(ngModelCtrl.$viewValue)

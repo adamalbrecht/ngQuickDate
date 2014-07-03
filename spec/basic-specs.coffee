@@ -375,3 +375,48 @@ describe "ngQuickDate", ->
 
         it 'should add ng-invalid to the div', ->
           expect($(element).hasClass('ng-invalid')).toBe(true)
+
+
+    describe "Given a datepicker set to Jul 3 2014 with minDate and maxDate set to a scope variable", ->
+      form = undefined
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.myDate = new Date(2014, 6, 3) # Jan 1
+        scope.minDate = null
+        scope.maxDate = null
+        element = $compile("<quick-datepicker ng-model='myDate' min-date='minDate' max-date='maxDate' />")(scope)
+        scope.$apply()
+      ))
+
+      describe "and setting minDate to Jul 10 2014", ->
+        beforeEach ->
+          scope.minDate = new Date(2014, 6, 10)
+          scope.$apply()
+
+        it 'should advance model value up to Jul 10 2014', ->
+          expect(scope.minDate).toEqual(new Date(2014, 6, 10))
+          expect(scope.myDate).toEqual(new Date(2014, 6, 10))
+
+        it 'should disable dates before Jul 10', ->
+          $td1 = $(element).find('.quickdate-calendar tr:nth-child(2) td:nth-child(4)')
+          $td2 = $(element).find('.quickdate-calendar tr:nth-child(2) td:nth-child(5)')
+
+          expect($td1.hasClass('disabled-date')).toBeTruthy()
+          expect($td2.hasClass('disabled-date')).toBeFalsy()
+
+      describe "and setting maxDate to Jul 1 2014", ->
+        beforeEach ->
+          scope.maxDate = new Date(2014, 6, 1)
+          scope.$apply()
+
+        it 'should retreat model value up to Jul 1 2014', ->
+          expect(scope.maxDate).toEqual(new Date(2014, 6, 1))
+          expect(scope.myDate).toEqual(new Date(2014, 6, 1))
+
+        it 'should disable dates after Jul 1', ->
+          $td1 = $(element).find('.quickdate-calendar tr:nth-child(1) td:nth-child(4)')
+          $td2 = $(element).find('.quickdate-calendar tr:nth-child(1) td:nth-child(3)')
+
+          expect($td1.hasClass('disabled-date')).toBeTruthy()
+          expect($td2.hasClass('disabled-date')).toBeFalsy()
+

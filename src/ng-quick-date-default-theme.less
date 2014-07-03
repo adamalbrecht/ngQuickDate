@@ -62,13 +62,25 @@
   padding-right:10px;
 }
 
+table.quickdate-calendar-wrapper {
+  width: 100%;
+}
+
+table.quickdate-calendar-weeks {
+  border: none;
+
+  td {
+    border: 1px solid #ccc;
+    background-color: @calendar-bg-color;  
+  }
+}
+
 table.quickdate-calendar {
-  border: solid 1px #ccc;
-  background-color: @calendar-bg-color;
+  border: none;
 
   th, td {
-    border-right: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
+    background-color: @calendar-bg-color;
+    border: 1px solid #ccc;
   }
 
   td {

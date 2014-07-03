@@ -59,11 +59,16 @@ There are a number of options that be configured inline with attributes. Here ar
 | hover-text           | null                | Hover text for button.                                                                      |
 | icon-class           | null                | If set, `<i class='some-class'></i>` will be prepended inside the button                    |
 | disable-timepicker   | false               | If true, the timepicker will be disabled and the default label format will be just the date |
+| disable-other        | false               | If true, dates from other months will be disabled in the calendar                           |
 | disable-clear-button | false               | If true, the clear button will be removed                                                   |
 | on-change            | null                | Set to a function that will be called when the date is changed                              |
 | default-time         | null                | Time that will be set when you click on a date on the calendar. Must be in 24-hour format.  |
 | init-value           | null                | Set the initial value of the date inline as a string. Will be immediately parsed and set as the value of your model.|
 | date-filter          | null                | Set to a function to enable/disable dates. Useful for disabling weekends, etc. [See more below](#date-filter-function) |
+| show-week-numbers    | false               | If true, show week numbers in the calendar.                                                 |
+| min-date             | null                | If set, denotes the minimum date allowed to be selected. Dates before minDate will be disabled |
+| max-date             | null                | If set, denotes the maximum date allowed to be selected. Dates after maxDate will be disabled |
+
 
 **Example:**
 

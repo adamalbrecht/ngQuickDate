@@ -14,7 +14,7 @@
       <form name='date_form' novalidate>
         <p>
           <label>My Date</label>
-          <quick-datepicker name='myDate' ng-model='myDate' required></quick-datepicker>
+          <quick-datepicker name='myDate' ng-model='myDate' min-date='minDate' max-date='maxDate' required></quick-datepicker>
         </p>
         <p>
           <label>Some other field</label>
@@ -23,22 +23,35 @@
       </form>
       <br/>
       <br/>
-      <a href='' ng-click='setToToday()'>Set Date to Today</a>
+      <a href='' ng-click='setToToday()'>Set Date to Today</a><br/>
+      <a href='' ng-click='setMinDate()'>Set Min Date To Today</a><br/>
+      <a href='' ng-click='setMaxDate()'>Set Max Date To Today</a><br/>
     </div>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <!-- <script type='text/javascript' src='vendor/sugar.js' /> -->
     <!-- <script type='text/javascript' src='vendor/date.js' /> -->
     <!-- <script type='text/javascript' src='bower_components/jquery/jquery.js' /> -->
-    <script type="text/javascript" src="dist/ng-quick-date.js"></script>
+    <script type='text/javascript' src='dist/ng-quick-date.js'></script>
     <script type='text/javascript'>
       var app = angular.module("ngQuickDateDemo", ["ngQuickDate"]);
       app.config(function(ngQuickDateDefaultsProvider) {
         return ngQuickDateDefaultsProvider.set({
+          showWeekNumbers: true,
+          disableTimepicker: true,
+          disableOther: true
         });
       });
       app.controller("DemoCtrl", function($scope) {
         $scope.myDate = null
-        $scope.setToToday = function() { $scope.myDate = new Date(); }
+        $scope.minDate = null
+        $scope.maxDate = null
+
+        var today = new Date();
+        today = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+        $scope.setToToday = function() { $scope.myDate = today; }
+        $scope.setMinDate = function() { $scope.minDate = today; }
+        $scope.setMaxDate = function() { $scope.maxDate = today; }
       });
     </script>
   </body>

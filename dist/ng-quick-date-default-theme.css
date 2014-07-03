@@ -47,14 +47,23 @@
 .quickdate-prev-month i {
   padding-right: 10px;
 }
-table.quickdate-calendar {
-  border: solid 1px #ccc;
+table.quickdate-calendar-wrapper {
+  width: 100%;
+}
+table.quickdate-calendar-weeks {
+  border: none;
+}
+table.quickdate-calendar-weeks td {
+  border: 1px solid #ccc;
   background-color: #ffffff;
+}
+table.quickdate-calendar {
+  border: none;
 }
 table.quickdate-calendar th,
 table.quickdate-calendar td {
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
 }
 table.quickdate-calendar td:hover {
   background-color: #e6e6e6;

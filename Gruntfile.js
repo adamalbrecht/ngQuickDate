@@ -35,9 +35,6 @@ module.exports = function(grunt) {
           debounceDelay: 250,
         },
       }
-    },
-    bump: {
-      files: ['package.json', 'bower.json']
     }
   });
 
@@ -45,7 +42,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-bump');
 
   grunt.registerTask('default', ['coffee', 'uglify', 'less', 'watch']);
 };

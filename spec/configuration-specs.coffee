@@ -10,7 +10,7 @@ describe "ngQuickDate", ->
         ngQuickDateDefaultsProvider.set('labelFormat', 'yyyy-MM-d')
         null
       ))
-      
+
       describe 'and given a basic datepicker', ->
         beforeEach(angular.mock.inject(($compile, $rootScope) ->
           scope = $rootScope
@@ -26,7 +26,7 @@ describe "ngQuickDate", ->
         ngQuickDateDefaultsProvider.set('dateFormat', 'yy-M-d')
         null
       ))
-        
+
       describe 'and given a basic datepicker', ->
         beforeEach angular.mock.inject ($compile, $rootScope) ->
           element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('1/1/2013 1:00 PM')))
@@ -180,6 +180,32 @@ describe "ngQuickDate", ->
 
         it 'should have a clear button', ->
           expect($(element).find('.quickdate-clear').hasClass('ng-hide')).toEqual(false)
+
+    describe 'Given that it is configured with day abbreviations', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('dayAbbreviations', ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"])
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date())
+        ))
+
+        it 'should render abbreviations', ->
+          expect($(element).find('.quickdate-calendar thead th').size()).toEqual(7)
+
+    describe 'Given that it is configured with duplicate day abbreviations', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('dayAbbreviations', ["S", "M", "T", "W", "T", "F", "S"])
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date())
+        ))
+
+        it 'should render abbreviations', ->
+          expect($(element).find('.quickdate-calendar thead th').size()).toEqual(7)
 
     xdescribe 'Given that a default time of 1:52 am is configured', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->

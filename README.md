@@ -88,8 +88,11 @@ app.config(function(ngQuickDateDefaultsProvider) {
 | all inline options  | see above table  | Note that they must be in camelCase form.                                                           |
 | buttonIconHtml      | null             | If you want to set a default button icon, set it to something like `<i class='icon-calendar'></i>`  |
 | closeButtonHtml     | 'X'              | By default, the close button is just an X character. You may set it to an icon similar to `buttonIconHtml` |
+| dateLabelHtml       | 'Date'           | By default, the date label is just text. You may set it to an icon or image.                   |
+| timeLabelHtml       | 'Time'           | By default, the time label is just text. You may set it to an icon or image.                   |
 | nextLinkHtml        | 'Next'           | By default, the next month link is just text. You may set it to an icon or image.                   |
 | prevLinkHtml        | 'Prev'           | By default, the previous month link is just text. You may set it to an icon or image.               |
+| clearLinkHtml       | 'Clear'          | By default, the clear link is just text. You may set it to an icon or image.               |
 | dayAbbreviations    | (see below)      | The day abbreviations used in the top row of the calendar.                                          |
 | parseDateFunction   | (see below)      | The function used to convert strings to date objects.                                               |
 

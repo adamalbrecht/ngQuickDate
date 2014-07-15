@@ -20,6 +20,8 @@ app.provider "ngQuickDateDefaults", ->
       hoverText: null
       buttonIconHtml: null
       closeButtonHtml: '&times;'
+      dateLabelHtml: 'Date'
+      timeLabelHtml: 'Time'
       nextLinkHtml: 'Next &rarr;'
       prevLinkHtml: '&larr; Prev'
       clearLinkHtml: 'Clear'
@@ -327,11 +329,11 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
-                    <label>Date</label>
+                    <label><span ng-bind-html='dateLabelHtml'></span></label>
                     <input class='quickdate-date-input' ng-class="{'ng-invalid': inputDateErr}" name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
-                    <label>Time</label>
+                    <label><span ng-bind-html='timeLabelHtml'></span></label>
                     <input class='quickdate-time-input' ng-class="{'ng-invalid': inputTimeErr}" name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onTimeInputTab()'>
                   </div>
                 </div>

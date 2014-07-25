@@ -76,7 +76,7 @@ There are a number of options that be configured inline with attributes. Here ar
 **Example:**
 
 ```html
-<quick-datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-timepicker='true'></datepicker>
+<quick-datepicker ng-model='myDate' date-format='EEEE, MMMM d, yyyy' placeholder='Pick a Date' disable-timepicker='true'></quick-datepicker>
 ```
 
 ## Configuration Options

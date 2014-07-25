@@ -104,7 +104,7 @@
               scope.toggleCalendar(false);
               scope.$apply();
             }
-            return datepickerClicked = (scope.readOnly ? false : true);
+            return datepickerClicked = false;
           });
           angular.element(element[0])[0].addEventListener('click', function(event) {
             return datepickerClicked = true;
@@ -246,6 +246,8 @@
           scope.toggleCalendar = function(show) {
             if (isFinite(show)) {
               return scope.calendarShown = show;
+            } else if (scope.readOnly) {
+              return scope.calendarShown = false;
             } else {
               return scope.calendarShown = !scope.calendarShown;
             }

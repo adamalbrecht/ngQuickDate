@@ -342,7 +342,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                 <table class='quickdate-calendar'>
                   <thead>
                     <tr>
-                      <th ng-repeat='day in dayAbbreviations'>{{day}}</th>
+                      <th ng-repeat='day in dayAbbreviations track by $index'>{{day}}</th>
                     </tr>
                   </thead>
                   <tbody>

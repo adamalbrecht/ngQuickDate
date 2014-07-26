@@ -274,9 +274,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
           tmpDateAndTime = parseDateString("#{scope.inputDate} #{tmpTime}")
           if !tmpDateAndTime
             throw 'Invalid Time'
-          tmpDate = tmpDateAndTime
-        unless datesAreEqualToMinute(ngModelCtrl.$viewValue, tmpDate)
-          if !scope.selectDate(tmpDate, false)
+          tmpDate = tmpDateAndTime 
+        if !scope.selectDate(tmpDate, false)
             throw 'Invalid Date'
 
         if closeCalendar

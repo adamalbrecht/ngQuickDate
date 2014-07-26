@@ -20,6 +20,7 @@
         defaultTime: null,
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
+        readOnly: false,
         parseDateFunction: function(str) {
           var seconds;
           seconds = Date.parse(str);
@@ -245,6 +246,8 @@
           scope.toggleCalendar = function(show) {
             if (isFinite(show)) {
               return scope.calendarShown = show;
+            } else if (scope.readOnly) {
+              return scope.calendarShown = false;
             } else {
               return scope.calendarShown = !scope.calendarShown;
             }

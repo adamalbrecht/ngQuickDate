@@ -27,6 +27,7 @@ app.provider "ngQuickDateDefaults", ->
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      readOnly: false
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -247,6 +248,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     scope.toggleCalendar = (show) ->
       if isFinite(show)
         scope.calendarShown = show
+      else if scope.readOnly
+        scope.calendarShown = false
       else
         scope.calendarShown = not scope.calendarShown
 

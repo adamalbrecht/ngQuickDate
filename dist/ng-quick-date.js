@@ -282,10 +282,8 @@
                 }
                 tmpDate = tmpDateAndTime;
               }
-              if (!datesAreEqualToMinute(ngModelCtrl.$viewValue, tmpDate)) {
-                if (!scope.selectDate(tmpDate, false)) {
-                  throw 'Invalid Date';
-                }
+              if (!scope.selectDate(tmpDate, false)) {
+                throw 'Invalid Date';
               }
               if (closeCalendar) {
                 scope.toggleCalendar(false);

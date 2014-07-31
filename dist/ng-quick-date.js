@@ -110,7 +110,7 @@
           });
           refreshView = function() {
             var date;
-            date = ngModelCtrl.$modelValue ? new Date(ngModelCtrl.$modelValue) : null;
+            date = ngModelCtrl.$modelValue ? parseDateString(ngModelCtrl.$modelValue) : null;
             setupCalendarView();
             setInputFieldValues(date);
             scope.mainButtonStr = date ? $filter('date')(date, scope.labelFormat) : scope.placeholder;

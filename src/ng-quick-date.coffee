@@ -65,7 +65,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       scope.inputTime = null # Time inputted into the time text input field
       scope.invalid = true
       if typeof(attrs.initValue) == 'string'
-        ngModelCtrl.$setViewValue(attrs.initValue)
+        ngModelCtrl.$setViewValue(parseDateString(attrs.initValue))
       setCalendarDate()
       refreshView()
 
@@ -221,7 +221,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
 
     # DATA WATCHES
     # ==================================
-    
+
     # Called when the model is updated from outside the datepicker
     ngModelCtrl.$render = ->
       setCalendarDate(ngModelCtrl.$viewValue)

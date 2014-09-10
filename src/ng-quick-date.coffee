@@ -19,6 +19,7 @@ app.provider "ngQuickDateDefaults", ->
       placeholder: 'Click to Set Date'
       hoverText: null
       buttonIconHtml: null
+      clearButtonHtml: 'Clear'
       closeButtonHtml: '&times;'
       nextLinkHtml: 'Next &rarr;'
       prevLinkHtml: '&larr; Prev'
@@ -352,7 +353,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   </tbody>
                 </table>
                 <div class='quickdate-popup-footer'>
-                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
+                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()' ng-bind-html="clearButtonHtml"></a>
                 </div>
               </div>
             </div>

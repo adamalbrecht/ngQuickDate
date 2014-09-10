@@ -48,6 +48,18 @@ describe "ngQuickDate", ->
         it 'should inject the given html into the close button spot', ->
           expect($(element).find('.quickdate-close').html()).toMatch('icon-remove')
 
+    describe 'Given that a non-default clear button is configured', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('clearButtonHtml', "<i class='icon-trash'></i>")
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach angular.mock.inject ($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
+
+        it 'should inject the given html into the clear button spot', ->
+          expect($(element).find('.quickdate-clear').html()).toMatch('icon-trash')
+
     describe 'Given that non-default next and previous links are configured', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
         ngQuickDateDefaultsProvider.set({

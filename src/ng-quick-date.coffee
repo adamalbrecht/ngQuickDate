@@ -27,6 +27,7 @@ app.provider "ngQuickDateDefaults", ->
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      timezone: null
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -55,6 +56,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
 
   replace: true
   link: (scope, element, attrs, ngModelCtrl) ->
+    emptyTime = '00:00:00'
+
     # INITIALIZE VARIABLES AND CONFIGURATION
     # ================================
     initialize = ->
@@ -78,10 +81,19 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
           scope[key] = attrs[key]
         else if !scope[key]
           scope[key] = ngQuickDateDefaults[key]
+
+      # Use the ISO format if timezone is UTC.
+      # This is necessary to ensure the date string is parsed in correct timezone.
+      if scope.timezone is "UTC"
+        scope.dateFormat = "yyyy-MM-dd"
+        scope.timeFormat = "HH:mm:ss"
+
+      # Generate the label format if not set
       if !scope.labelFormat
         scope.labelFormat = scope.dateFormat
         unless scope.disableTimepicker
           scope.labelFormat += " " + scope.timeFormat
+
       if attrs.iconClass && attrs.iconClass.length
         scope.buttonIconHtml = $sce.trustAsHtml("<i ng-show='iconClass' class='#{attrs.iconClass}'></i>")
 
@@ -109,15 +121,15 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       date = if ngModelCtrl.$modelValue then parseDateString(ngModelCtrl.$modelValue) else null
       setupCalendarView()
       setInputFieldValues(date)
-      scope.mainButtonStr = if date then $filter('date')(date, scope.labelFormat) else scope.placeholder
+      scope.mainButtonStr = if date then $filter('date')(date, scope.labelFormat, scope.timezone) else scope.placeholder
       scope.invalid = ngModelCtrl.$invalid
 
 
     # Set the values used in the 2 input fields
     setInputFieldValues = (val) ->
       if val?
-        scope.inputDate = $filter('date')(val, scope.dateFormat)
-        scope.inputTime = $filter('date')(val, scope.timeFormat)
+        scope.inputDate = $filter('date')(val, scope.dateFormat, scope.timezone)
+        scope.inputTime = $filter('date')(val, scope.timeFormat, scope.timezone)
       else
         scope.inputDate = null
         scope.inputTime = null
@@ -194,7 +206,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     # HELPER METHODS
     # =================================
     dateToString = (date, format) ->
-      $filter('date')(date, format)
+      $filter('date')(date, format, scope.timezone)
 
     stringToDate = (date) ->
       if typeof date == 'string'
@@ -203,6 +215,12 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
         date
 
     parseDateString = ngQuickDateDefaults.parseDateFunction
+
+    combineDateAndTime = (date, time) ->
+      if scope.timezone is "UTC"
+        "#{date}T#{time}Z"
+      else
+        "#{date} #{time}"
 
     datesAreEqual = (d1, d2, compareTimes=false) ->
       if compareTimes
@@ -221,7 +239,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
 
     # DATA WATCHES
     # ==================================
-    
+
     # Called when the model is updated from outside the datepicker
     ngModelCtrl.$render = ->
       setCalendarDate(ngModelCtrl.$viewValue)
@@ -266,12 +284,12 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     # This is triggered when the date or time inputs have a blur or enter event.
     scope.selectDateFromInput = (closeCalendar=false) ->
       try
-        tmpDate = parseDateString(scope.inputDate)
+        tmpDate = parseDateString(combineDateAndTime(scope.inputDate, emptyTime))
         if !tmpDate
           throw 'Invalid Date'
         if !scope.disableTimepicker && scope.inputTime and scope.inputTime.length and tmpDate
-          tmpTime = if scope.disableTimepicker then '00:00:00' else scope.inputTime
-          tmpDateAndTime = parseDateString("#{scope.inputDate} #{tmpTime}")
+          tmpTime = if scope.disableTimepicker then emptyTime else scope.inputTime
+          tmpDateAndTime = parseDateString(combineDateAndTime(scope.inputDate, tmpTime))
           if !tmpDateAndTime
             throw 'Invalid Time'
           tmpDate = tmpDateAndTime

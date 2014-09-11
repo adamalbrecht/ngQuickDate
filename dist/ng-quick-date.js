@@ -20,6 +20,7 @@
         defaultTime: null,
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
+        timezone: null,
         parseDateFunction: function(str) {
           var seconds;
           seconds = Date.parse(str);
@@ -61,7 +62,8 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModelCtrl) {
-          var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, getDaysInMonth, initialize, parseDateString, refreshView, setCalendarDate, setConfigOptions, setInputFieldValues, setupCalendarView, stringToDate;
+          var combineDateAndTime, dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, emptyTime, getDaysInMonth, initialize, parseDateString, refreshView, setCalendarDate, setConfigOptions, setInputFieldValues, setupCalendarView, stringToDate;
+          emptyTime = '00:00:00';
           initialize = function() {
             setConfigOptions();
             scope.toggleCalendar(false);
@@ -86,6 +88,10 @@
               } else if (!scope[key]) {
                 scope[key] = ngQuickDateDefaults[key];
               }
+            }
+            if (scope.timezone === "UTC") {
+              scope.dateFormat = "yyyy-MM-dd";
+              scope.timeFormat = "HH:mm:ss";
             }
             if (!scope.labelFormat) {
               scope.labelFormat = scope.dateFormat;
@@ -113,13 +119,13 @@
             date = ngModelCtrl.$modelValue ? parseDateString(ngModelCtrl.$modelValue) : null;
             setupCalendarView();
             setInputFieldValues(date);
-            scope.mainButtonStr = date ? $filter('date')(date, scope.labelFormat) : scope.placeholder;
+            scope.mainButtonStr = date ? $filter('date')(date, scope.labelFormat, scope.timezone) : scope.placeholder;
             return scope.invalid = ngModelCtrl.$invalid;
           };
           setInputFieldValues = function(val) {
             if (val != null) {
-              scope.inputDate = $filter('date')(val, scope.dateFormat);
-              return scope.inputTime = $filter('date')(val, scope.timeFormat);
+              scope.inputDate = $filter('date')(val, scope.dateFormat, scope.timezone);
+              return scope.inputTime = $filter('date')(val, scope.timeFormat, scope.timezone);
             } else {
               scope.inputDate = null;
               return scope.inputTime = null;
@@ -193,7 +199,7 @@
             }
           });
           dateToString = function(date, format) {
-            return $filter('date')(date, format);
+            return $filter('date')(date, format, scope.timezone);
           };
           stringToDate = function(date) {
             if (typeof date === 'string') {
@@ -203,6 +209,13 @@
             }
           };
           parseDateString = ngQuickDateDefaults.parseDateFunction;
+          combineDateAndTime = function(date, time) {
+            if (scope.timezone === "UTC") {
+              return "" + date + "T" + time + "Z";
+            } else {
+              return "" + date + " " + time;
+            }
+          };
           datesAreEqual = function(d1, d2, compareTimes) {
             if (compareTimes == null) {
               compareTimes = false;
@@ -270,13 +283,13 @@
               closeCalendar = false;
             }
             try {
-              tmpDate = parseDateString(scope.inputDate);
+              tmpDate = parseDateString(combineDateAndTime(scope.inputDate, emptyTime));
               if (!tmpDate) {
                 throw 'Invalid Date';
               }
               if (!scope.disableTimepicker && scope.inputTime && scope.inputTime.length && tmpDate) {
-                tmpTime = scope.disableTimepicker ? '00:00:00' : scope.inputTime;
-                tmpDateAndTime = parseDateString("" + scope.inputDate + " " + tmpTime);
+                tmpTime = scope.disableTimepicker ? emptyTime : scope.inputTime;
+                tmpDateAndTime = parseDateString(combineDateAndTime(scope.inputDate, tmpTime));
                 if (!tmpDateAndTime) {
                   throw 'Invalid Time';
                 }

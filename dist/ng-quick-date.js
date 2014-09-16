@@ -21,8 +21,209 @@
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
         parseDateFunction: function(str) {
-          var seconds;
-          seconds = Date.parse(str);
+          var getDateFromFormat, scope, seconds;
+          getDateFromFormat = function(val, format) {
+            var ampm, c, date, day_name, hh, i, i_format, i_val, mm, month, month_name, newdate, now, ss, token, token2, x, y, year, _getInt, _isInteger;
+            _isInteger = function(val) {
+              var digits, i;
+              digits = "1234567890";
+              i = 0;
+              while (i < val.length) {
+                if (digits.indexOf(val.charAt(i)) === -1) {
+                  return false;
+                }
+                i++;
+              }
+              return true;
+            };
+            _getInt = function(str, i, minlength, maxlength) {
+              var token, x;
+              x = maxlength;
+              while (x >= minlength) {
+                token = str.substring(i, i + x);
+                if (token.length < minlength) {
+                  return null;
+                }
+                if (_isInteger(token)) {
+                  return token;
+                }
+                x--;
+              }
+              return null;
+            };
+            val = val + "";
+            format = format + "";
+            i_val = 0;
+            i_format = 0;
+            c = "";
+            token = "";
+            token2 = "";
+            x = void 0;
+            y = void 0;
+            now = new Date();
+            year = now.getYear();
+            month = now.getMonth() + 1;
+            date = 1;
+            hh = now.getHours();
+            mm = now.getMinutes();
+            ss = now.getSeconds();
+            ampm = "";
+            while (i_format < format.length) {
+              c = format.charAt(i_format);
+              token = "";
+              while ((format.charAt(i_format) === c) && (i_format < format.length)) {
+                token += format.charAt(i_format++);
+              }
+              if (token === "yyyy" || token === "yy" || token === "y") {
+                if (token === "yyyy") {
+                  x = 4;
+                  y = 4;
+                }
+                if (token === "yy") {
+                  x = 2;
+                  y = 2;
+                }
+                if (token === "y") {
+                  x = 2;
+                  y = 4;
+                }
+                year = _getInt(val, i_val, x, y);
+                if (year == null) {
+                  return 0;
+                }
+                i_val += year.length;
+                if (year.length === 2) {
+                  if (year > 70) {
+                    year = 1900 + (year - 0);
+                  } else {
+                    year = 2000 + (year - 0);
+                  }
+                }
+              } else if (token === "MMM" || token === "NNN") {
+                month = 0;
+                i = 0;
+                while (i < MONTH_NAMES.length) {
+                  month_name = MONTH_NAMES[i];
+                  if (val.substring(i_val, i_val + month_name.length).toLowerCase() === month_name.toLowerCase()) {
+                    if (token === "MMM" || (token === "NNN" && i > 11)) {
+                      month = i + 1;
+                      if (month > 12) {
+                        month -= 12;
+                      }
+                      i_val += month_name.length;
+                      break;
+                    }
+                  }
+                  i++;
+                }
+                if ((month < 1) || (month > 12)) {
+                  return 0;
+                }
+              } else if (token === "EE" || token === "E") {
+                i = 0;
+                while (i < DAY_NAMES.length) {
+                  day_name = DAY_NAMES[i];
+                  if (val.substring(i_val, i_val + day_name.length).toLowerCase() === day_name.toLowerCase()) {
+                    i_val += day_name.length;
+                    break;
+                  }
+                  i++;
+                }
+              } else if (token === "MM" || token === "M") {
+                month = _getInt(val, i_val, token.length, 2);
+                if ((month == null) || (month < 1) || (month > 12)) {
+                  return 0;
+                }
+                i_val += month.length;
+              } else if (token === "dd" || token === "d") {
+                date = _getInt(val, i_val, token.length, 2);
+                if ((date == null) || (date < 1) || (date > 31)) {
+                  return 0;
+                }
+                i_val += date.length;
+              } else if (token === "hh" || token === "h") {
+                hh = _getInt(val, i_val, token.length, 2);
+                if ((hh == null) || (hh < 1) || (hh > 12)) {
+                  return 0;
+                }
+                i_val += hh.length;
+              } else if (token === "HH" || token === "H") {
+                hh = _getInt(val, i_val, token.length, 2);
+                if ((hh == null) || (hh < 0) || (hh > 23)) {
+                  return 0;
+                }
+                i_val += hh.length;
+              } else if (token === "KK" || token === "K") {
+                hh = _getInt(val, i_val, token.length, 2);
+                if ((hh == null) || (hh < 0) || (hh > 11)) {
+                  return 0;
+                }
+                i_val += hh.length;
+              } else if (token === "kk" || token === "k") {
+                hh = _getInt(val, i_val, token.length, 2);
+                if ((hh == null) || (hh < 1) || (hh > 24)) {
+                  return 0;
+                }
+                i_val += hh.length;
+                hh--;
+              } else if (token === "mm" || token === "m") {
+                mm = _getInt(val, i_val, token.length, 2);
+                if ((mm == null) || (mm < 0) || (mm > 59)) {
+                  return 0;
+                }
+                i_val += mm.length;
+              } else if (token === "ss" || token === "s") {
+                ss = _getInt(val, i_val, token.length, 2);
+                if ((ss == null) || (ss < 0) || (ss > 59)) {
+                  return 0;
+                }
+                i_val += ss.length;
+              } else if (token === "a") {
+                if (val.substring(i_val, i_val + 2).toLowerCase() === "am") {
+                  ampm = "AM";
+                } else if (val.substring(i_val, i_val + 2).toLowerCase() === "pm") {
+                  ampm = "PM";
+                } else {
+                  return 0;
+                }
+                i_val += 2;
+              } else {
+                if (val.substring(i_val, i_val + token.length) !== token) {
+                  return 0;
+                } else {
+                  i_val += token.length;
+                }
+              }
+            }
+            if (i_val !== val.length) {
+              return 0;
+            }
+            if (month === 2) {
+              if (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0)) {
+                if (date > 29) {
+                  return 0;
+                }
+              } else {
+                if (date > 28) {
+                  return 0;
+                }
+              }
+            }
+            if ((month === 4) || (month === 6) || (month === 9) || (month === 11) ? date > 30 : void 0) {
+              return 0;
+            }
+            if (hh < 12 && ampm === "PM") {
+              hh = hh - 0 + 12;
+            } else {
+              if (hh > 11 && ampm === "AM") {
+                hh -= 12;
+              }
+            }
+            newdate = new Date(year, month - 1, date, hh, mm, ss);
+            return newdate.getTime();
+          };
+          scope = this;
+          seconds = getDateFromFormat(str, scope.labelFormat) || Date.parse(str);
           if (isNaN(seconds)) {
             return null;
           } else {
@@ -202,7 +403,9 @@
               return date;
             }
           };
-          parseDateString = ngQuickDateDefaults.parseDateFunction;
+          parseDateString = function() {
+            return ngQuickDateDefaults.parseDateFunction.apply(scope, arguments);
+          };
           datesAreEqual = function(d1, d2, compareTimes) {
             if (compareTimes == null) {
               compareTimes = false;

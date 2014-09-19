@@ -66,6 +66,10 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       scope.invalid = true
       if typeof(attrs.initValue) == 'string'
         ngModelCtrl.$setViewValue(attrs.initValue)
+      if !scope.defaultTime
+        templateDate = new Date(2013, 0, 1, 12, 0)
+        scope.datePlaceholder = $filter('date')(templateDate, scope.dateFormat);
+        scope.timePlaceholder = $filter('date')(templateDate, scope.timeFormat);
       setCalendarDate()
       refreshView()
 
@@ -327,11 +331,11 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>
-                    <input class='quickdate-date-input' ng-class="{'ng-invalid': inputDateErr}" name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onDateInputTab()' />
+                    <input class='quickdate-date-input' ng-class="{'ng-invalid': inputDateErr}" name='inputDate' type='text' ng-model='inputDate' placeholder='{{ datePlaceholder }}' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onDateInputTab()' />
                   </div>
                   <div class='quickdate-input-wrapper' ng-hide='disableTimepicker'>
                     <label>Time</label>
-                    <input class='quickdate-time-input' ng-class="{'ng-invalid': inputTimeErr}" name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onTimeInputTab()'>
+                    <input class='quickdate-time-input' ng-class="{'ng-invalid': inputTimeErr}" name='inputTime' type='text' ng-model='inputTime' placeholder='{{ timePlaceholder }}' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onTimeInputTab()'>
                   </div>
                 </div>
                 <div class='quickdate-calendar-header'>

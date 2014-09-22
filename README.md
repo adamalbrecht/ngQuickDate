@@ -68,6 +68,7 @@ There are a number of options that be configured inline with attributes. Here ar
 | icon-class           | null                | If set, `<i class='some-class'></i>` will be prepended inside the button                    |
 | disable-timepicker   | false               | If true, the timepicker will be disabled and the default label format will be just the date |
 | disable-clear-button | false               | If true, the clear button will be removed                                                   |
+| clear-button-text    | 'Clear'             | Clear button text                                                                           |
 | on-change            | null                | Set to a function that will be called when the date is changed                              |
 | default-time         | null                | Time that will be set when you click on a date on the calendar. Must be in 24-hour format.  |
 | init-value           | null                | Set the initial value of the date inline as a string. Will be immediately parsed and set as the value of your model.|

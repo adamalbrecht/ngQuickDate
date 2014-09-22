@@ -24,6 +24,7 @@ app.provider "ngQuickDateDefaults", ->
       prevLinkHtml: '&larr; Prev'
       disableTimepicker: false
       disableClearButton: false
+      clearButtonText: 'Clear'
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
@@ -511,7 +512,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   </tbody>
                 </table>
                 <div class='quickdate-popup-footer'>
-                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
+                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>{{ clearButtonText }}</a>
                 </div>
               </div>
             </div>

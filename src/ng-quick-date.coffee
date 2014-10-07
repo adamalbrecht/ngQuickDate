@@ -223,6 +223,28 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     getDaysInMonth = (year, month) ->
       [31, (if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) then 29 else 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 
+    # Executes a function one time per N milliseconds (wait)
+    debounce = (func, wait) ->
+      timeout = args = context = timestamp = result = null
+      later = ->
+        last = +new Date() - timestamp
+
+        if last < wait && last > 0
+          timeout = setTimeout(later, wait - last)
+        else
+          timeout = null
+
+      return ->
+        context = this
+        args = arguments
+        timestamp = +new Date()
+        if !timeout
+          timeout = setTimeout(later, wait)
+          result = func.apply(context, args)
+          context = args = null
+
+        return result
+
     # DATA WATCHES
     # ==================================
     
@@ -248,11 +270,14 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
 
     # VIEW ACTIONS
     # ==================================
-    scope.toggleCalendar = (show) ->
-      if isFinite(show)
-        scope.calendarShown = show
-      else
-        scope.calendarShown = not scope.calendarShown
+    scope.toggleCalendar = debounce(
+      (show) ->
+        if isFinite(show)
+          scope.calendarShown = show
+        else
+          scope.calendarShown = not scope.calendarShown
+      150
+    )
 
     # Select a new model date. This is called in 3 situations:
     #   * Clicking a day on the calendar or from the `selectDateFromInput`

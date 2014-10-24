@@ -61,7 +61,7 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModelCtrl) {
-          var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, getDaysInMonth, initialize, parseDateString, refreshView, setCalendarDate, setConfigOptions, setInputFieldValues, setupCalendarView, stringToDate;
+          var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, debounce, getDaysInMonth, initialize, parseDateString, refreshView, setCalendarDate, setConfigOptions, setInputFieldValues, setupCalendarView, stringToDate;
           initialize = function() {
             var templateDate;
             setConfigOptions();
@@ -230,6 +230,30 @@
           getDaysInMonth = function(year, month) {
             return [31, ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
           };
+          debounce = function(func, wait) {
+            var args, context, later, result, timeout, timestamp;
+            timeout = args = context = timestamp = result = null;
+            later = function() {
+              var last;
+              last = +new Date() - timestamp;
+              if (last < wait && last > 0) {
+                return timeout = setTimeout(later, wait - last);
+              } else {
+                return timeout = null;
+              }
+            };
+            return function() {
+              context = this;
+              args = arguments;
+              timestamp = +new Date();
+              if (!timeout) {
+                timeout = setTimeout(later, wait);
+                result = func.apply(context, args);
+                context = args = null;
+              }
+              return result;
+            };
+          };
           ngModelCtrl.$render = function() {
             setCalendarDate(ngModelCtrl.$viewValue);
             return refreshView();
@@ -248,13 +272,13 @@
               return dateInput.select();
             }
           });
-          scope.toggleCalendar = function(show) {
+          scope.toggleCalendar = debounce(function(show) {
             if (isFinite(show)) {
               return scope.calendarShown = show;
             } else {
               return scope.calendarShown = !scope.calendarShown;
             }
-          };
+          }, 150);
           scope.selectDate = function(date, closeCalendar) {
             var changed;
             if (closeCalendar == null) {

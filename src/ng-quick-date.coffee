@@ -276,20 +276,30 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
           scope.calendarShown = show
         else
           scope.calendarShown = not scope.calendarShown
+
+        setPopupPosition()  if scope.calendarShown
       150
     )
+
+    setPopupPosition = ->
+      popupHeight = 330
+      y_Depth = $(element).offset().top + $(element).height() + popupHeight
+      if y_Depth > window.innerHeight and window.innerHeight > popupHeight
+        scope.popupTop = true
+      else
+        scope.popupTop = false
 
     # Select a new model date. This is called in 3 situations:
     #   * Clicking a day on the calendar or from the `selectDateFromInput`
     #   * Changing the date or time inputs, which call the `selectDateFromInput` method, which calls this method.
     #   * The clear button is clicked
-    scope.selectDate = (date, closeCalendar=true) ->
+    scope.selectDate = (date, closeCalendar=false) ->
       changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() != ngModelCtrl.$viewValue.getTime()))
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
       ngModelCtrl.$setViewValue(date)
       if closeCalendar
-        scope.toggleCalendar(false)
+        scope.toggleCalendar(true)
       true
 
     # This is triggered when the date or time inputs have a blur or enter event.
@@ -350,8 +360,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
   # ================================================================
   template: """
             <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
-              <div class='quickdate-popup' ng-class='{open: calendarShown}'>
+              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
+              <div class='quickdate-popup' ng-class="{open: calendarShown, 'popup-top': popupTop}">
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
@@ -381,7 +391,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   </tbody>
                 </table>
                 <div class='quickdate-popup-footer'>
-                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
+                  <a href='' class='quickdate-button' tabindex='-1' ng-click='toggleCalendar()'>OK</a>
+                  <a href='' class='quickdate-button' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
                 </div>
               </div>
             </div>

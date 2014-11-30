@@ -283,13 +283,13 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     #   * Clicking a day on the calendar or from the `selectDateFromInput`
     #   * Changing the date or time inputs, which call the `selectDateFromInput` method, which calls this method.
     #   * The clear button is clicked
-    scope.selectDate = (date, closeCalendar=true) ->
+    scope.selectDate = (date, closeCalendar=false) ->
       changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() != ngModelCtrl.$viewValue.getTime()))
       if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
         return false
       ngModelCtrl.$setViewValue(date)
       if closeCalendar
-        scope.toggleCalendar(false)
+        scope.toggleCalendar(true)
       true
 
     # This is triggered when the date or time inputs have a blur or enter event.
@@ -381,7 +381,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   </tbody>
                 </table>
                 <div class='quickdate-popup-footer'>
-                  <a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
+                  <a href='' class='quickdate-button' tabindex='-1' ng-click='toggleCalendar()'>OK</a>
+                  <a href='' class='quickdate-button' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>
                 </div>
               </div>
             </div>

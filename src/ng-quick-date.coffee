@@ -22,6 +22,7 @@ app.provider "ngQuickDateDefaults", ->
       closeButtonHtml: '&times;'
       nextLinkHtml: 'Next &rarr;'
       prevLinkHtml: '&larr; Prev'
+      disableDatepicker:false
       disableTimepicker: false
       disableClearButton: false
       defaultTime: null
@@ -354,7 +355,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
-                  <div class='quickdate-input-wrapper'>
+                  <div class='quickdate-input-wrapper' ng-hide='disableDatepicker>
                     <label>Date</label>
                     <input class='quickdate-date-input' ng-class="{'ng-invalid': inputDateErr}" name='inputDate' type='text' ng-model='inputDate' placeholder='{{ datePlaceholder }}' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onDateInputTab()' />
                   </div>

@@ -2,6 +2,14 @@
   display: inline-block;
   position: relative;
 }
+.quickdate.disabled .quickdate-button {
+  background-color: #ddd;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+.quickdate.disabled .quickdate-button:hover {
+  text-decoration: none;
+}
 .quickdate-button div,
 .quickdate-action-link div {
   display: inline;
@@ -70,6 +78,12 @@ table.quickdate-calendar {
   border-spacing: 0;
   width: 100%;
   margin-top: 5px;
+}
+table.quickdate-calendar.hide-weekends th:first-child,
+table.quickdate-calendar.hide-weekends tbody td:first-child,
+table.quickdate-calendar.hide-weekends th:last-child,
+table.quickdate-calendar.hide-weekends tbody td:last-child {
+  display: none;
 }
 table.quickdate-calendar th,
 table.quickdate-calendar td {

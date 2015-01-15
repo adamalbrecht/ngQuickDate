@@ -6,6 +6,17 @@
   position: relative;
 }
 
+.quickdate.disabled {
+    .quickdate-button {
+      background-color: #ddd;
+      cursor: not-allowed;
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+}
+
 .quickdate-button, .quickdate-action-link {
   div {
     display: inline
@@ -77,6 +88,14 @@ input.quickdate-date-input, input.quickdate-time-input {
 }
 
 table.quickdate-calendar {
+  &.hide-weekends {
+    th, tbody td {
+      &:first-child, &:last-child {
+        display: none;
+      }
+    }
+  }
+
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;

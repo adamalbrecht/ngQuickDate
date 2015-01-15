@@ -23,10 +23,12 @@ app.provider "ngQuickDateDefaults", ->
       nextLinkHtml: 'Next &rarr;'
       prevLinkHtml: '&larr; Prev'
       disableTimepicker: false
+      disableDateInput: false
       disableClearButton: false
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      hideWeekends: false
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -52,6 +54,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     dateFilter: '=?'
     onChange: "&"
     required: '@'
+    disabled: '=ngDisabled'
 
   replace: true
   link: (scope, element, attrs, ngModelCtrl) ->
@@ -285,7 +288,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     #   * The clear button is clicked
     scope.selectDate = (date, closeCalendar=true) ->
       changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() != ngModelCtrl.$viewValue.getTime()))
-      if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
+      if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date) || (scope.hideWeekends == true && (date.getDay() == 0 || date.getDay() == 6))
         return false
       ngModelCtrl.$setViewValue(date)
       if closeCalendar
@@ -349,12 +352,12 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
+            <div class='quickdate' ng-class='{disabled: disabled}'>
+              <a href='' ng-focus='toggleCalendar(!disabled)' ng-click='toggleCalendar(!disabled)' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
-                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
+                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar(!disabled)'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
-                  <div class='quickdate-input-wrapper'>
+                  <div class='quickdate-input-wrapper' ng-hide='disableDateInput'>
                     <label>Date</label>
                     <input class='quickdate-date-input' ng-class="{'ng-invalid': inputDateErr}" name='inputDate' type='text' ng-model='inputDate' placeholder='{{ datePlaceholder }}' ng-enter="selectDateFromInput(true)" ng-blur="selectDateFromInput(false)" on-tab='onDateInputTab()' />
                   </div>
@@ -368,7 +371,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
                   <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>
                 </div>
-                <table class='quickdate-calendar'>
+                <table class='quickdate-calendar' ng-class='{"hide-weekends": hideWeekends.toString().toLowerCase() == "true"}'>
                   <thead>
                     <tr>
                       <th ng-repeat='day in dayAbbreviations'>{{day}}</th>

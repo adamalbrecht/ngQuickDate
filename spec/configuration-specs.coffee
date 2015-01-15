@@ -122,6 +122,38 @@ describe "ngQuickDate", ->
         it 'shows the timepicker input', ->
           expect($(element).find('.quickdate-input-wrapper:last').hasClass('ng-hide')).toNotEqual(true)
 
+    describe 'Given that it is configured to disable the date textbox input', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('disableDateInput', true)
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
+        ))
+        it 'does not show the date text input', ->
+          expect($(element).find('.quickdate-input-wrapper:first').hasClass('ng-hide')).toEqual(true)
+      
+      describe 'and given a datepicker with date textbox input re-enabled', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          $rootScope.myDate = new Date(2013, 10, 1)
+          element = $compile("<quick-datepicker ng-model='myDate' disable-date-input='false' />")(scope)
+          $rootScope.$digest()
+        ))
+        it 'shows the date text input', ->
+          expect($(element).find('.quickdate-input-wrapper:first').hasClass('ng-hide')).toNotEqual(true)
+
+    describe 'Given that it is configured to hide weekends', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('hideWeekends', true)
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date(Date.parse('11/1/2013 3:59 pm')))
+        ))
+        it 'does not show the first table column nor the last table column', ->
+          expect($(element).find('table.quickdate-calendar').hasClass('hide-weekends')).toEqual(true)
 
     describe 'Given that it is configured with a custom date/time parser function that always returns July 1, 2013', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->

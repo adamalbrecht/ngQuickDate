@@ -353,7 +353,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
             <div class='quickdate' ng-class='{disabled: disabled}'>
               <a href='' ng-focus='toggleCalendar(!disabled)' ng-click='toggleCalendar(!disabled)' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
-                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar(!disabled)'><div ng-bind-html='closeButtonHtml'></div></a>
+                <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
                   <div class='quickdate-input-wrapper'>
                     <label>Date</label>

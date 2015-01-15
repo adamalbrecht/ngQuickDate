@@ -2,6 +2,13 @@
   display: inline-block;
   position: relative;
 }
+.quickdate.disabled .quickdate-button {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+.quickdate.disabled .quickdate-button:hover {
+  text-decoration: none;
+}
 .quickdate-button div,
 .quickdate-action-link div {
   display: inline;

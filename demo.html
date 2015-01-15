@@ -14,7 +14,11 @@
       <form name='date_form' novalidate>
         <p>
           <label>My Date</label>
-          <quick-datepicker name='myDate' ng-model='myDate' required></quick-datepicker>
+          <quick-datepicker name='myDate' ng-model='myDate' ng-disabled="isDisabled" required></quick-datepicker>
+        </p>
+        <p>
+          <label>Disabled</label>
+          <input type="checkbox" ng-model="isDisabled" />
         </p>
         <p>
           <label>Some other field</label>
@@ -38,8 +42,11 @@
       });
       app.controller("DemoCtrl", function($scope) {
         $scope.myDate = null
-        $scope.setToToday = function() { $scope.myDate = new Date(); }
+        $scope.setToToday = function () { $scope.myDate = new Date(); }
+        $scope.isDisabled = false;
       });
     </script>
   </body>
 </html>
+
+

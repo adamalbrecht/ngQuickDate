@@ -122,6 +122,27 @@ describe "ngQuickDate", ->
         it 'shows the timepicker input', ->
           expect($(element).find('.quickdate-input-wrapper:last').hasClass('ng-hide')).toNotEqual(true)
 
+    describe 'Given that it is configured to disable the date textbox input', ->
+      beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
+        ngQuickDateDefaultsProvider.set('disableDateInput', true)
+        null
+      ))
+      describe 'and given a basic datepicker', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          element = buildBasicDatepicker($compile, $rootScope, new Date(2013, 10, 1))
+        ))
+        it 'does not show the date text input', ->
+          expect($(element).find('.quickdate-input-wrapper:first').hasClass('ng-hide')).toEqual(true)
+      
+      describe 'and given a datepicker with date textbox input re-enabled', ->
+        beforeEach(angular.mock.inject(($compile, $rootScope) ->
+          $rootScope.myDate = new Date(2013, 10, 1)
+          element = $compile("<quick-datepicker ng-model='myDate' disable-date-input='false' />")(scope)
+          $rootScope.$digest()
+        ))
+        it 'shows the date text input', ->
+          expect($(element).find('.quickdate-input-wrapper:first').hasClass('ng-hide')).toNotEqual(true)
+
     describe 'Given that it is configured to hide weekends', ->
       beforeEach(module('ngQuickDate', (ngQuickDateDefaultsProvider) ->
         ngQuickDateDefaultsProvider.set('hideWeekends', true)

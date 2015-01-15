@@ -5,6 +5,7 @@
 .quickdate.disabled .quickdate-button {
   background-color: #ddd;
   cursor: not-allowed;
+  text-decoration: none;
 }
 .quickdate.disabled .quickdate-button:hover {
   text-decoration: none;

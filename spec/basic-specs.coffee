@@ -375,3 +375,25 @@ describe "ngQuickDate", ->
 
         it 'should add ng-invalid to the div', ->
           expect($(element).hasClass('ng-invalid')).toBe(true)
+
+    describe 'Given a datepicker that is disabled', ->
+      beforeEach(inject(($compile, $rootScope) ->
+        scope = $rootScope
+        scope.isDisabled = true
+        element = $compile("<quick-datepicker ng-model='someDate' ng-disabled='isDisabled' />")(scope)
+        scope.$apply()
+      ))
+
+      it 'should add a disabled class to the main element', ->
+        expect($(element).hasClass('disabled')).toBe(true)
+   
+      it 'should not open the datepicker', ->
+        expect($(element).find('.quickdate-popup').hasClass('open')).toBe(false)
+   
+      describe 'when you click the button', ->
+        beforeEach ->
+          browserTrigger($(element).find('.quickdate-button'), 'click')
+          scope.$apply()
+
+        it 'should not open the datepicker', ->
+          expect($(element).find('.quickdate-popup').hasClass('open')).toBe(false)

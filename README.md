@@ -1,8 +1,8 @@
-## Notice:
+## Deprecated:
 
-Sorry for the lack of updates lately. After using this directive in my own app, I realized it was lacking in a few fundamental ways, so I started on a new datepicker that is different enough that it called for a completely separate repo. I should have something up on Github soon.
+Sorry everyone, but I just don't have time to work on this anymore. Also, after using this in my own app, I realized that it was lacking in some fundamental ways. I think what is really needed is a good polyfill for `<input type='date'>` and `<input type='datetime-local'>`. Unfortunately, I don't know of any great ones. If someone were to start on a better one, I'd love to contribute. And if anyone wants to maintain this project, please let me know.
 
-In the meantime, if someone would like to help maintain this project, please let me know.
+Adam
 
 ---
 

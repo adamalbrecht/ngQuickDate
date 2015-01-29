@@ -104,16 +104,33 @@
             }
           };
           datepickerClicked = false;
-          window.document.addEventListener('click', function(event) {
-            if (scope.calendarShown && !datepickerClicked) {
-              scope.toggleCalendar(false);
-              scope.$apply();
-            }
-            return datepickerClicked = false;
-          });
-          angular.element(element[0])[0].addEventListener('click', function(event) {
-            return datepickerClicked = true;
-          });
+          // IE8 needs attachEvent rather than addEventListener
+          if(window.document.addEventListener) {
+            window.document.addEventListener('click', function(event) {
+              if (scope.calendarShown && !datepickerClicked) {
+                scope.toggleCalendar(false);
+                scope.$apply();
+              }
+              datepickerClicked = false; // returning this value acts like preventDefault in ie8
+            });
+          } else {
+            window.document.attachEvent('onclick', function(event) {
+              if (scope.calendarShown && !datepickerClicked) {
+                scope.toggleCalendar(false);
+                scope.$apply();
+              }
+              datepickerClicked = false; // returning this value acts like preventDefault in ie8
+            });
+          }
+          if(angular.element(element[0])[0].addEventListener) {
+            angular.element(element[0])[0].addEventListener('click', function(event) {
+              datepickerClicked = true; // no reason to return anything
+            });
+          } else {
+            angular.element(element[0])[0].attachEvent('onclick', function(event) {
+              datepickerClicked = true; // no reason to return anything
+            });
+          }
           refreshView = function() {
             var date;
             date = ngModelCtrl.$modelValue ? parseDateString(ngModelCtrl.$modelValue) : null;

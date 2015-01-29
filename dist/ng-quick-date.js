@@ -268,6 +268,7 @@
           scope.$watch('calendarShown', function(newVal, oldVal) {
             var dateInput;
             if (newVal) {
+              setupCalendarView();
               dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0];
               return dateInput.select();
             }

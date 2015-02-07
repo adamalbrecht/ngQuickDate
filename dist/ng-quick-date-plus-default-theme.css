@@ -71,6 +71,12 @@ table.quickdate-calendar {
   width: 100%;
   margin-top: 5px;
 }
+table.quickdate-calendar.hide-weekends th:first-child,
+table.quickdate-calendar.hide-weekends tbody td:first-child,
+table.quickdate-calendar.hide-weekends th:last-child,
+table.quickdate-calendar.hide-weekends tbody td:last-child {
+  display: none;
+}
 table.quickdate-calendar th,
 table.quickdate-calendar td {
   padding: 5px;

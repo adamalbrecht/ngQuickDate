@@ -77,6 +77,14 @@ input.quickdate-date-input, input.quickdate-time-input {
 }
 
 table.quickdate-calendar {
+  &.hide-weekends {
+    th, tbody td {
+      &:first-child, &:last-child {
+        display: none;
+      }
+    }
+  }
+
   border-collapse: collapse;
   border-spacing: 0;
   width: 100%;

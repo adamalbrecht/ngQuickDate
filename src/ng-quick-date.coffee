@@ -27,6 +27,7 @@ app.provider "ngQuickDateDefaults", ->
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      hideWeekends: false
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -285,7 +286,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     #   * The clear button is clicked
     scope.selectDate = (date, closeCalendar=true) ->
       changed = (!ngModelCtrl.$viewValue && date) || (ngModelCtrl.$viewValue && !date) || ((date && ngModelCtrl.$viewValue) && (date.getTime() != ngModelCtrl.$viewValue.getTime()))
-      if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date)
+      if typeof(scope.dateFilter) == 'function' && !scope.dateFilter(date) || (scope.hideWeekends == true && (date.getDay() == 0 || date.getDay() == 6))
         return false
       ngModelCtrl.$setViewValue(date)
       if closeCalendar
@@ -368,7 +369,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   <span class='quickdate-month'>{{calendarDate | date:'MMMM yyyy'}}</span>
                   <a href='' class='quickdate-next-month quickdate-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>
                 </div>
-                <table class='quickdate-calendar'>
+                <table class='quickdate-calendar' ng-class='{"hide-weekends": hideWeekends.toString().toLowerCase() == "true"}'>
                   <thead>
                     <tr>
                       <th ng-repeat='day in dayAbbreviations'>{{day}}</th>

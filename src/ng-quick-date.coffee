@@ -276,6 +276,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
         if isFinite(show)
           scope.calendarShown = show
         else
+          if not scope.calendarShown
+            refreshView();
           scope.calendarShown = not scope.calendarShown
       150
     )

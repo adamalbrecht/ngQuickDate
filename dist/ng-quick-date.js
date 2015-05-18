@@ -277,6 +277,9 @@
             if (isFinite(show)) {
               return scope.calendarShown = show;
             } else {
+              if (!scope.calendarShown) {
+                refreshView();
+              }
               return scope.calendarShown = !scope.calendarShown;
             }
           }, 150);

@@ -13,6 +13,16 @@
     "package.json",
     "screenshot.png"
   ],
+  "homepage": "https://github.com/resultscom/ngQuickDate",
+  "_release": "035c5c5c1e",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "035c5c5c1efb64dd69c5cea8d6ccc304c127e7cf"
+  },
+  "_source": "git://github.com/resultscom/ngQuickDate.git",
+  "_target": "master",
+  "_originalSource": "git://github.com/resultscom/ngQuickDate",
   "dependencies": {
     "angular": "~1.2.0"
   },
@@ -23,3 +33,4 @@
     "jquery": "~2.0"
   }
 }
+

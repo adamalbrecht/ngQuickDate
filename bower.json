@@ -13,6 +13,10 @@
     "package.json",
     "screenshot.png"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/resultscom/ngQuickDate.git"
+  },
   "homepage": "https://github.com/resultscom/ngQuickDate",
   "_release": "035c5c5c1e",
   "_resolution": {

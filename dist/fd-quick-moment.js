@@ -2,7 +2,6 @@
   var app;
 
   app = angular.module("fdQuickMoment", []);
-
   app.provider("fdQuickMomentDefaults", function() {
     return {
       options: {
@@ -22,6 +21,7 @@
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
         timezone: "America/Chicago",
+
         parseDateFunction: function(str) {
           var m;
           m = moment(str);
@@ -63,7 +63,7 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModel) {
-          var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, debug, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel, stringToDate;
+          var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, debug, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel, stringToDate, setDayStyles;
           debug = attrs.debug && attrs.debug.length;
           initialize = function() {
             scope.toggleCalendar(false);
@@ -140,7 +140,7 @@
             numRows = Math.ceil((offset + daysInMonth) / 7);
             weeks = [];
             curDate = moment(scope.calendarDate).tz(scope.timezone);
-            curDate.add('d', offset * -1);
+            curDate.add(offset * -1, 'd');
             for (row = _i = 0, _ref = numRows - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; row = 0 <= _ref ? ++_i : --_i) {
               weeks.push([]);
               for (day = _j = 0; _j <= 6; day = ++_j) {
@@ -153,16 +153,21 @@
                 }
                 selected = scope.ngModel && d && datesAreEqual(d, scope.ngModel);
                 today = datesAreEqual(d, moment().tz(scope.timezone));
+                
+                // Note: rkim - 2015.04.10
+                // Pulled style calculation into setDayStyles since we'll want
+                // to re-calculate them every time the calendar is shown.
                 weeks[row].push({
                   date: d,
-                  selected: selected,
-                  disabled: typeof scope.dateFilter === 'function' ? !scope.dateFilter(d) : false,
-                  other: d.month() !== scope.calendarDate.month(),
-                  today: today
+                  //selected: selected,
+                  //disabled: typeof scope.dateFilter === 'function' ? !scope.dateFilter(d) : false,
+                  //other: d.month() !== scope.calendarDate.month(),
+                  //today: today
                 });
-                curDate.add('d', 1);
+                curDate.add(1, 'd');
               }
             }
+            setDayStyles(weeks);
             return scope.weeks = weeks;
           };
           dateToString = function(date, format) {
@@ -175,6 +180,31 @@
               return date;
             }
           };
+
+          // Calculate styles for each day in scope.weeks
+          setDayStyles = function(weeks) {
+            if (!weeks || !weeks.length)
+              return;
+
+            for (var i = 0; i < weeks.length; i++) {
+              var w = weeks[i];
+              if (!w || !w.length)
+                continue;
+
+              for (var j = 0; j < w.length; j++) {
+                var d = w[j];
+                if (!d || !d.date)
+                  continue;
+
+                var date = d.date;
+                d.selected = scope.ngModel && datesAreEqual(date, scope.ngModel);
+                d.disabled = typeof scope.dateFilter === 'function' ? !scope.dateFilter(date) : false
+                d.other = date.month() !== scope.calendarDate.month();
+                d.today = datesAreEqual(date, moment().tz(scope.timezone));
+              }
+            }
+          };
+
           parseDateString = fdQuickMomentDefaults.parseDateFunction;
           datesAreEqual = function(d1, d2, compareTimes) {
             if (compareTimes == null) {
@@ -194,6 +224,7 @@
             }
             return d1.year() === d2.year() && d1.month() === d2.month() && d1.date() === d2.date() && d1.hour() === d2.hour() && d1.minute() === d2.minute();
           };
+
           scope.$watch('ngModel', function(newVal, oldVal) {
             if (newVal !== oldVal) {
               setInputDateFromModel();
@@ -209,6 +240,11 @@
             }
           });
           scope.$watch('calendarShown', function(newVal, oldVal) {
+            // Note: rkim - 2014.04.10
+            // Recalc day styles whenever the calendar is opened
+            if (newVal)
+              setDayStyles(scope.weeks);
+
             var dateInput;
             dateInput = angular.element(element[0].querySelector(".quickmoment-date-input"))[0];
             return dateInput.select();
@@ -295,10 +331,10 @@
             return true;
           };
           scope.nextMonth = function() {
-            return scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).add('M', 1);
+            return scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).add(1, 'M');
           };
           scope.prevMonth = function() {
-            return scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).subtract('M', 1);
+            return scope.calendarDate = moment(scope.calendarDate).tz(scope.timezone).subtract(1, 'M');
           };
           scope.clear = function() {
             return scope.setDate(null, true);
@@ -309,7 +345,7 @@
             return console.log("quick date scope:", scope);
           }
         },
-        template: "<div class='quickmoment'>\n  <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickmoment-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>\n  <div class='quickmoment-popup' ng-class='{open: calendarShown}'>\n    <a href='' tabindex='-1' class='quickmoment-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>\n    <div class='quickmoment-text-inputs'>\n      <div class='quickmoment-input-wrapper' ng-hide='disableDateinput'>\n        <label>Date</label>\n        <input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur=\"setDateFromInput()\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputDateErr}\" on-tab='onDateInputTab()'/>\n      </div>\n      <div class='quickmoment-input-wrapper' ng-hide='disableTimepicker'>\n        <label>Time</label>\n        <input class='quickmoment-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur=\"setDateFromInput(false)\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputTimeErr}\" on-tab='onTimeInputTab()'>\n      </div>\n    </div>\n    <div class='quickmoment-calendar-header'>\n      <a href='' class='quickmoment-prev-month quickmoment-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>\n      <span class='quickmoment-month'>{{calendarDate | moment:'MMMM YYYY'}}</span>\n      <a href='' class='quickmoment-next-month quickmoment-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>\n    </div>\n    <table class='quickmoment-calendar'>\n      <thead>\n        <tr>\n          <th ng-repeat='day in dayAbbreviations'>{{day}}</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr ng-repeat='week in weeks'>\n          <td ng-mousedown='setDate(day.date)' ng-class='{\"other-month\": day.other, \"disabled-date\": day.disabled, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | moment:'D'}}</td>\n        </tr>\n      </tbody>\n    </table>\n    <div class='quickmoment-popup-footer'>\n      <a href='' class='quickmoment-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>\n    </div>\n  </div>\n</div>"
+        template: "<div class='quickmoment'>\n  <a href='' ng-click='toggleCalendar()' class='quickmoment-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>\n  <div class='quickmoment-popup' ng-class='{open: calendarShown}'>\n    <a href='' tabindex='-1' class='quickmoment-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>\n    <div class='quickmoment-text-inputs'>\n      <div class='quickmoment-input-wrapper' ng-hide='disableDateinput'>\n        <label>Date</label>\n        <input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur=\"setDateFromInput()\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputDateErr}\" on-tab='onDateInputTab()'/>\n      </div>\n      <div class='quickmoment-input-wrapper' ng-hide='disableTimepicker'>\n        <label>Time</label>\n        <input class='quickmoment-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur=\"setDateFromInput(false)\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputTimeErr}\" on-tab='onTimeInputTab()'>\n      </div>\n    </div>\n    <div class='quickmoment-calendar-header'>\n      <a href='' class='quickmoment-prev-month quickmoment-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>\n      <span class='quickmoment-month'>{{calendarDate | moment:'MMMM YYYY'}}</span>\n      <a href='' class='quickmoment-next-month quickmoment-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>\n    </div>\n    <table class='quickmoment-calendar'>\n      <thead>\n        <tr>\n          <th ng-repeat='day in dayAbbreviations'>{{day}}</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr ng-repeat='week in weeks'>\n          <td ng-mousedown='setDate(day.date)' ng-class='{\"other-month\": day.other, \"disabled-date\": day.disabled, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | moment:'D'}}</td>\n        </tr>\n      </tbody>\n    </table>\n    <div class='quickmoment-popup-footer'>\n      <a href='' class='quickmoment-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>\n    </div>\n  </div>\n</div>"
       };
     }
   ]);

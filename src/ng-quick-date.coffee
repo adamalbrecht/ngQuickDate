@@ -349,8 +349,8 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
   # TEMPLATE
   # ================================================================
   template: """
-            <div class='quickdate'>
-              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' ng-blur='toggleCalendar()' class='quickdate-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
+            <div class='quickdate' on-tab='onDateInputTab()'>
+              <a href='' ng-focus='toggleCalendar()' ng-click='toggleCalendar()' class='quickdate-button' title='{{hoverText}}' on-tab='onDateInputTab()><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr}}</a>
               <div class='quickdate-popup' ng-class='{open: calendarShown}'>
                 <a href='' tabindex='-1' class='quickdate-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>
                 <div class='quickdate-text-inputs'>
@@ -399,5 +399,5 @@ app.directive 'onTab', ->
   restrict: 'A',
   link: (scope, element, attr) ->
     element.bind 'keydown keypress', (e) ->
-      if (e.which == 9) && !e.shiftKey
+      if (e.which == 9)
         scope.$apply(attr.onTab)

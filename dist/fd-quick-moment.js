@@ -1,7 +1,5 @@
 (function() {
-  var app;
-
-  app = angular.module("fdQuickMoment", []);
+  var app = angular.module("fdQuickMoment", []);
   app.provider("fdQuickMomentDefaults", function() {
     return {
       options: {
@@ -52,7 +50,60 @@
   });
 
   app.directive("momentpicker", [
-    'fdQuickMomentDefaults', '$filter', '$sce', function(fdQuickMomentDefaults, $filter, $sce) {
+    'fdQuickMomentDefaults', 
+    '$filter',
+    '$sce',
+
+    function(fdQuickMomentDefaults, $filter, $sce) {
+      var template = [
+        "<div class='quickmoment'>",
+          "<a href='' ng-click='toggleCalendar()' class='quickmoment-button' title='{{hoverText}}'>",
+            "<div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>",
+            "{{mainButtonStr()}}",
+          "</a>",
+          "<div class='quickmoment-popup' ng-class='{open: calendarShown}'>",
+            "<a href='' tabindex='-1' class='quickmoment-close' ng-click='toggleCalendar()'>",
+              "<div ng-bind-html='closeButtonHtml'></div>",
+            "</a>",
+            
+            "<div class='quickmoment-text-inputs'>",
+              "<div class='quickmoment-input-wrapper' ng-hide='disableDateinput'>",
+                "<label>Date</label>",
+                "<input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur=\"setDateFromInput()\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputDateErr}\" on-tab='onDateInputTab()'/>",
+              "</div>",
+              "<div class='quickmoment-input-wrapper' ng-hide='disableTimepicker'>",
+                "<label>Time</label>",
+                "<input class='quickmoment-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur=\"setDateFromInput(false)\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputTimeErr}\" on-tab='onTimeInputTab()'/>",
+              "</div>",
+            "</div>",
+            "<div class='quickmoment-calendar-header'>",
+              "<a href='' class='quickmoment-prev-month quickmoment-action-link' tabindex='-1' ng-click='prevMonth()'>",
+                "<div ng-bind-html='prevLinkHtml'></div>",
+              "</a>",
+              "<span class='quickmoment-month'>{{calendarDate | moment:'MMMM YYYY'}}</span>",
+              "<a href='' class='quickmoment-next-month quickmoment-action-link' ng-click='nextMonth()' tabindex='-1' >",
+                "<div ng-bind-html='nextLinkHtml'></div>",
+              "</a>",
+            "</div>",
+            "<table class='quickmoment-calendar'>",
+              "<thead>",
+                "<tr>",
+                  "<th ng-repeat='day in dayAbbreviations'>{{day}}</th>",
+                "</tr>",
+              "</thead>",
+              "<tbody>",
+                "<tr ng-repeat='week in weeks'>",
+                  "<td ng-mousedown='setDate(day.date)' ng-class='{\"other-month\": day.other, \"disabled-date\": day.disabled, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | moment:'D'}}</td>",
+                "</tr>",
+              "</tbody>",
+            "</table>",
+            "<div class='quickmoment-popup-footer'>",
+              "<a href='' class='quickmoment-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>",
+            "</div>",
+          "</div>",
+        "</div>"
+      ].join("\n");
+
       return {
         restrict: "E",
         require: "ngModel",
@@ -62,6 +113,7 @@
           onChange: "&"
         },
         replace: true,
+        template: template,
         link: function(scope, element, attrs, ngModel) {
           var dateToString, datepickerClicked, datesAreEqual, datesAreEqualToMinute, debug, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel, stringToDate, setDayStyles;
           debug = attrs.debug && attrs.debug.length;
@@ -344,8 +396,8 @@
           if (debug) {
             return console.log("quick date scope:", scope);
           }
-        },
-        template: "<div class='quickmoment'>\n  <a href='' ng-click='toggleCalendar()' class='quickmoment-button' title='{{hoverText}}'><div ng-hide='iconClass' ng-bind-html='buttonIconHtml'></div>{{mainButtonStr()}}</a>\n  <div class='quickmoment-popup' ng-class='{open: calendarShown}'>\n    <a href='' tabindex='-1' class='quickmoment-close' ng-click='toggleCalendar()'><div ng-bind-html='closeButtonHtml'></div></a>\n    <div class='quickmoment-text-inputs'>\n      <div class='quickmoment-input-wrapper' ng-hide='disableDateinput'>\n        <label>Date</label>\n        <input class='quickmoment-date-input' name='inputDate' type='text' ng-model='inputDate' placeholder='1/1/2013' ng-blur=\"setDateFromInput()\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputDateErr}\" on-tab='onDateInputTab()'/>\n      </div>\n      <div class='quickmoment-input-wrapper' ng-hide='disableTimepicker'>\n        <label>Time</label>\n        <input class='quickmoment-time-input' name='inputTime' type='text' ng-model='inputTime' placeholder='12:00 PM' ng-blur=\"setDateFromInput(false)\" ng-enter=\"setDateFromInput(true)\" ng-class=\"{'quickmoment-error': inputTimeErr}\" on-tab='onTimeInputTab()'>\n      </div>\n    </div>\n    <div class='quickmoment-calendar-header'>\n      <a href='' class='quickmoment-prev-month quickmoment-action-link' tabindex='-1' ng-click='prevMonth()'><div ng-bind-html='prevLinkHtml'></div></a>\n      <span class='quickmoment-month'>{{calendarDate | moment:'MMMM YYYY'}}</span>\n      <a href='' class='quickmoment-next-month quickmoment-action-link' ng-click='nextMonth()' tabindex='-1' ><div ng-bind-html='nextLinkHtml'></div></a>\n    </div>\n    <table class='quickmoment-calendar'>\n      <thead>\n        <tr>\n          <th ng-repeat='day in dayAbbreviations'>{{day}}</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr ng-repeat='week in weeks'>\n          <td ng-mousedown='setDate(day.date)' ng-class='{\"other-month\": day.other, \"disabled-date\": day.disabled, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | moment:'D'}}</td>\n        </tr>\n      </tbody>\n    </table>\n    <div class='quickmoment-popup-footer'>\n      <a href='' class='quickmoment-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>\n    </div>\n  </div>\n</div>"
+        } // link
+
       };
     }
   ]);

@@ -406,5 +406,3 @@
   });
 
 }).call(this);
-
-//# sourceMappingURL=ng-quick-date.js.map

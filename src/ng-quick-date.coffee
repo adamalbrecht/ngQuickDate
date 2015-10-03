@@ -27,6 +27,8 @@ app.provider "ngQuickDateDefaults", ->
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      detectTouchDevices: false
+      isTouchDevice: false
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -57,6 +59,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
   link: (scope, element, attrs, ngModelCtrl) ->
     # INITIALIZE VARIABLES AND CONFIGURATION
     # ================================
+    useTouch = false
     initialize = ->
       setConfigOptions() # Setup configuration variables
       scope.toggleCalendar(false) # Make sure it is closed initially
@@ -64,6 +67,14 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       scope.inputDate = null # Date inputted into the date text input field
       scope.inputTime = null # Time inputted into the time text input field
       scope.invalid = true
+
+      # Determine if using a touch device
+      useTouch = false
+      if scope.isTouchDevice
+        useTouch = true
+      else if scope.detectTouchDevices && ('ontouchstart' of window)
+        useTouch = true
+
       if typeof(attrs.initValue) == 'string'
         ngModelCtrl.$setViewValue(attrs.initValue)
       if !scope.defaultTime
@@ -279,6 +290,16 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       150
     )
 
+    # Redirect onmousedown and onclick events based on whether touch device
+    scope.isMouseDown = (date) ->
+      if (!useTouch)
+        scope.selectDate(date, true, true)
+    scope.isClick = (date, ev) ->
+      if (useTouch)
+        scope.selectDate(date, true, true)
+      else
+        ev.preventDefault();
+
     # Select a new model date. This is called in 3 situations:
     #   * Clicking a day on the calendar or from the `selectDateFromInput`
     #   * Changing the date or time inputs, which call the `selectDateFromInput` method, which calls this method.
@@ -376,7 +397,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
                   </thead>
                   <tbody>
                     <tr ng-repeat='week in weeks'>
-                      <td ng-mousedown='selectDate(day.date, true, true)' ng-click='$event.preventDefault()' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
+                      <td ng-mousedown='isMouseDown(day.date)' ng-click='isClick(day.date, $event)' ng-class='{"other-month": day.other, "disabled-date": day.disabled, "selected": day.selected, "is-today": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>
                     </tr>
                   </tbody>
                 </table>

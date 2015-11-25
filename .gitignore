@@ -1,2 +1,5 @@
 *.swp
+bower_components/
+node_modules/
+spec/
 .DS_Store

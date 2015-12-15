@@ -27,9 +27,11 @@
         }
       }
     };
+
     this.$get = function() {
       return this.options;
     };
+
     return this.set = function(keyOrHash, value) {
       var k, v, _results;
       if (typeof keyOrHash === 'object') {
@@ -43,6 +45,7 @@
         return this.options[keyOrHash] = value;
       }
     };
+
   });
 
   app.directive("datepicker", [
@@ -55,8 +58,14 @@
         },
         replace: true,
         link: function(scope, element, attrs, ngModel) {
-          var dateToString, datepickerClicked, datesAreEqual, debug, getDaysInMonth, initialize, parseDateString, setCalendarDateFromModel, setCalendarRows, setConfigOptions, setInputDateFromModel;
+          var dateToString, datepickerClicked, 
+              datesAreEqual, debug, getDaysInMonth, 
+              initialize, parseDateString, 
+              setCalendarDateFromModel, setCalendarRows, 
+              setConfigOptions, setInputDateFromModel;
+
           debug = attrs.debug && attrs.debug.length;
+
           initialize = function() {
             scope.toggleCalendar(false);
             scope.weeks = [];
@@ -68,6 +77,7 @@
             setInputDateFromModel();
             return setCalendarDateFromModel();
           };
+
           setConfigOptions = function() {
             var key, value;
             for (key in ngQuickDateDefaults) {
@@ -88,7 +98,9 @@
               return scope.buttonIconHtml = "<i ng-show='iconClass' class='" + attrs.iconClass + "'></i>";
             }
           };
+
           datepickerClicked = false;
+
           window.document.addEventListener('click', function(event) {
             if (!datepickerClicked) {
               scope.toggleCalendar(false);
@@ -96,9 +108,11 @@
             }
             return datepickerClicked = false;
           });
+
           angular.element(element[0])[0].addEventListener('click', function(event) {
             return datepickerClicked = true;
           });
+
           setInputDateFromModel = function() {
             if (scope.ngModel) {
               scope.inputDate = $filter('date')(scope.ngModel, ngQuickDateDefaults.dateFormat);
@@ -108,6 +122,7 @@
               return scope.inputTime = null;
             }
           };
+
           setCalendarDateFromModel = function() {
             var d;
             d = scope.ngModel ? new Date(scope.ngModel) : new Date();
@@ -117,6 +132,7 @@
             d.setDate(1);
             return scope.calendarDate = new Date(d);
           };
+
           setCalendarRows = function() {
             var curDate, d, day, daysInMonth, numRows, offset, row, selected, today, weeks, _i, _j, _ref;
             offset = scope.calendarDate.getDay();
@@ -142,10 +158,13 @@
             }
             return scope.weeks = weeks;
           };
+
           dateToString = function(date, format) {
             return $filter('date')(date, format);
           };
+
           parseDateString = ngQuickDateDefaults.parseDateFunction;
+
           datesAreEqual = function(d1, d2, compareTimes) {
             if (compareTimes == null) {
               compareTimes = false;
@@ -156,25 +175,30 @@
               return d1 && d2 && (d1.getYear() === d2.getYear()) && (d1.getMonth() === d2.getMonth()) && (d1.getDate() === d2.getDate());
             }
           };
+
           getDaysInMonth = function(year, month) {
             return [31, ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
           };
+
           scope.$watch('ngModel', function(newVal, oldVal) {
             if (newVal !== oldVal) {
               setInputDateFromModel();
               return setCalendarDateFromModel();
             }
           });
+
           scope.$watch('calendarDate', function(newVal, oldVal) {
             if (newVal !== oldVal) {
               return setCalendarRows();
             }
           });
+
           scope.$watch('calendarShown', function(newVal, oldVal) {
             var dateInput;
             dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0];
             return dateInput.select();
           });
+
           scope.mainButtonStr = function() {
             if (scope.ngModel) {
               return $filter('date')(scope.ngModel, scope.labelFormat);
@@ -182,6 +206,7 @@
               return scope.placeholder;
             }
           };
+
           scope.toggleCalendar = function(show) {
             if (isFinite(show)) {
               return scope.calendarShown = show;
@@ -189,6 +214,7 @@
               return scope.calendarShown = !scope.calendarShown;
             }
           };
+
           scope.setDate = function(date, closeCalendar) {
             if (closeCalendar == null) {
               closeCalendar = true;
@@ -196,6 +222,7 @@
             scope.ngModel = date;
             return scope.toggleCalendar(false);
           };
+
           scope.setDateFromInput = function(closeCalendar) {
             var err, tmpDate, tmpDateAndTime, tmpTime;
             if (closeCalendar == null) {
@@ -230,28 +257,35 @@
               }
             }
           };
+
           scope.onDateInputTab = function(param) {
             if (scope.disableTimepicker) {
               scope.toggleCalendar(false);
             }
             return true;
           };
+          
           scope.onTimeInputTab = function(param) {
             scope.toggleCalendar(false);
             return true;
           };
+
           scope.nextMonth = function() {
             return scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() + 1));
           };
+
           scope.prevMonth = function() {
             return scope.calendarDate = new Date(new Date(scope.calendarDate).setMonth(scope.calendarDate.getMonth() - 1));
           };
+
           scope.clear = function() {
             scope.ngModel = null;
             return scope.toggleCalendar(false);
           };
+
           initialize();
           setCalendarRows();
+
           if (debug) {
             return console.log("quick date scope:", scope);
           }

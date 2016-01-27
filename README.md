@@ -1,11 +1,3 @@
-## Deprecated:
-
-Sorry everyone, but I just don't have time to work on this anymore. Also, after using this in my own app, I realized that it was lacking in some fundamental ways. I think what is really needed is a good polyfill for `<input type='date'>` and `<input type='datetime-local'>`. Unfortunately, I don't know of any great ones. If someone were to start on a better one, I'd love to contribute. And if anyone wants to maintain this project, please let me know.
-
-Adam
-
----
-
 # ngQuickDate
 
 ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive. It stresses speed of data entry and simplicity while being highly configurable and easy to re-style.

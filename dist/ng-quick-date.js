@@ -20,6 +20,7 @@
         defaultTime: null,
         dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
         dateFilter: null,
+        readOnly: false,
         parseDateFunction: function(str) {
           var seconds;
           seconds = Date.parse(str);
@@ -103,7 +104,7 @@
               scope.toggleCalendar(false);
               scope.$apply();
             }
-            return datepickerClicked = false;
+            return datepickerClicked = (scope.readOnly ? false : true);
           });
           angular.element(element[0])[0].addEventListener('click', function(event) {
             return datepickerClicked = true;

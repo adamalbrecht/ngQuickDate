@@ -27,6 +27,7 @@ app.provider "ngQuickDateDefaults", ->
       defaultTime: null
       dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
       dateFilter: null
+      readOnly: false
       parseDateFunction: (str) ->
         seconds = Date.parse(str)
         if isNaN(seconds)
@@ -96,7 +97,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       if scope.calendarShown && ! datepickerClicked
         scope.toggleCalendar(false)
         scope.$apply()
-      datepickerClicked = false
+      datepickerClicked = (if scope.readOnly then false else true)
 
     angular.element(element[0])[0].addEventListener 'click', (event) ->
       datepickerClicked = true

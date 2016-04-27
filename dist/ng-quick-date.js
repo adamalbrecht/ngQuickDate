@@ -173,6 +173,12 @@
                                 curDate.setDate(curDate.getDate() + 1);
                             }
                         }
+                        var todayDate = new Date();
+                        var tomorrowDate = new Date();
+                        tomorrowDate.setDate(todayDate.getDate() + 1);
+                        scope.isTodayOrTomorrow = (datesAreEqual(todayDate, ngModelCtrl.$modelValue)? 'today' :
+                            (datesAreEqual(tomorrowDate, ngModelCtrl.$modelValue)? 'tomorrow': null));
+                        console.log('Checkbox value: ' + scope.isTodayOrTomorrow);
                         return scope.weeks = weeks;
                     };
                     ngModelCtrl.$parsers.push(function (viewVal) {
@@ -352,6 +358,17 @@
                     scope.clear = function () {
                         return scope.selectDate(null, true);
                     };
+                    scope.setToday = function (event) {
+                        scope.selectDate(new Date(), false);
+                        return refreshView();
+                    };
+                    scope.setTomorrow = function (event) {
+                        var today = new Date();
+                        var tomorrow = new Date();
+                        tomorrow.setDate(today.getDate() + 1);
+                        scope.selectDate(tomorrow, false);
+                        return refreshView();
+                    };
                     return initialize();
                 },
                 template: "<div class='quickdate'>\n  " +
@@ -391,6 +408,13 @@
                 "</tbody>\n    " +
                 "</table>\n    " +
                 "<div class='quickdate-popup-footer'>\n      " +
+                "<div><form><span style='float:left;'>" +
+                "<input type='radio' ng-model='isTodayOrTomorrow' value='today' ng-click='setToday($event)'>Today</input>" +
+                "</span>" +
+                "<span style='float:right;'>" +
+                "<input type='radio' ng-model='isTodayOrTomorrow' value='tomorrow' ng-click='setTomorrow($event)'>Tomorrow</input>" +
+                "</span>" +
+                "</form></div>" +
                 "<a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>\n    " +
                 "</div>\n  " +
                 "</div><div class='dateOverlay'></div>" +

@@ -9,7 +9,7 @@
                 dateFormat: 'M/d/yyyy',
                 timeFormat: 'h:mm a',
                 labelFormat: null,
-                placeholder: 'Click to Set Date',
+                placeholder: '',
                 hoverText: null,
                 buttonIconHtml: null,
                 closeButtonHtml: '&times;',
@@ -20,6 +20,7 @@
                 defaultTime: null,
                 dayAbbreviations: ["Su", "M", "Tu", "W", "Th", "F", "Sa"],
                 dateFilter: null,
+                showTodayTomorrow: false,
                 parseDateFunction: function (str) {
                     var seconds;
                     seconds = Date.parse(str);
@@ -70,6 +71,9 @@
                         scope.inputDate = null;
                         scope.inputTime = null;
                         scope.invalid = true;
+                        scope.todayTomorrow = {
+                            isToday: null
+                        };
                         if (typeof attrs.initValue === 'string') {
                             ngModelCtrl.$setViewValue(attrs.initValue);
                         }
@@ -172,6 +176,16 @@
                                 });
                                 curDate.setDate(curDate.getDate() + 1);
                             }
+                        }
+                        var todayDate = new Date();
+                        var tomorrowDate = new Date();
+                        tomorrowDate.setDate(todayDate.getDate() + 1);
+                        if (datesAreEqual(todayDate, ngModelCtrl.$modelValue) === true) {
+                            scope.todayTomorrow.isToday = true;
+                        } else if (datesAreEqual(tomorrowDate, ngModelCtrl.$modelValue) === true) {
+                            scope.todayTomorrow.isToday = false;
+                        } else {
+                            scope.todayTomorrow.isToday = null;
                         }
                         return scope.weeks = weeks;
                     };
@@ -352,6 +366,17 @@
                     scope.clear = function () {
                         return scope.selectDate(null, true);
                     };
+                    scope.setToday = function () {
+                        scope.selectDate(new Date(), true);
+                        return refreshView();
+                    };
+                    scope.setTomorrow = function () {
+                        var today = new Date();
+                        var tomorrow = new Date();
+                        tomorrow.setDate(today.getDate() + 1);
+                        scope.selectDate(tomorrow, true);
+                        return refreshView();
+                    };
                     return initialize();
                 },
                 template: "<div class='quickdate'>\n  " +
@@ -391,6 +416,10 @@
                 "</tbody>\n    " +
                 "</table>\n    " +
                 "<div class='quickdate-popup-footer'>\n      " +
+                "<div ng-if='showTodayTomorrow'><form>" +
+                "<input type='radio' ng-model='todayTomorrow.isToday' ng-value='true' ng-click='setToday($event)'>Today</input>" +
+                "<input type='radio' ng-model='todayTomorrow.isToday' ng-value='false' ng-click='setTomorrow($event)'>Tomorrow</input>" +
+                "</form></div>" +
                 "<a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>\n    " +
                 "</div>\n  " +
                 "</div><div class='dateOverlay'></div>" +

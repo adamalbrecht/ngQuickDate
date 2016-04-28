@@ -367,14 +367,14 @@
                         return scope.selectDate(null, true);
                     };
                     scope.setToday = function () {
-                        scope.selectDate(new Date(), false);
+                        scope.selectDate(new Date(), true);
                         return refreshView();
                     };
                     scope.setTomorrow = function () {
                         var today = new Date();
                         var tomorrow = new Date();
                         tomorrow.setDate(today.getDate() + 1);
-                        scope.selectDate(tomorrow, false);
+                        scope.selectDate(tomorrow, true);
                         return refreshView();
                     };
                     return initialize();

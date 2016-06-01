@@ -88,3 +88,6 @@ table.quickdate-calendar td:hover {
 .quickdate input.ng-invalid:focus {
   outline-color: #dd3b30;
 }
+.popup-top {
+  top: -260px;
+}

@@ -272,7 +272,7 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
     # ==================================
     scope.toggleCalendar = debounce(
       (show) ->
-        // resetting view to cater for any changes within disabled date ranges
+        # resetting view to cater for any changes within disabled date ranges
         setupCalendarView();
         if isFinite(show)
           scope.calendarShown = show

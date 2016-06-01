@@ -88,6 +88,9 @@ table.quickdate-calendar td:hover {
 .quickdate input.ng-invalid:focus {
   outline-color: #dd3b30;
 }
+.popup-top {
+  top: -260px;
+}
 
 .quickdate {
   display: inline-block;
@@ -180,9 +183,8 @@ table.quickdate-calendar td.is-today.disabled-date {
 .quickdate-popup-footer {
   margin: 3px 1px 0;
 }
-.quickdate-clear {
+.quickdate-button {
   display: inline-block;
-  padding: 2px 4px;
   background-color: #ffffff;
   color: #333333;
   border: solid 1px #cccccc;
@@ -190,6 +192,6 @@ table.quickdate-calendar td.is-today.disabled-date {
   border-radius: 4px;
   text-decoration: none;
 }
-.quickdate-clear:hover {
+.quickdate-button:hover {
   background-color: #f2f2f2;
 }

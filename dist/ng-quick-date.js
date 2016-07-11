@@ -283,6 +283,9 @@
                         var dateInput;
                         if (newVal) {
                             dateInput = angular.element(element[0].querySelector(".quickdate-date-input"))[0];
+                            if ((typeof obj === 'undefined') || (obj === null) || (obj === '')) {
+                                return null;
+                            }
                             return dateInput.select();
                         }
                     });
@@ -399,7 +402,7 @@
                 "</thead>\n      " +
                 "<tbody>\n        " +
                 "<tr ng-repeat='week in weeks'>\n          " +
-                "<td ng-mousedown='selectDate(day.date, true, true)' ng-click='$event.preventDefault()' ng-class='{\"other-month\": day.other, \"disabled-date\": day.disabled, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>\n        " +
+                "<td ng-mousedown='selectDate(day.date, disableTimepicker)' ng-click='$event.preventDefault()' ng-class='{\"other-month\": day.other, \"disabled-date\": day.disabled, \"selected\": day.selected, \"is-today\": day.today}' ng-repeat='day in week'>{{day.date | date:'d'}}</td>\n        " +
                 "</tr>\n      " +
                 "</tbody>\n    " +
                 "</table>\n    " +
@@ -418,6 +421,7 @@
                 "<input class='quickdate-time-input' ng-class=\"{'ng-invalid': inputTimeErr}\" name='inputTime' type='text' ng-model='inputTime' placeholder='{{ timePlaceholder }}' ng-enter=\"selectDateFromInput(true)\" ng-blur=\"selectDateFromInput(false)\" on-tab='onTimeInputTab()'>\n      " +
                 "</div>\n    " +
                 "</div>\n    " +
+                "<a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='selectDateFromInput(true)'>Submit</a>\n    " +
                 "<a href='' class='quickdate-clear' tabindex='-1' ng-hide='disableClearButton' ng-click='clear()'>Clear</a>\n    " +
                 "</div>\n  " +
                 "</div><div class='dateOverlay' ng-click='toggleCalendar()'></div>" +

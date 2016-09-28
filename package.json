@@ -1,6 +1,6 @@
-{
+  {
   "name": "fdQuickMoment",
-  "version": "1.3.12",
+  "version": "1.3.13",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7",

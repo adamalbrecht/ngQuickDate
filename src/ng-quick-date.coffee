@@ -103,12 +103,12 @@ app.directive "quickDatepicker", ['ngQuickDateDefaults', '$filter', '$sce', (ngQ
       datepickerClicked = false
 
     angular.element(element[0])[0].addEventListener 'click', (event) ->
-        if navigator.userAgent.indexOf("Safari") !== -1 && navigator.userAgent.indexOf("Chrome"  === -1) 
-            var popup = event.target.parentElement.querySelectorAll('.quickdate-popup')[0]
-            if popup.classList.contains('open')
-                popup.classList.remove('open')
-            else
-                popup.classList.add('open')
+      if navigator.userAgent.indexOf("Safari") !== -1 && navigator.userAgent.indexOf("Chrome"  === -1) 
+        var popup = event.target.parentElement.querySelectorAll('.quickdate-popup')[0]
+        if popup.classList.contains('open')
+          popup.classList.remove('open')
+        else
+          popup.classList.add('open')
       datepickerClicked = true
 
     # SCOPE MANIPULATION Methods

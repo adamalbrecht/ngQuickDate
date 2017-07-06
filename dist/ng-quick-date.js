@@ -113,7 +113,7 @@
           });
           angular.element(element[0])[0].addEventListener('click', function(event) {
             var popup;
-            if (navigator.userAgent.indexOf("Safari") !== -1 && navigator.userAgent.indexOf("Chrome" === -1)) {
+            if (navigator.userAgent.indexOf("Safari") !== -1 && navigator.userAgent.indexOf("Chrome") === -1) {
               popup = event.target.parentElement.querySelectorAll('.quickdate-popup')[0];
               if (popup.classList.contains('open')) {
                 popup.classList.remove('open');
